@@ -1,4 +1,4 @@
-package org.freeside.qratitude.common;
+package org.freesideatlanta.qratitude.common;
 
 import android.app.Activity;
 import android.util.Log;

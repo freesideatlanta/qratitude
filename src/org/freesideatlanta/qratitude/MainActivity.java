@@ -1,4 +1,4 @@
-package org.freeside.qratitude;
+package org.freesideatlanta.qratitude;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -27,10 +27,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.util.Log;
 
-import org.freeside.qratitude.common.Logger;
+import org.freesideatlanta.qratitude.common.Logger;
 
 public class MainActivity extends Activity {
-	public static final String EXTRA_ASSET = "org.freeside.qratitude.ASSET";
+	public static final String EXTRA_ASSET = "org.freesideatlanta.qratitude.ASSET";
 	
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	private static final int PHOTO_SIZE = 100;

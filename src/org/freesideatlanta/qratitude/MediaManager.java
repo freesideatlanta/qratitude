@@ -1,4 +1,4 @@
-package org.freeside.qratitude;
+package org.freesideatlanta.qratitude;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -9,7 +9,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Files.FileColumns;
 
-import org.freeside.qratitude.common.Logger;
+import org.freesideatlanta.qratitude.common.Logger;
 
 public class MediaManager {
   

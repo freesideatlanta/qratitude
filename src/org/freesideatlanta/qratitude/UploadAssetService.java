@@ -1,4 +1,4 @@
-package org.freeside.qratitude;
+package org.freesideatlanta.qratitude;
 
 import android.app.IntentService;
 import android.content.Intent;
