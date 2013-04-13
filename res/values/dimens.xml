@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<dimen name="header_font_size">20sp</dimen>
+	<dimen name="header_text_margin_left">15dp</dimen>
+	<dimen name="photo_width">100dp</dimen>
+	<dimen name="photo_height">100dp</dimen>
+	<dimen name="photo_frame_width">150dp</dimen>
+	<dimen name="photo_frame_height">150dp</dimen>
+</resources>

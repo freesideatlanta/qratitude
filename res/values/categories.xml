@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="categories">
+		<item>Appliances</item>
+		<item>Architectural Items</item>
+		<item>Cabinets</item>
+		<item>Ceiling</item>
+		<item>Doors</item>
+		<item>Electrical</item>
+		<item>Flooring</item>
+		<item>Hardware</item>
+		<item>Life Safety</item>
+		<item>Lighting</item>
+		<item>Lumber / Wood</item>
+		<item>Office Furniture</item>
+		<item>Paint</item>
+		<item>Plumbing</item>
+		<item>Storage</item>
+		<item>Windows</item>
+	</string-array>
+</resources>
