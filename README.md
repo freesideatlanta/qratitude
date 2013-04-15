@@ -1,7 +1,7 @@
 QRatitude: A QR-code based Inventory Tagging System
 ===================================================
 
-This is an Android application that implements a simple workflow for tagging inventory with pre-printed (*NOTE:* non-URL) QR codes.
+This is an Android application that implements a simple workflow for tagging inventory with pre-printed (**NOTE:** non-URL) QR codes.
 
 Workflow Overview
 -----------------
@@ -25,7 +25,7 @@ Server-side Options
 
 There are several options for how to handle the data once it reaches server-side, so that implementation of the site in the final form (shown [here](http://inventory.lifecyclebuildingcenter.org/)) could be made easy.  Feel free to add your thoughts below.
 
-- (emptyset) I would store the data in postgresql.  Tables would be simple: product (productid, qrcode, form data ...), images (productid, image (binary)).  I would write a small API in whatever (java, node.js) that exposed a few methods for basic CRUD on this data.  Then, both the Android app and the website could consume the API.
+- (**emptyset**) I would store the data in postgresql.  Tables would be simple: *products* (productid, qrcode, form data ...), *images* (productid, image (binary)).  I would write a small API in whatever (java, node.js) that exposed a few methods for basic CRUD on this data.  Then, both the Android app and the website could consume the API.
 
 
 Further Directions
