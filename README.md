@@ -27,6 +27,8 @@ There are several options for how to handle the data once it reaches server-side
 
 - (**emptyset**) I would store the data in postgresql.  Tables would be simple: *products* (productid, qrcode, form data ...), *images* (productid, image (binary)).  I would write a small API in whatever (java, node.js) that exposed a few methods for basic CRUD on this data.  Then, both the Android app and the website could consume the API.
 
+- (**thrillgore**) The API itself should be JSON-based as we can use some object mappers for Java such as Jackson or GSON to map out those attributes into POJOs, and accelerate development. 
+
 
 Further Directions
 ------------------
