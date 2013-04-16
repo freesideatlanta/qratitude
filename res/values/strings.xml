@@ -4,7 +4,8 @@
 
 	<string name="title_activity_main">MainActivity</string>
 	<string name="text_category">Select a category:</string>
-	<string name="edit_description">Item name and description</string>
+	<string name="edit_title">Item Name</string>
+	<string name="edit_description">Description</string>
 	<string name="edit_size">Item dimensions</string>
 	<string name="edit_quantity">Number of items</string>
 	<string name="edit_condition">Condition</string>
