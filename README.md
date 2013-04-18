@@ -28,9 +28,9 @@ Server-side Options
 
 There are several options for how to handle the data once it reaches server-side, so that implementation of the site in the final form (shown [here](http://inventory.lifecyclebuildingcenter.org)) could be made easy.  Feel free to add your thoughts below.
 
-- (__emptyset__) I would store the data in postgresql.  Tables would be simple: *products* (productid, qrcode, form data ...), *images* (productid, image (binary)).  I would write a small API in whatever (java, node.js) that exposed a few methods for basic CRUD on this data.  Then, both the Android app and the website could consume the API.
+- (<b>emptyset</b>) I would store the data in postgresql.  Tables would be simple: *products* (productid, qrcode, form data ...), *images* (productid, image (binary)).  I would write a small API in whatever (java, node.js) that exposed a few methods for basic CRUD on this data.  Then, both the Android app and the website could consume the API.
 
-- (__thrillgore__) The API itself should be JSON-based as we can use some object mappers for Java such as Jackson or GSON to map out those attributes into POJOs, and accelerate development. 
+- (<b>thrillgore</b>) The API itself should be JSON-based as we can use some object mappers for Java such as Jackson or GSON to map out those attributes into POJOs, and accelerate development. 
 
 
 Further Directions
