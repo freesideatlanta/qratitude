@@ -11,6 +11,6 @@ public class UploadAssetService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		Asset asset = intent.getParcelableExtra(MainActivity.EXTRA_ASSET);
+		Asset asset = intent.getParcelableExtra(ProductDataEntryActivity.EXTRA_ASSET);
 	}
 }

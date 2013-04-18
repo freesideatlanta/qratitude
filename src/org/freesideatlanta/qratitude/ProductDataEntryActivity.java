@@ -29,7 +29,7 @@ import android.util.Log;
 
 import org.freesideatlanta.qratitude.common.Logger;
 
-public class MainActivity extends Activity {
+public class ProductDataEntryActivity extends Activity {
 	public static final String EXTRA_ASSET = "org.freesideatlanta.qratitude.ASSET";
 	
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;

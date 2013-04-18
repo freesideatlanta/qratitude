@@ -9,6 +9,14 @@ import android.os.Parcelable;
 
 public class Asset implements Parcelable {
 	
+	private String id;
+	public void setId(String i) {
+		this.id = i;
+	}
+	public String getId() {
+		return this.id;
+	}
+
 	private String category;
 	public void setCategory(String c) {
 		this.category = c;
@@ -39,6 +47,7 @@ public class Asset implements Parcelable {
 	}
 
 	private Asset(Parcel in) {
+		this.id = in.readString();
 		this.category = in.readString();
 		this.description = in.readString();
 		this.dimensions = in.readString();
@@ -55,6 +64,7 @@ public class Asset implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel out, int flags) {
+		out.writeString(this.id);
 		out.writeString(this.category);
 		out.writeString(this.description);
 		out.writeString(this.dimensions);

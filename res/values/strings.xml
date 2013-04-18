@@ -2,7 +2,10 @@
 <resources>
     <string name="app_name">QRatitude</string>
 
-	<string name="title_activity_main">MainActivity</string>
+	<string name="title_activity_scan">ScanActivity</string>
+	<string name="button_scan">Scan a QR Code</string>
+
+	<string name="title_activity_product_data_entry">ProductDataEntryActivity</string>
 	<string name="text_category">Select a category:</string>
 	<string name="edit_title">Item Name</string>
 	<string name="edit_description">Description</string>
