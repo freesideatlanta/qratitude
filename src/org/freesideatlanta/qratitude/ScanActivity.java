@@ -48,6 +48,10 @@ public class ScanActivity extends Activity implements View.OnClickListener {
 
 		// initialize class properties
 		this.asset = new Asset();
+
+		// initialize the event handlers
+		final Button b = (Button) findViewById(R.id.button_scan);
+		b.setOnClickListener(this);
     }
 
 	@Override 
@@ -55,7 +59,9 @@ public class ScanActivity extends Activity implements View.OnClickListener {
 		final Button b = (Button) findViewById(R.id.button_scan);
 		if (view.equals(b)) {
 			IntentIntegrator i = new IntentIntegrator(this);
+			log.d("intent integrator instantiated");
 			i.initiateScan();
+			log.d("intent integrator initiateScan called");
 		}
 	}
 
@@ -63,6 +69,7 @@ public class ScanActivity extends Activity implements View.OnClickListener {
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		IntentResult r = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 		if (r != null) {
+			log.d("obtaining the scanned string from the IntentResult");
 			// obtain scanned string (the psuedo-GUID)
 			String id = r.getContents();
 			this.asset.setId(id);
@@ -71,6 +78,7 @@ public class ScanActivity extends Activity implements View.OnClickListener {
 			
 		} else {
 			// TODO: display message?  ignore?
+			log.d("IntentResult returned null");
 		}
 	}
 }
