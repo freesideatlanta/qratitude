@@ -32,7 +32,6 @@ There are several options for how to handle the data once it reaches server-side
 
 - (<b>thrillgore</b>) The API itself should be JSON-based as we can use some object mappers for Java such as Jackson or GSON to map out those attributes into POJOs, and accelerate development. 
 
-
 Further Directions
 ------------------
 
@@ -43,6 +42,15 @@ Some very easy improvements to the app are readily possible after the initial wo
 - Editing and saving of form data, by scanning a QR code of an already uploaded product.
 
 - ZXing supports barcode scanning, too - so perhaps the initial *ScanActivity* can also include an option to scan barcodes (if needed).
+
+Signing
+-------
+
+In order to sign the release, the `sign.sh` script assumes a symlink to `freesideatlanta.keystore` in the qratitude top directory.
+That symlink points to the actual keystore file, which is currently kept in an encrypted container that needs to be mounted.
+Access to that (and therefore, the ability to sign the release apk) is reserved to Freeside Atlanta.
+
+Here's [one opinion](http://stackoverflow.com/a/4053381/172217) on signing open-source software in the Android universe.
 
 License/Legal
 -------------
