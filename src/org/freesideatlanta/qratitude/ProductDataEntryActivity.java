@@ -46,7 +46,7 @@ public class ProductDataEntryActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
     	// called when the activity is first created
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.activity_product_data_entry);
 
 		// initialize the logger
 		String n = getString(R.string.app_name);
