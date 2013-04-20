@@ -1,3 +1,3 @@
 #!/bin/sh
-adb uninstall org.freeside.qratitude
+adb uninstall org.freesideatlanta.qratitude
 ant clean
