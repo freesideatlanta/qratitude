@@ -30,8 +30,6 @@ import android.util.Log;
 import org.freesideatlanta.qratitude.common.Logger;
 
 public class ProductDataEntryActivity extends Activity {
-	public static final String EXTRA_ASSET = "org.freesideatlanta.qratitude.ASSET";
-	
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	private static final int PHOTO_SIZE = 100;
 
@@ -59,7 +57,11 @@ public class ProductDataEntryActivity extends Activity {
 		this.mediaManager = new MediaManager(d);
 		this.mediaManager.setLog(log);
 
-		this.asset = new Asset();
+		// extract asset from the intent bundle 
+		Intent i = this.getIntent();
+		this.asset = (Asset) i.getParcelableExtra(Asset.EXTRA_ASSET);
+
+		log.d("asset.id = " + this.asset.getId());
 
 		// sets up the categories spinner control
 		final Spinner s = (Spinner) findViewById(R.id.spinner_category);
@@ -97,7 +99,7 @@ public class ProductDataEntryActivity extends Activity {
 
 	public void uploadAsset(View view) {
 		Intent i = new Intent(this, UploadAssetActivity.class);
-		i.putExtra(EXTRA_ASSET, this.asset); 
+		i.putExtra(Asset.EXTRA_ASSET, this.asset); 
 		startActivity(i);
 	}
 

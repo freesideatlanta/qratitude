@@ -8,6 +8,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Asset implements Parcelable {
+	public static final String EXTRA_ASSET = "org.freesideatlanta.qratitude.ASSET";
 	
 	private String id;
 	public void setId(String i) {
@@ -47,6 +48,8 @@ public class Asset implements Parcelable {
 	}
 
 	private Asset(Parcel in) {
+		this();
+
 		this.id = in.readString();
 		this.category = in.readString();
 		this.description = in.readString();

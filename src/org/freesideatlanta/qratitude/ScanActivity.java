@@ -7,6 +7,7 @@ import java.util.Date;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,9 +31,11 @@ import android.util.Log;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
 import org.freesideatlanta.qratitude.common.Logger;
 
 public class ScanActivity extends Activity implements View.OnClickListener {
+	public static boolean InDebugMode;
 	private Logger log;
 	private Asset asset;
 	
@@ -41,6 +44,9 @@ public class ScanActivity extends Activity implements View.OnClickListener {
     	// called when the activity is first created
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
+
+		// initialize static "constants"
+		ScanActivity.InDebugMode = ((this.getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE) != 0);
 
 		// initialize the logger
 		String n = getString(R.string.app_name);
@@ -59,9 +65,7 @@ public class ScanActivity extends Activity implements View.OnClickListener {
 		final Button b = (Button) findViewById(R.id.button_scan);
 		if (view.equals(b)) {
 			IntentIntegrator i = new IntentIntegrator(this);
-			log.d("intent integrator instantiated");
 			i.initiateScan();
-			log.d("intent integrator initiateScan called");
 		}
 	}
 
@@ -69,15 +73,22 @@ public class ScanActivity extends Activity implements View.OnClickListener {
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		IntentResult r = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 		if (r != null) {
-			log.d("obtaining the scanned string from the IntentResult");
-			// obtain scanned string (the psuedo-GUID)
-			String id = r.getContents();
-			this.asset.setId(id);
+			if (InDebugMode) {
+				this.asset.setId("4048675309");
+			} else {
+				// obtain scanned string (the psuedo-GUID)
+				String id = r.getContents();
+				this.asset.setId(id);
+			}
 
-			// TODO: do something with the asset
-			
+			log.d("asset.id = " + this.asset.getId());
+
+			// pass the asset to the product data entry activity
+			Intent i = new Intent(this, ProductDataEntryActivity.class);
+			i.putExtra(Asset.EXTRA_ASSET, this.asset);
+			startActivity(i);
+
 		} else {
-			// TODO: display message?  ignore?
 			log.d("IntentResult returned null");
 		}
 	}
