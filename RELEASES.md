@@ -45,4 +45,37 @@ Release: Chordata
 -----------------
 This release of QRatitude might expand existing features, like customizing reports, integration with other
 mobile or web payment options, or perhaps introduce stricter validation on product data for better data
-entry.
+entry.  The main feature will be attempting to integrate GPS coordinates and to store them in PostGIS.
+
+- On QR code scan, the GPS coordinates are read from the phone and stored in the product data in the Android app
+- When GPS coordinates (as part of product data) are posted to the server, they create a spatial record
+- The spatial record (could be columns in the product data table) includes GPS coordinates, and a point shape
+- Some preset spatial queries can be run against the data from the web application
+- Integrate some open source geocoding solution to lookup addresses from GPS coordinates
+- User initiates geocoding for a product from the web application (could be turned into a server queue/process)
+- Store geocoded address record as part of the product data, support CRUD operations
+
+
+Ideas
+-----
+
+These are some ideas that we could incorporate into one the planned or future releases.  There are clarifications
+after the list of ideas.
+
+- Introduce a Facility[0] class, which is 1:N with Product (product gets new foreign key, facility_id)
+- User can specify facility in the settings of the Android app (onsite)
+- User can specify no facility in settings (roaming)
+- User can query for product location within facility[1]
+- When a user scans a product that was not associated to a facility, they can set the facility as part of product editing[2]
+- User can enable a setting which defaults to a facility on product edit
+- User can initiate a spatial query for products in facilities located within X distance from their location
+- User can query for facilities located within X distance from their location
+
+[0]: Facilities are where the products are stored.  Some users will always use the app on the smartphone within
+a facility (say, as part of product intake).  Others may go out and source the products from various locations
+(which are non-facility).  So, there needs to be a way to specify both cases.
+
+[1]: Depending on the resolution (accuracy) of the GPS in practice.  This might work well in a large facility.
+
+[2]: This models product intake.  Presumably, users that are roaming show up with a bunch of products already tagged.
+The intake processor will scan each product and set the facility.
