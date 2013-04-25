@@ -4,11 +4,11 @@
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
-	<TextView android:id="@+id/textview_settings_title"
+	<TextView android:id="@+id/textview_authentication_title"
 		android:layout_weight="1"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_marginLeft="@dimen/header_text_margin_left"
 		android:textSize="@dimen/header_font_size"
-		android:text="@string/text_settings_title" />
+		android:text="@string/text_authentication_title" />
 </LinearLayout>

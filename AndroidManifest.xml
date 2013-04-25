@@ -12,17 +12,15 @@
 		android:label="@string/app_name" 
 		android:icon="@drawable/ic_launcher"
 		android:debuggable="true">
-		<activity android:name="ScanActivity"
-			android:label="@string/app_name">
+		<activity android:name="AuthenticationActivity" android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+			</intent-filter>
 		</activity>
-        <activity android:name="ProductDataEntryActivity"
-            android:label="@string/app_name">
-        </activity>
-		<service android:name=".UploadAssetService"
-			android:exported="false" />
+		<activity android:name="ScanActivity" android:label="@string/app_name" />
+		<activity android:name="EditSettingsActivity" android:label="@string/app_name" />
+        <activity android:name="ProductDataEntryActivity" android:label="@string/app_name" />
+		<service android:name=".UploadAssetService" android:exported="false" />
     </application>
 </manifest>

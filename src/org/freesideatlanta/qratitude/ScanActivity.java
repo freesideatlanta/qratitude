@@ -71,7 +71,7 @@ public class ScanActivity extends Activity implements View.OnClickListener {
 			IntentIntegrator i = new IntentIntegrator(this);
 			i.initiateScan();
 		} else if (view.equals(settings)) {
-			Intent i = new Intent(this, EditSettingsActivity.class);
+			Intent i = new Intent(this, AuthenticationActivity.class);
 			startActivity(i);
 		}
 	}
