@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<integer name="http_request_timeout_ms">30000</integer>
+	<string name="base_url">https://qratitude.freesideatlanta.org</string>
+	<string name="auth_path">/auth</string>
 </resources>

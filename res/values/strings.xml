@@ -28,12 +28,4 @@
 	<string name="text_upload_status">Upload Status</string>
 
 	<string name="destination_directory">org.freesideatlanta.qratitude.Assets</string>
-
-	<string name="failed_authentication">Failed to authenticate.</string>
-	<string name="unable_to_create_files">Unable to store pictures.  Check SD Card is present and mounted.</string>
-	<string name="external_media_unmounted">External Media (SD Card) is not present or unmounted</string>
-	<string name="failed_to_create_directory">Failed to create the destination directory for asset pictures</string>
-	<string name="photo_result_failed">Failed to take photo</string>
-	<string name="unknown_media_type">Unknown media type file requested</string>
-	<string name="user_canceled_photo">User canceled taking a photo</string>
 </resources>

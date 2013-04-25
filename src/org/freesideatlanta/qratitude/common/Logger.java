@@ -36,6 +36,14 @@ public class Logger  {
 		Log.e(this.appName, m);
 	}
 
+	public void i(int id) {
+		this.i(this.getMessage(id));
+	}
+
+	public void i(String m) {
+		Log.i(this.appName, m);
+	}
+
 	private String getMessage(int id) {
 		return this.activity.getString(id);
 	}
