@@ -58,4 +58,3 @@ License/Legal
 QRatitude is released under the [Creative Commons CC-BY-SA license](http://creativecommons.org/licenses/by-sa/3.0).
 
 The ZXing android-integration library is released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html).
-This project uses the [Clean Imports](http://www.cleanimports.tombrus.nl) ant tool, released under the Apache Software License.
