@@ -3,3 +3,4 @@ gen/
 *.swp
 
 freesideatlanta.keystore
+local.properties
