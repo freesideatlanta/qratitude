@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<string name="uninitialized_authentication_listener">Authentication listener has not been initialized.</string>
 	<string name="failed_authentication">Failed to authenticate.</string>
 	<string name="token_read_error">Error reading token from HTTP response.</string>
 	<string name="unable_to_create_files">Unable to store pictures.  Check SD Card is present and mounted.</string>

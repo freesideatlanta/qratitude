@@ -1,7 +1,8 @@
 package org.freesideatlanta.qratitude;
 
-import android.accounts.AccountManager;
+import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +13,9 @@ import android.widget.EditText;
 
 import org.freesideatlanta.qratitude.common.Logger;
 
-public class AuthenticationActivity extends AccountAuthenticatorActivity implements View.OnClickListener {
+public class AuthenticationActivity extends AccountAuthenticatorActivity implements View.OnClickListener, AuthenticationListener {
 	private Logger log;
+	private UserLoginTask loginTask;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,8 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
 		authenticate.setOnClickListener(this);
 	}
 
+	// TODO: @Override protected Dialog onCreateDialog(int id, Bundle arguments)
+
 	@Override
 	public void onClick(View view) {
 		final Button authenticate = (Button) findViewById(R.id.button_authenticate);
@@ -47,10 +51,55 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
 				// TODO: display a toast thing to the user
 			} else {
 				// TODO: show progress dialog
-				UserLoginTask task = new UserLoginTask(this, c);
-				task.execute();
+
+				this.loginTask = new UserLoginTask(this, c);
+				this.loginTask.setAuthenticationListener(this);
+				this.loginTask.execute();
 			}
 		}
+	}
+
+	@Override
+	public void onAuthenticationResult(String token) {
+		boolean success = ((token != null) && (token.length() > 0));
+
+		if (success) {
+			updateAccount(token);
+			advance();
+		} else {
+			log.e(R.string.failed_authentication);
+			// TODO: display a toast thing to the user
+		}
+
+		// TODO: hide progress dialog
+	}
+
+	@Override
+	public void onAuthenticationCancel() {
+		this.loginTask = null;
+
+		// TODO: hide progress dialog
+	}
+
+	private void updateAccount(String token) {
+		Credentials credentials = this.getCredentials();
+		String username = credentials.getUsername();
+		String accountType = getString(R.string.account_type);
+		final Account account = new Account(username, accountType);
+
+		AccountManager am = AccountManager.get(this);
+		am.setPassword(account, token);
+	}
+
+	private void advance() {
+		final Intent i = new Intent();
+		Credentials c = this.getCredentials();
+		String username = c.getUsername();
+		i.putExtra(AccountManager.KEY_ACCOUNT_NAME, username);
+		i.putExtra(AccountManager.KEY_ACCOUNT_TYPE, getString(R.string.account_type));
+		this.setAccountAuthenticatorResult(i.getExtras());
+		setResult(RESULT_OK, i);
+		finish();
 	}
 
 	private Credentials getCredentials() {

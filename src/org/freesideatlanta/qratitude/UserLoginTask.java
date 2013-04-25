@@ -25,6 +25,12 @@ import org.freesideatlanta.qratitude.common.Logger;
 
 public class UserLoginTask extends AsyncTask<Void, Void, String> {
 	private Logger log;
+	
+	private AuthenticationListener listener;
+	public void setAuthenticationListener(AuthenticationListener l) {
+		this.listener = l;
+	}
+
 	private Credentials credentials;
 	private URI authenticationUri;
 
@@ -49,6 +55,26 @@ public class UserLoginTask extends AsyncTask<Void, Void, String> {
 			log.e(R.string.failed_authentication);
 			return null;
 		}
+	}
+
+	@Override
+	protected void onPostExecute(final String token) throws IllegalStateException {
+		if (this.listener == null) {
+			log.d(R.string.uninitialized_authentication_listener);
+			throw new IllegalStateException();
+		}
+
+		this.listener.onAuthenticationResult(token);
+	}
+
+	@Override
+	protected void onCancelled() throws IllegalStateException {
+		if (this.listener == null) {
+			log.d(R.string.uninitialized_authentication_listener);
+			throw new IllegalStateException();
+		}
+
+		this.listener.onAuthenticationCancel();
 	}
 
 	private String authenticate(String username, String password) {
