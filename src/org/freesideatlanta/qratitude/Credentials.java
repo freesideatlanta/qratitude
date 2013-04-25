@@ -1,5 +1,7 @@
 package org.freesideatlanta.qratitude;
 
+import android.text.TextUtils;
+
 public class Credentials {
 	public static final String EXTRA_USERNAME = "org.freesideatlanta.qratitude.USERNAME";
 	public static final String EXTRA_PASSWORD = "org.freesideatlanta.qratitude.PASSWORD";
@@ -17,5 +19,9 @@ public class Credentials {
 	public Credentials(String u, String p) {
 		this.username = u;
 		this.password = p;
+	}
+
+	public boolean isIncomplete() {
+		return (TextUtils.isEmpty(this.username) || TextUtils.isEmpty(this.password));
 	}
 }

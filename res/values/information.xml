@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<string name="incomplete_credentials">Incomplete credentials; please provider both username and password.</string>
 	<string name="authentication_success">Successful authentication.</string>
 </resources>
