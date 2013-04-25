@@ -1,32 +1,37 @@
 package org.freesideatlanta.qratitude;
 
 import android.accounts.AccountManager;
+import android.accounts.AccountAuthenticatorActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
 
-public class AuthenticationActivity extends Activity {
-	private static final String EXTRA_USERNAME = "org.freesideatlanta.qratitude.USERNAME";
-	private static final String EXTRA_PASSWORD = "org.freesideatlanta.qratitude.PASSWORD";
+import org.freesideatlanta.qratitude.common.Logger;
 
-	private String username;
-	private String password;
+public class AuthenticationActivity extends AccountAuthenticatorActivity {
+	private Logger log;
+	private Credentials credentials;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_authentication);
 
-		AccountManager am = AccountManager.get(this);
+		// initialize class attributes
+		String n = getString(R.string.app_name);
+		log = new Logger(this, n);
+
 		final Intent i = this.getIntent();
-		this.username = i.getStringExtra(EXTRA_USERNAME);
+		String username = i.getStringExtra(Credentials.EXTRA_USERNAME);
+		String p = i.getStringExtra(Credentials.EXTRA_PASSWORD);
+		this.credentials = new Credentials(username, p);
 
-		EditText u = (EditText) findViewById(R.id.edit_username);
-
-		if (!TextUtils.isEmpty(this.username)) {
-			u.setText(this.username);
+		// initialize controls
+		EditText ut = (EditText) findViewById(R.id.edit_username);
+		if (!TextUtils.isEmpty(username)) {
+			ut.setText(username);
 		}
 	}
 }
