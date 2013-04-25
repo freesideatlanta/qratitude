@@ -10,24 +10,32 @@ Release: Arthropoda
 -------------------
 This is the initial release of QRatitude, and implements a basic product inventory application.
 
-- User can provide credentials to the Android app
-- User can initiate reset of password from app
+### Android App
+
+- User can provide credentials to the Android app [done]
 - User can scan a QR code [done]
 - User can perform data entry of product attributes [done]
 - User can take photos of product [done]
 - Photos are stored on SD card [done]
-- User is authenticated via web service, when an upload is initiated
+- On expired or failed authentication token, the user is prompted to re-enter credentials
 - On upload errors, user is notified and can try the upload again
 - Product data is uploaded to server as an asynchronous, background service
+
+### Web Service (API)
+
+- User is authenticated via web service, providing an auth token to the app
 - Product data is stored in a queryable database
 - CRUD operations on product data are exposed via a RESTful API web service
-- Web application authenticates user via web service
+
+### Web Application
+
+- Web application authenticates user via web service, providing an auth token to the session
 - Web application can query for and display product data
 - Web application can edit product attributes
 - Web application can accept photos of product for upload, or delete photos
 - User can sign out of web application
-- User can change username or password
-- User can reset password via email
+- User can change username or password on the web application
+- User can reset password via email on the web application
 
 Release: Brachiopoda
 --------------------
