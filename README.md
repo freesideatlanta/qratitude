@@ -1,7 +1,7 @@
 QRatitude: A QR-code based Inventory Tagging System
 ===================================================
 
-This is an Android application that implements a simple workflow for tagging inventory with pre-printed (**NOTE:** non-URL) QR codes.
+This is an Android application that implements a simple workflow for tagging inventory with pre-printed (<b>NOTE:</b> non-URL) QR codes.
 
 
 It uses the [ZXing](https://code.google.com/p/zxing) android-integration library, which installs the ZXing barcode scanning application separately.
