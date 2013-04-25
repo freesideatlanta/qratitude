@@ -41,9 +41,9 @@ ProductProvider.prototype.save = function(products, callback) {
 };
 
 new ProductProvider().save([
-		{ name: 'abc widget' description: 'orange thing' },
-		{ name: 'def widget' description: 'green thing' },
-		{ name: 'ghi widget' description: 'purple thing' },
+		{ name: 'abc widget', description: 'orange thing' },
+		{ name: 'def widget', description: 'green thing' },
+		{ name: 'ghi widget', description: 'purple thing' },
 	], function(error, products){});
 
 exports.ProductProvider = ProductProvider;
