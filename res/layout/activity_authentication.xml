@@ -11,4 +11,12 @@
 		android:layout_marginLeft="@dimen/header_text_margin_left"
 		android:textSize="@dimen/header_font_size"
 		android:text="@string/text_authentication_title" />
+	<EditText android:id="@+id/edit_username"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content" 
+	    android:hint="@string/edit_username" />
+	<EditText android:id="@+id/edit_password"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:hint="@string/edit_password" />
 </LinearLayout>
