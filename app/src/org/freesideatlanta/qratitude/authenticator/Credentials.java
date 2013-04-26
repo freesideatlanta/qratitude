@@ -1,4 +1,4 @@
-package org.freesideatlanta.qratitude;
+package org.freesideatlanta.qratitude.authenticator;
 
 import android.text.TextUtils;
 

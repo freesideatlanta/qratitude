@@ -1,4 +1,4 @@
-package org.freesideatlanta.qratitude;
+package org.freesideatlanta.qratitude.authenticator;
 
 public interface AuthenticationListener {
 	void onAuthenticationResult(String token) throws IllegalStateException;

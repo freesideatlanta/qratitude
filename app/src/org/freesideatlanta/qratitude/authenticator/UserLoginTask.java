@@ -1,4 +1,4 @@
-package org.freesideatlanta.qratitude;
+package org.freesideatlanta.qratitude.authenticator;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -20,6 +20,7 @@ import org.apache.http.message.BasicNameValuePair;
 import android.app.Activity;
 import android.os.AsyncTask;
 
+import org.freesideatlanta.qratitude.R;
 import org.freesideatlanta.qratitude.common.NetworkUtil;
 import org.freesideatlanta.qratitude.common.Logger;
 

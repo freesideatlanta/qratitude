@@ -32,6 +32,7 @@ import android.util.Log;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.freesideatlanta.qratitude.authenticator.AuthenticationActivity;
 import org.freesideatlanta.qratitude.common.Logger;
 
 public class ScanActivity extends Activity implements View.OnClickListener {

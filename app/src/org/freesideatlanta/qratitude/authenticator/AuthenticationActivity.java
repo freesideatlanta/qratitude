@@ -1,4 +1,4 @@
-package org.freesideatlanta.qratitude;
+package org.freesideatlanta.qratitude.authenticator;
 
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.freesideatlanta.qratitude.R;
 import org.freesideatlanta.qratitude.common.Logger;
 
 public class AuthenticationActivity extends AccountAuthenticatorActivity implements View.OnClickListener, AuthenticationListener {
