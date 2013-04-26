@@ -54,7 +54,7 @@ Here's [one opinion](http://stackoverflow.com/a/4053381/172217) on signing open-
 
 License/Legal
 -------------
-
-QRatitude is released under the [Creative Commons CC-BY-SA license](http://creativecommons.org/licenses/by-sa/3.0).
+The QRatitude software is released under the [MIT License](http://opensource.org/licenses/MIT).  
+Assets (creative works) are released under the [Creative Commons CC-BY-SA license](http://creativecommons.org/licenses/by-sa/3.0).
 
 The ZXing android-integration library is released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html).

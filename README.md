@@ -5,4 +5,5 @@ QRatitude is an inventory management system consisting of:
 * (coming soon) a website front-end that consumes the API
 
 ### License/Legal
-QRatitude is released under the [Creative Commons CC-BY-SA license](http://creativecommons.org/licenses/by-sa/3.0).
+The QRatitude software is released under the [MIT License](http://opensource.org/licenses/MIT).  
+Assets (creative works) are released under the [Creative Commons CC-BY-SA license](http://creativecommons.org/licenses/by-sa/3.0).
