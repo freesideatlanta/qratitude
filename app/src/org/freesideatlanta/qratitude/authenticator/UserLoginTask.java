@@ -21,11 +21,13 @@ import android.app.Activity;
 import android.os.AsyncTask;
 
 import org.freesideatlanta.qratitude.R;
-import org.freesideatlanta.qratitude.common.NetworkUtil;
 import org.freesideatlanta.qratitude.common.Logger;
+import org.freesideatlanta.qratitude.common.NetworkUtil;
+import org.freesideatlanta.qratitude.common.Proxy;
 
 public class UserLoginTask extends AsyncTask<Void, Void, String> {
 	private Logger log;
+	private Activity activity;
 	
 	private AuthenticationListener listener;
 	public void setAuthenticationListener(AuthenticationListener l) {
@@ -39,6 +41,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, String> {
 		String n = a.getString(R.string.app_name);
 		this.log = new Logger(a, n);
 
+		this.activity = a;
 		this.credentials = c;
 		String url = a.getString(R.string.base_url) + a.getString(R.string.auth_path);
 		this.authenticationUri = URI.create(url);
@@ -47,9 +50,8 @@ public class UserLoginTask extends AsyncTask<Void, Void, String> {
 	@Override
 	protected String doInBackground(Void... params) {
 		try {
-			String u = this.credentials.getUsername();
-			String p = this.credentials.getPassword();
-			String token = this.authenticate(u, p);
+			Proxy proxy = new Proxy(this.activity);
+			String token = proxy.authenticate(this.credentials);
 
 			return token;
 		} catch (Exception ex) {
@@ -78,47 +80,4 @@ public class UserLoginTask extends AsyncTask<Void, Void, String> {
 		this.listener.onAuthenticationCancel();
 	}
 
-	private String authenticate(String username, String password) {
-		final HttpResponse response;
-		final ArrayList<NameValuePair> parameters = this.getParameters();
-		String token = null;
-
-		try {
-			final HttpEntity entity = new UrlEncodedFormEntity(parameters);
-			final HttpPost post = new HttpPost(this.authenticationUri);
-			post.addHeader(entity.getContentType());
-			post.setEntity(entity);
-			HttpClient client = NetworkUtil.getHttpClient();
-			response = client.execute(post);
-			int code = response.getStatusLine().getStatusCode();
-
-			if (code == HttpStatus.SC_OK) {
-				InputStream s = (response.getEntity() != null) ? response.getEntity().getContent() : null;
-				if (s != null) {
-					BufferedReader br = new BufferedReader(new InputStreamReader(s));
-					token = br.readLine().trim();
-				}
-			}
-			
-			if ((token != null) && (token.length() > 0)) {
-				log.i(R.string.authentication_success);
-			}
-
-		} catch (final UnsupportedEncodingException ex) {
-			log.d("This should never happen, so they say...");
-			throw new IllegalStateException(ex);
-		} catch (final IOException ex) {
-			log.e(R.string.token_read_error);
-			token = null;
-		}
-
-		return token;
-	}
-
-	private ArrayList<NameValuePair> getParameters() {
-		final ArrayList<NameValuePair> p = new ArrayList<NameValuePair>();
-		p.add(new BasicNameValuePair(Credentials.EXTRA_USERNAME, this.credentials.getUsername()));
-		p.add(new BasicNameValuePair(Credentials.EXTRA_PASSWORD, this.credentials.getPassword()));
-		return p;
-	}
 }

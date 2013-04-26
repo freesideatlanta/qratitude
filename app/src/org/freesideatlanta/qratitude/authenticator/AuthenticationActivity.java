@@ -15,6 +15,9 @@ import org.freesideatlanta.qratitude.R;
 import org.freesideatlanta.qratitude.common.Logger;
 
 public class AuthenticationActivity extends AccountAuthenticatorActivity implements View.OnClickListener, AuthenticationListener {
+	public static final String EXTRA_USERNAME = "username";
+	public static final String EXTRA_AUTHORIZATION_TOKEN_TYPE = "authorization_token_type";
+
 	private Logger log;
 	private UserLoginTask loginTask;
 

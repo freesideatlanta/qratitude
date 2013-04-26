@@ -1,6 +1,6 @@
 package org.freesideatlanta.qratitude.common;
 
-import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
 public class Logger  {
@@ -10,14 +10,14 @@ public class Logger  {
 		this.appName = n;
 	}
 
-	private Activity activity;
-	public void setActivity(Activity a) {
-		this.activity = a;
+	private Context context;
+	public void setContext(Context a) {
+		this.context = a;
 	}
 
-	public Logger(Activity a, String n) {
+	public Logger(Context c, String n) {
 		this.setAppName(n);
-		this.setActivity(a);
+		this.setContext(c);
 	}
 
 	public void d(int id) {
@@ -45,6 +45,6 @@ public class Logger  {
 	}
 
 	private String getMessage(int id) {
-		return this.activity.getString(id);
+		return this.context.getString(id);
 	}
 }
