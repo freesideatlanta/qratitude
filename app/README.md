@@ -48,12 +48,14 @@ Signing
 
 In order to sign the release, the `sign.sh` script assumes a symlink to `freesideatlanta.keystore` in the qratitude top directory.
 That symlink points to the actual keystore file, which is currently kept in an encrypted container that needs to be mounted.
-Access to that (and therefore, the ability to sign the release apk) is reserved to Freeside Atlanta.
+Access to that (and therefore, the ability to sign the release apk) is reserved to Freeside Technology Spaces.
 
 Here's [one opinion](http://stackoverflow.com/a/4053381/172217) on signing open-source software in the Android universe.
 
 License/Legal
 -------------
+Copyright (c) 2013 Freeside Technology Spaces.
+
 The QRatitude software is released under the [MIT License](http://opensource.org/licenses/MIT).  
 Assets (creative works) are released under the [Creative Commons CC-BY-SA license](http://creativecommons.org/licenses/by-sa/3.0).
 

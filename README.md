@@ -5,5 +5,7 @@ QRatitude is an inventory management system consisting of:
 * (coming soon) a website front-end that consumes the API
 
 ### License/Legal
+Copyright (c) 2013 Freeside Technology Spaces.
+
 The QRatitude software is released under the [MIT License](http://opensource.org/licenses/MIT).  
 Assets (creative works) are released under the [Creative Commons CC-BY-SA license](http://creativecommons.org/licenses/by-sa/3.0).
