@@ -21,7 +21,8 @@
 			<intent-filter>
 				<action android:name="android.accounts.AccountAuthenticator" />
 			</intent-filter>
-			<meta-data android:name="android.accounts.AccountAuthenticator" />
+			<meta-data android:name="android.accounts.AccountAuthenticator" 
+				android:resource="@xml/authenticator" />
 		</service>
 		<service android:name=".UploadAssetService" android:exported="false" />
 		<activity android:name=".AuthenticationActivity" 
