@@ -3,7 +3,10 @@ var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , fs = require('fs')
+  , util = require('util')
+  , filepath = __dirname;
 var ProductProvider = require('./productprovider-memory').ProductProvider;
 
 var app = express();
@@ -38,12 +41,51 @@ app.get('/', function(req, res) {
 app.get('/auth', function (request, response) {
 	response.send("login page");
 })
-
 app.post('/auth', function (request, response) {
 	console.log("sending back the token on the response...");
 	response.send("8675309");
 })
 
+app.get('/asset', function (request, response) {
+	response.writeHead(200, { 'Content-Type': 'application/json' });
+	response.write(JSON.stringify({ name: 'Blue Thing', description: 'This thing is particularly blue' }));
+	response.send();
+})
+app.post('/asset', function (request, response) {
+	response.writeHead(200, { 'Content-Type': 'application/json' });
+	response.write(JSON.stringify({ status: 'OK' }));
+	response.send();
+})
+app.put('/asset', function (request, response) {
+	response.writeHead(200, { 'Content-Type': 'application/json' });
+	response.write(JSON.stringify({ status: 'OK' }));
+	response.send();
+})
+app.delete('/asset', function (request, response) {
+	response.writeHead(200, { 'Content-Type': 'application/json' });
+	response.write(JSON.stringify({ status: 'OK' }));
+	response.send();
+});
+
+app.get('/photo', function (request, response) {
+	var f = filepath + '/gentleman.jpg';
+	response.writeHead(200, { 'Content-Type': 'image/jpeg' });
+	fs.readFile(f, function (err, data) { 
+		if (err) throw err;
+		response.write(data);
+	});
+	response.send();
+})
+app.post('/photo', function (request, response) {
+	response.writeHead(200, { 'Content-Type': 'application/json' });
+	response.write(JSON.stringify({ status: 'OK' }));
+	response.send();
+});
+app.delete('/photo', function (request, response) {
+	response.writeHead(200, { 'Content-Type': 'application/json' });
+	response.write(JSON.stringify({ status: 'OK' }));
+	response.send();
+});
 
 app.get('/', routes.index);
 app.get('/users', user.list);
