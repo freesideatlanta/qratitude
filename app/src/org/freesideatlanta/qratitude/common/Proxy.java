@@ -51,12 +51,17 @@ public class Proxy {
 		String token = null;
 
 		try {
+			log.d("setting up the post web method to execute");
 			final HttpEntity entity = new UrlEncodedFormEntity(parameters);
+			log.d("this.authenticationUri = " + this.authenticationUri);
 			final HttpPost post = new HttpPost(this.authenticationUri);
+			log.d("created post web method");
 			post.addHeader(entity.getContentType());
 			post.setEntity(entity);
 			HttpClient client = NetworkUtil.getHttpClient();
+			log.d("about to execute the post web method");
 			response = client.execute(post);
+			log.d("executed the post web method");
 			int code = response.getStatusLine().getStatusCode();
 			log.d("code = " + code);
 
@@ -76,6 +81,7 @@ public class Proxy {
 			log.d("This should never happen, so they say...");
 			throw new IllegalStateException(ex);
 		} catch (final IOException ex) {
+			log.d(ex.toString());
 			log.e(ex.getMessage());
 			log.e(R.string.token_read_error);
 			token = null;

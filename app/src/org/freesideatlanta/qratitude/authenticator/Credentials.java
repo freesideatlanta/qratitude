@@ -24,4 +24,9 @@ public class Credentials {
 	public boolean isIncomplete() {
 		return (TextUtils.isEmpty(this.username) || TextUtils.isEmpty(this.password));
 	}
+
+	@Override
+	public String toString() {
+		return "{username: " + this.username + " password:" + this.password + " }";
+	}
 }

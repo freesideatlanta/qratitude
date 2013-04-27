@@ -51,10 +51,12 @@ public class UserLoginTask extends AsyncTask<Void, Void, String> {
 	protected String doInBackground(Void... params) {
 		try {
 			Proxy proxy = new Proxy(this.activity);
+			log.d("this.credentials = " + this.credentials.toString());
 			String token = proxy.authenticate(this.credentials);
 
 			return token;
 		} catch (Exception ex) {
+			log.e(ex.getMessage());
 			log.e(R.string.failed_authentication);
 			return null;
 		}

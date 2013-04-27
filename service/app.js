@@ -40,7 +40,8 @@ app.get('/auth', function (request, response) {
 })
 
 app.post('/auth', function (request, response) {
-   response.send("8675309");	
+	console.log("sending back the token on the response...");
+	response.send("8675309");
 })
 
 

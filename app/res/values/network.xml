@@ -2,6 +2,6 @@
 <resources>
 	<integer name="http_request_timeout_ms">30000</integer>
 	<!-- <string name="base_url">https://qratitude.freesideatlanta.org</string> -->
-	<string name="base_url">http://localhost:3000</string>
+	<string name="base_url">http://10.0.2.2:3000</string>
 	<string name="auth_path">/auth</string>
 </resources>
