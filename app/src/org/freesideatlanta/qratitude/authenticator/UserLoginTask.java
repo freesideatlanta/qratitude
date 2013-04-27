@@ -53,6 +53,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, String> {
 			Proxy proxy = new Proxy(this.activity);
 			log.d("this.credentials = " + this.credentials.toString());
 			String token = proxy.authenticate(this.credentials);
+			log.d("token = " + token);
 
 			return token;
 		} catch (Exception ex) {

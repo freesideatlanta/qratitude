@@ -4,6 +4,8 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.accounts.AccountManager;
+import android.accounts.Account;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -100,4 +102,5 @@ public class ScanActivity extends Activity implements View.OnClickListener {
 			log.d("IntentResult returned null");
 		}
 	}
+
 }

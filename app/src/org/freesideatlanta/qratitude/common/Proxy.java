@@ -18,10 +18,12 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.accounts.Account;
 import android.app.Activity;
 import android.content.Context;
 
 import org.freesideatlanta.qratitude.R;
+import org.freesideatlanta.qratitude.Asset;
 import org.freesideatlanta.qratitude.authenticator.Credentials;
 
 public class Proxy {
@@ -88,6 +90,10 @@ public class Proxy {
 		}
 
 		return token;
+	}
+
+	public void uploadAsset(Account account, String token, Asset asset) {
+		// TODO: post the asset to the web service
 	}
 
 	private ArrayList<NameValuePair> getParameters(String username, String password) {
