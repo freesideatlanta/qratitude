@@ -58,6 +58,7 @@ public class Proxy {
 			HttpClient client = NetworkUtil.getHttpClient();
 			response = client.execute(post);
 			int code = response.getStatusLine().getStatusCode();
+			log.d("code = " + code);
 
 			if (code == HttpStatus.SC_OK) {
 				InputStream s = (response.getEntity() != null) ? response.getEntity().getContent() : null;
@@ -75,6 +76,7 @@ public class Proxy {
 			log.d("This should never happen, so they say...");
 			throw new IllegalStateException(ex);
 		} catch (final IOException ex) {
+			log.e(ex.getMessage());
 			log.e(R.string.token_read_error);
 			token = null;
 		}

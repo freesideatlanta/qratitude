@@ -16,7 +16,7 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
+app.use(express.cookieParser('taxidermy nutria'));
 app.use(express.session());
 app.use(app.router);
 app.use(require('stylus').middleware(__dirname + '/public'));
@@ -34,6 +34,15 @@ app.get('/', function(req, res) {
 		res.send(docs);
 	});
 })
+
+app.get('/auth', function (request, response) {
+	response.send("login page");
+})
+
+app.post('/auth', function (request, response) {
+   response.send("8675309");	
+})
+
 
 app.get('/', routes.index);
 app.get('/users', user.list);

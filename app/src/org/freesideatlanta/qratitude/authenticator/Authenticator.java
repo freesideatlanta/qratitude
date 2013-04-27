@@ -10,15 +10,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import org.freesideatlanta.qratitude.common.Logger;
 import org.freesideatlanta.qratitude.common.Proxy;
 import org.freesideatlanta.qratitude.R;
 
 public class Authenticator extends AbstractAccountAuthenticator {
+	private final Logger log;
 	private final Context context;
 
 	public Authenticator(Context c) {
 		super(c);
 		this.context = c;
+
+		String n = c.getString(R.string.app_name);
+		this.log = new Logger(c, n);
 	}
 
 	@Override
@@ -41,9 +46,12 @@ public class Authenticator extends AbstractAccountAuthenticator {
 			Account account,
 			String authTokenType,
 			Bundle loginOptions) throws NetworkErrorException {
+		log.d("authTokenType = " + authTokenType);
 		Bundle result;
 
 		String att = this.context.getString(R.string.authorization_token_type);
+		log.d("att = " + att);
+
 		if (authTokenType.equals(att)) {
 			result = this.getServerAuthorization(account);
 			if (result == null) {
