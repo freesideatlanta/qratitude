@@ -2,6 +2,7 @@
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
+  , asset = require('./routes/asset')
   , http = require('http')
   , path = require('path')
   , fs = require('fs')
@@ -46,6 +47,15 @@ app.post('/auth', function (request, response) {
 	response.send("8675309");
 })
 
+app.post('/asset', asset.create);
+app.all('/asset/:id/:op?', asset.load);
+app.get('/asset/:id', asset.view);
+app.get('/asset/:id/view', asset.view);
+app.get('/asset/:id/edit', asset.edit);
+app.put('/asset/:id/edit', asset.update);
+app.delete('/asset/:id', asset.remove);
+
+/*
 app.get('/asset', function (request, response) {
 	response.writeHead(200, { 'Content-Type': 'application/json' });
 	response.write(JSON.stringify({ name: 'Blue Thing', description: 'This thing is particularly blue' }));
@@ -66,6 +76,7 @@ app.delete('/asset', function (request, response) {
 	response.write(JSON.stringify({ status: 'OK' }));
 	response.send();
 });
+*/
 
 app.get('/photo', function (request, response) {
 	var f = filepath + '/gentleman.jpg';
