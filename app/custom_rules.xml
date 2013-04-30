@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="custom_rules">
+
+	<!-- run checkstyle prior to pre-compile -->
+	<target name="-pre-compile" depends="checkstyle" />
+
+	<!-- checkstyle custom target/task -->
 	<path id="checkstyle.lib.path">
 		<fileset dir="libs" includes="checkstyle-5.6-all.jar" />
 	</path>
 	<taskdef 
 		resource="checkstyletask.properties"
 		classpathref="checkstyle.lib.path" />
-	<target name="checkstyle" description="generates a report of code convention violations" depends="-pre-compile">
+	<target name="checkstyle" description="generates a report of code convention violations">
 		<checkstyle config="style.xml">
 			<fileset dir="src" includes="**/*.java" />
 		</checkstyle>
