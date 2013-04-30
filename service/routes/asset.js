@@ -42,7 +42,7 @@ exports.update = function (request, response) {
 	// TODO: perform validation on body parameter
 	request.asset.name = asset.name;
 	request.asset.description = asset.description;
-	request.asset.email = asset.email;
+	request.asset.quantity = asset.quantity;
 
 	// TODO: save out to mongo db via data provider
 	
