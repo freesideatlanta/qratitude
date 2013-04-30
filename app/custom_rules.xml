@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="custom_rules">
+	<path id="checkstyle.lib.path">
+		<fileset dir="libs" includes="checkstyle-5.6-all.jar" />
+	</path>
+	<taskdef 
+		resource="checkstyletask.properties"
+		classpathref="checkstyle.lib.path" />
+	<target name="checkstyle" description="generates a report of code convention violations" depends="-pre-compile">
+		<checkstyle config="style.xml">
+			<fileset dir="src" includes="**/*.java" />
+		</checkstyle>
+	</target>
+</project>
