@@ -19,7 +19,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.accounts.Account;
-import android.app.Activity;
 import android.content.Context;
 
 import org.freesideatlanta.qratitude.R;

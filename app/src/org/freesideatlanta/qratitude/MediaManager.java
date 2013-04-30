@@ -6,7 +6,6 @@ import java.util.Date;
 
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.provider.MediaStore.Files.FileColumns;
 
 import org.freesideatlanta.qratitude.common.Logger;

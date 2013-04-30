@@ -1,28 +1,12 @@
 package org.freesideatlanta.qratitude.authenticator;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.util.ArrayList;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.os.AsyncTask;
 
 import org.freesideatlanta.qratitude.R;
 import org.freesideatlanta.qratitude.common.Logger;
-import org.freesideatlanta.qratitude.common.NetworkUtil;
 import org.freesideatlanta.qratitude.common.Proxy;
 
 public class UserLoginTask extends AsyncTask<Void, Void, String> {
