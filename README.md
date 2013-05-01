@@ -5,6 +5,8 @@ QRatitude is an inventory management system consisting of:
 * (coming soon) a website front-end that consumes the API
 
 ## Development Setup
+There are several handy scripts to setup, build, and run the QRatitude system from CLI.  
+Your mileage may vary with Eclipse or non-*nix environments.
 
 ### Installs
 * install mongodb
@@ -22,7 +24,7 @@ QRatitude is an inventory management system consisting of:
 * run `service/database/mongo/create.sh` to bootstrap database
 * run `node service/app.js` to run the web service
 
-### License/Legal
+## License/Legal
 Copyright (c) 2013 Freeside Technology Spaces.
 
 The QRatitude software is released under the [MIT License](http://opensource.org/licenses/MIT).  
