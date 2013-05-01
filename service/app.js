@@ -1,7 +1,6 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , user = require('./routes/user')
   , asset = require('./routes/asset')
   , photo = require('./routes/photo')
   , http = require('http')
@@ -9,7 +8,14 @@ var express = require('express')
   , fs = require('fs')
   , util = require('util')
   , filepath = __dirname;
-var ProductProvider = require('./productprovider-memory').ProductProvider;
+
+var Config = require('./config');
+
+var UserProvider = require('./userProvider').UserProvider;
+var userProvider = new UserProvider(Config.db.name, Config.db.host, Config.db.port);
+
+var User = require('./routes/user').User;
+var user = new User(userProvider);
 
 var app = express();
 

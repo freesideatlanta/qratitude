@@ -1,52 +1,94 @@
-exports.authorize = function (request, response) {
-	// TODO: generate the token from the salt and hash of the password
-	response.send("8675309");
+
+User = function (userProvider) {
+	this.userProvider = userProvider;
 };
 
-exports.create = function (request, response) {
+User.prototype.authorize = function (request, response) {
+	var username = request.body.username;
+	var code = request.body.code;
+	var password = request.body.password;
+	this.userProvider.findByUsername(username, function (error, user) {
+		if (error) console.log(error);
+		else {
+			if (user.code == code) {
+				// TODO: generate the token from the salt and hash of the password
+				// TODO: store the token in the db.tokens collection and assign expiration date
+				var token = '8675309';
+				var salt = 'fresh from the sea of random';
+				var hash = 'computed from password plus salt';
+				user.salt = salt;
+				user.hash = hash;
+				this.userProvider.update(user, function (error) {
+					if (error) console.log(error);
+				});
+
+				response.statusCode = 200;
+				response.setHeader('Content-Type', 'application/json');
+				response.end(JSON.stringify({ token: token }));
+			} else {
+				response.statusCode = 401;
+				response.setHeader('WWW-Authenticate', 'Basic realm="Secure Area"');
+				response.end();
+			}
+		}
+	});
+};
+
+User.prototype.create = function (request, response) {
 	// TODO: check for admin authorization
 	var user = request.body.user;
-	// TODO: validate attributes
-	// TODO: store in database via the data provider
+	// TODO: validate the JSON against the schema
+	this.userProvider.create(user, function (error) {
+		if (error) console.log(error);
+	});
 };
 
-exports.load = function (request, response, next) {
+User.prototype.load = function (request, response, next) {
 	// TODO: check for authorization
-	var id = request.params.id;
-	// TODO: fetch the user from the data provider
-	request.user = { id: 0, username: 'zerocool', password: 'GOD', name: 'Dade Murphy', email: 'zerocool@hackerspaces.org' };
+	var username = request.params.username;
+	this.userProvider.findByUsername(username, function (error, user) {
+		if (error) console.log(error);
+		else {
+			request.user = user;
+		}
+	});
 	next();
 };
 
-exports.view = function (request, response) {
+User.prototype.view = function (request, response) {
 	var user = request.user;
 	response.writeHead(200, { 'Content-Type': 'application/json' });
 	response.write(JSON.stringify(user));
 };
 
-exports.edit = function (request, response) {
+User.prototype.edit = function (request, response) {
 	var user = request.user;
 	response.writeHead(200, { 'Content-Type': 'application/json' });
 	response.write(JSON.stringify(user));
 };
 
-exports.update = function (request, response) {
+User.prototype.update = function (request, response) {
 	var user = request.body.user;
-	// TODO: pass in the whole JSON update object to the data provider
-	request.user.username = user.username;
-	request.user.password = user.password;
-	request.user.name = user.name;
-	request.user.email = user.email;
+	// TODO: validate the JSON against the schema
+	this.userProvider.update(user, function (error) {
+		if (error) console.log(error);
+	});
+	request.user = user;
 	
 	response.writeHead(200, { 'Content-Type': 'application/json' });
 	response.write(JSON.stringify({ status: 'OK' }));
 	response.redirect('back');
 };
 
-exports.remove = function (request, response) {
+User.prototype.remove = function (request, response) {
 	// TODO: check for admin authorization
 	var user = request.user;
-	// TODO: delete the user via the data provider
+	this.userProvider.remove(user, function (error) {
+		if (error) console.log(error);
+	});
+
 	response.writeHead(200, { 'Content-Type': 'application/json' });
 	response.write(JSON.stringify({ status: 'OK' }));
 };
+
+exports.User = User 
