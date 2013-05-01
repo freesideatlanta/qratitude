@@ -38,8 +38,13 @@ User.prototype.create = function (request, response) {
 	// TODO: check for admin authorization
 	var user = request.body.user;
 	// TODO: validate the JSON against the schema
-	this.userProvider.create(user, function (error) {
+	this.userProvider.create(user, function (error, result) {
 		if (error) console.log(error);
+		else {
+			// TODO: stringify the result._id 
+			var id = result._id;
+			response.redirect('/user/' + id + '/edit');
+		}
 	});
 };
 

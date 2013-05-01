@@ -10,6 +10,7 @@
     "jade": "*",
 	"pg": "1.1.0",
     "stylus": "*",
-	"mongodb": ">= 0.9.6-7"
+	"mongodb": ">= 0.9.6-7",
+	"jwt-simple": "*"
   }
 }

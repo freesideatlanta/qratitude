@@ -1,7 +1,5 @@
 var MongoClient = require('mongodb').MongoClient;
-var Connection = require('mongodb').Connection;
 var Server = require('mongodb').Server;
-var BSON = require('mongodb').BSON;
 var ObjectID = require('mongodb').ObjectID;
 
 AssetProvider = function (database, host, port) {
@@ -15,6 +13,19 @@ AssetProvider.prototype.getCollection = function (callback) {
 	this.db.collection('assets', function (error, collection) {
 		if (error) callback(error);
 		else callback(null, collection);
+	});
+};
+
+AssetProvider.prototype.findById = function (id, callback) {
+	var asset_id = ObjectID.createFromHexString(id);
+	this.getCollection(function (error, collection) {
+		if (error) callback(error);
+		else {
+			collection.findOne({ _id: asset_id }, function(error, result) {
+				if (error) callback(error);
+				else callback(null, result);
+			});
+		}
 	});
 };
 

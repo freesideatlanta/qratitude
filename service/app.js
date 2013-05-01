@@ -13,9 +13,13 @@ var Config = require('./config');
 
 var UserProvider = require('./userProvider').UserProvider;
 var userProvider = new UserProvider(Config.db.name, Config.db.host, Config.db.port);
+var AssetProvider = require('./assetProvider').AssetProvider;
+var assetProvider = new AssetProvider(Config.db.name, Config.db.host, Config.db.port);
 
 var User = require('./routes/user').User;
 var user = new User(userProvider);
+var Asset = require('./routes/asset').Asset;
+var asset = new Asset(assetProvider);
 
 var app = express();
 
@@ -42,6 +46,7 @@ if ('development' == app.get('env')) {
 app.post('/user/authorize', user.authorize);
 
 // asset web methods
+app.get('/asset/:tag', asset.search);
 app.post('/asset', asset.create);
 app.all('/asset/:id/:op?', asset.load);
 app.get('/asset/:id', asset.view);
