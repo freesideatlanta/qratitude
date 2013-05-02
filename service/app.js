@@ -44,6 +44,12 @@ if ('development' == app.get('env')) {
 
 // user web methods
 app.post('/user/authorize', user.authorize);
+app.post('/user', user.create);
+app.all('/user/:username/:op?', user.load);
+app.get('/user/:username/view', user.view);
+app.get('/user/:id/edit', user.edit);
+app.put('/user/:id/edit', user.update);
+app.delete('/user/:id', user.remove);
 
 // asset web methods
 app.get('/asset/:tag', asset.search);
@@ -60,7 +66,7 @@ app.post('photo', photo.create);
 app.all('photo/:id/:op?', photo.load);
 app.get('photo/:id', photo.view);
 app.get('photo/:id/view', photo.view);
-app.delete('/asset/:id', photo.remove);
+app.delete('/photo/:id', photo.remove);
 
 app.get('/', routes.index);
 
