@@ -16,6 +16,9 @@ var userProvider = new UserProvider(Config.db.name, Config.db.host, Config.db.po
 var AssetProvider = require('./assetProvider').AssetProvider;
 var assetProvider = new AssetProvider(Config.db.name, Config.db.host, Config.db.port);
 
+console.log("AssetProvider = " + AssetProvider);
+console.log("assetProvider = " + assetProvider);
+
 var User = require('./routes/user').User;
 var user = new User(userProvider);
 var Asset = require('./routes/asset').Asset;

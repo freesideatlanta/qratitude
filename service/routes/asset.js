@@ -1,6 +1,8 @@
 
 Asset = function (assetProvider) {
+	console.log("Asset.constructor");
 	this.assetProvider = assetProvider;
+	console.log("this.assetProvider = " + this.assetProvider);
 };
 
 Asset.prototype.search = function (request, response) {
@@ -16,13 +18,20 @@ Asset.prototype.search = function (request, response) {
 };
 
 Asset.prototype.create = function (request, response) {
+	console.log("Asset.create");
 	// TODO: check for authorization
-	var asset = request.body.asset;
+	var asset = request.body;
+	console.log("asset = " + asset);
 	// TODO: validate the JSON against the schema
-	this.assetProvider.create(asset, function (error, result) {
-		var id = result._id;
-		response.redirect('/asset/' + id + '/edit');
-	});
+	if (asset) {
+		console.log("this.assetProvider = " + this.assetProvider);
+		this.assetProvider.create(asset, function (error, result) {
+			var id = result._id;
+			response.redirect('/asset/' + id + '/edit');
+		});
+	} else {
+		console.log("asset was undefined");
+	}
 };
 
 Asset.prototype.load = function (request, response, next) {
