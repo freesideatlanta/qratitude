@@ -1,17 +1,11 @@
-
-Release Plan
-============
-
+# Release Plan
 Releases are feature sets that form a complete and working iteration of the application.
-
 Each release is named after a phylum, because taxonomy.
 
-Release: Arthropoda
--------------------
+## Release: Arthropoda
 This is the initial release of QRatitude, and implements a basic product inventory application.
 
 ### Android App
-
 - User can provide credentials to the Android app [done]
 - User can scan a QR code [done]
 - User can perform data entry of product attributes [done]
@@ -22,13 +16,12 @@ This is the initial release of QRatitude, and implements a basic product invento
 - Product data is uploaded to server as an asynchronous, background service
 
 ### Web Service (API)
-
 - User is authenticated via web service, providing an auth token to the app
-- Product data is stored in a queryable database
-- CRUD operations on product data are exposed via a RESTful API web service
+- CRUD operations on user data are exposed via a RESTful API web service [done]
+- Product data is stored in a queryable database [done]
+- CRUD operations on product data are exposed via a RESTful API web service [done]
 
 ### Web Application
-
 - Web application authenticates user via web service, providing an auth token to the session
 - Web application can query for and display product data
 - Web application can edit product attributes
@@ -37,8 +30,7 @@ This is the initial release of QRatitude, and implements a basic product invento
 - User can change username or password on the web application
 - User can reset password via email on the web application
 
-Release: Brachiopoda
---------------------
+## Release: Brachiopoda
 The next release of QRatitude will have pricing support and integration with Square.
 
 - User can scan a QR code to edit product data
@@ -49,8 +41,7 @@ The next release of QRatitude will have pricing support and integration with Squ
 - User can query the audit trail
 - User can generate a simple (non-customizable) report of sales
 
-Release: Chordata
------------------
+## Release: Chordata
 This release of QRatitude might expand existing features, like customizing reports, integration with other
 mobile or web payment options, or perhaps introduce stricter validation on product data for better data
 entry.  The main feature will be attempting to integrate GPS coordinates and to store them in PostGIS.
@@ -63,9 +54,7 @@ entry.  The main feature will be attempting to integrate GPS coordinates and to 
 - User initiates geocoding for a product from the web application (could be turned into a server queue/process)
 - Store geocoded address record as part of the product data, support CRUD operations
 
-
-Ideas
------
+# Ideas
 
 These are some ideas that we could incorporate into one the planned or future releases.  There are clarifications
 after the list of ideas.
