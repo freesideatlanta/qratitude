@@ -55,7 +55,7 @@ app.put('/user/:id/edit', user.update);
 app.delete('/user/:id', user.remove);
 
 // asset web methods
-app.get('/asset/:tag', asset.search);
+app.get('/asset/search/:tag', asset.search);
 app.post('/asset', asset.create);
 app.all('/asset/:id/:op?', asset.load);
 app.get('/asset/:id', asset.view);

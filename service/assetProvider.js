@@ -2,14 +2,7 @@ var MongoClient = require('mongodb').MongoClient;
 var Server = require('mongodb').Server;
 var ObjectID = require('mongodb').ObjectID;
 
-var client;
-var db;
-
 function AssetProvider(database, host, port) {
-	console.log("AssetProvider.constructor");
-	console.log(database);
-	console.log(host);
-	console.log(port);
 	client = new MongoClient(new Server(host, port, { auto_reconnect: true }, {}));
 	client.open(function (error, client) {
 		db = client.db(database);

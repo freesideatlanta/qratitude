@@ -6,4 +6,4 @@ db.assets.ensureIndex({ 'category': 1 });
 db.assets.ensureIndex({ 'tag': 1 });
 
 db.createCollection('photos');
-db.assets.ensureIndex({ 'asset_id': 1 });
+db.photos.ensureIndex({ 'asset_id': 1 });

@@ -15,13 +15,10 @@ Asset.prototype.search = function (request, response) {
 };
 
 Asset.prototype.create = function (request, response) {
-	console.log("* Asset.create");
 	// TODO: check for authorization
 	var asset = request.body;
-	console.log("asset = " + asset);
 	// TODO: validate the JSON against the schema
 	if (asset) {
-		console.log("request.assetProvider = " + request.assetProvider);
 		request.assetProvider.create(asset, function (error, result) {
 			var id = result._id;
 			response.redirect('/asset/' + id + '/edit');
