@@ -1,7 +1,6 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , asset = require('./routes/asset')
   , photo = require('./routes/photo')
   , http = require('http')
   , path = require('path')
@@ -13,16 +12,13 @@ var Config = require('./config');
 
 var UserProvider = require('./userProvider').UserProvider;
 var userProvider = new UserProvider(Config.db.name, Config.db.host, Config.db.port);
-var AssetProvider = require('./assetProvider').AssetProvider;
+var AssetProvider = require('./assetProvider');
 var assetProvider = new AssetProvider(Config.db.name, Config.db.host, Config.db.port);
-
-console.log("AssetProvider = " + AssetProvider);
-console.log("assetProvider = " + assetProvider);
 
 var User = require('./routes/user').User;
 var user = new User(userProvider);
-var Asset = require('./routes/asset').Asset;
-var asset = new Asset(assetProvider);
+var Asset = require('./routes/asset');
+var asset = new Asset();
 
 var app = express();
 
@@ -36,6 +32,10 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('taxidermy nutria'));
 app.use(express.session());
+app.use(function (request, response, next) {
+	request.assetProvider = assetProvider;
+	next();
+});
 app.use(app.router);
 app.use(require('stylus').middleware(__dirname + '/public'));
 app.use(express.static(path.join(__dirname, 'public')));

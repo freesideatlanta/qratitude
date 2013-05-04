@@ -1,13 +1,10 @@
 
-Asset = function (assetProvider) {
-	console.log("Asset.constructor");
-	this.assetProvider = assetProvider;
-	console.log("this.assetProvider = " + this.assetProvider);
+function Asset() {
 };
 
 Asset.prototype.search = function (request, response) {
 	var tag = request.params.tag;
-	this.assetProvider.findByTag(tag, function (error, asset) {
+	request.assetProvider.findByTag(tag, function (error, asset) {
 		if (error) console.log(error);
 		else {
 			response.statusCode = 200;
@@ -18,14 +15,14 @@ Asset.prototype.search = function (request, response) {
 };
 
 Asset.prototype.create = function (request, response) {
-	console.log("Asset.create");
+	console.log("* Asset.create");
 	// TODO: check for authorization
 	var asset = request.body;
 	console.log("asset = " + asset);
 	// TODO: validate the JSON against the schema
 	if (asset) {
-		console.log("this.assetProvider = " + this.assetProvider);
-		this.assetProvider.create(asset, function (error, result) {
+		console.log("request.assetProvider = " + request.assetProvider);
+		request.assetProvider.create(asset, function (error, result) {
 			var id = result._id;
 			response.redirect('/asset/' + id + '/edit');
 		});
@@ -36,7 +33,7 @@ Asset.prototype.create = function (request, response) {
 
 Asset.prototype.load = function (request, response, next) {
 	var id = request.params.id;
-	this.assetProvider.findById(function (error, asset) {
+	request.assetProvider.findById(function (error, asset) {
 		if (error) console.log(error);
 		else {
 			request.asset = asset;
@@ -62,7 +59,7 @@ Asset.prototype.update = function (request, response) {
 	// TODO: validate the JSON against the schema
 	request.asset = asset;
 
-	this.assetProvider.update(asset, function (error) { 
+	request.assetProvider.update(asset, function (error) { 
 		if (error) console.log(error);
 	});
 	
@@ -73,7 +70,7 @@ Asset.prototype.update = function (request, response) {
 
 Asset.prototype.remove = function (request, response) {
 	var asset = request.asset;
-	this.assetProvider.remove(asset, function (error) {
+	request.assetProvider.remove(asset, function (error) {
 		if (error) console.log(error);
 	});
 
@@ -81,4 +78,4 @@ Asset.prototype.remove = function (request, response) {
 	response.write(JSON.stringify({ status: 'OK' }));
 };
 
-exports.Asset = Asset
+module.exports = Asset

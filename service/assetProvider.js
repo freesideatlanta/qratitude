@@ -2,19 +2,22 @@ var MongoClient = require('mongodb').MongoClient;
 var Server = require('mongodb').Server;
 var ObjectID = require('mongodb').ObjectID;
 
-AssetProvider = function (database, host, port) {
+var client;
+var db;
+
+function AssetProvider(database, host, port) {
 	console.log("AssetProvider.constructor");
 	console.log(database);
 	console.log(host);
 	console.log(port);
-	this.client = new MongoClient(new Server(host, port, { auto_reconnect: true }, {}));
-	this.client.open(function (error, client) {
-		this.db = client.db(database);
+	client = new MongoClient(new Server(host, port, { auto_reconnect: true }, {}));
+	client.open(function (error, client) {
+		db = client.db(database);
 	});
 };
 
 AssetProvider.prototype.getCollection = function (callback) {
-	this.db.collection('assets', function (error, collection) {
+	db.collection('assets', function (error, collection) {
 		if (error) callback(error);
 		else callback(null, collection);
 	});
@@ -100,4 +103,4 @@ AssetProvider.prototype.remove = function (assets, callback) {
 	});
 };
 
-exports.AssetProvider = AssetProvider;
+module.exports = AssetProvider;
