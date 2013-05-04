@@ -20,8 +20,7 @@ mongo --quiet $DB_HOST:$DB_PORT/$DB $SETUP
 curl -X POST -H 'Content-Type: application/json' -d @test-asset.json $BASE/asset
 mongo $DB_HOST:$DB_PORT/$DB --eval "db.assets.findOne()"
 # GET /asset/search/:tag
-grep -Po '"tag":.*?[^\\]",' test-asset.json
-TAG=$?
+TAG=A8675309
 curl -X GET -H 'Content-Type: application/json' $BASE/asset/search/$TAG
 #curl -i -H "Accept: application/json" -X POST -d @test-asset.json $BASE/asset
 #curl -i -H "Accept: application/json" -X GET $BASE/asset/0
