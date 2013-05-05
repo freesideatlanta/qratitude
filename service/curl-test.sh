@@ -22,6 +22,7 @@ mongo $DB_HOST:$DB_PORT/$DB --eval "db.assets.findOne()"
 # GET /asset/search/:tag
 TAG=A8675309
 curl -X GET -H 'Content-Type: application/json' $BASE/asset/search/$TAG
+#curl -X GET -H 'Content-Type: application/json' $BASE/asset/$ID
 #curl -i -H "Accept: application/json" -X POST -d @test-asset.json $BASE/asset
 #curl -i -H "Accept: application/json" -X GET $BASE/asset/0
 #curl -i -H "Accept: application/json" -X GET $BASE/asset/1/view
