@@ -21,7 +21,9 @@ Asset.prototype.create = function (request, response) {
 	if (asset) {
 		request.assetProvider.create(asset, function (error, result) {
 			var id = result._id;
-			response.redirect('/asset/' + id + '/edit');
+			response.statusCode = 200;
+			response.setHeader('Content-Type', 'application/json');
+			response.end(JSON.stringify(asset));
 		});
 	} else {
 		console.log("asset was undefined");
