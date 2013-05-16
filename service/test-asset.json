@@ -6,5 +6,6 @@
 	"size": "20cm x 4m x 50mm",
 	"quantity": 30,
 	"condition": "Good",
-	"color": "Orange"
+	"color": "Orange",
+    "featured": true
 }
