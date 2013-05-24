@@ -1,5 +1,5 @@
 
-User = function (userProvider) {
+function User(userProvider) {
 	this.userProvider = userProvider;
 };
 
@@ -96,4 +96,4 @@ User.prototype.remove = function (request, response) {
 	response.write(JSON.stringify({ status: 'OK' }));
 };
 
-exports.User = User 
+module.exports = User;
