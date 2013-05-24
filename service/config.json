@@ -1,0 +1,7 @@
+{
+    "db" : {
+        "name" : "qratitude_local",
+        "host" : "localhost",
+        "port" : 27017
+    }
+}
