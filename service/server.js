@@ -14,42 +14,35 @@ function Server(config, routes, providers) {
       , asset = routes.asset
       , photo = routes.photo;
 
+    // Plugins
+    srv.use(restify.queryParser());
+    srv.use(restify.bodyParser());
 
-    // Request handlers
+    // Common handlers
     srv.use(function (request, response, next) {
         request.assetProvider = providers.assets;
         next();
     });
 
-
-    srv.post('/user/authorize', user.authorize);
     srv.post('/user', user.create);
+    srv.post('/user/authorize', user.authorize);
+    srv.get('/user/:username/view', [user.load, user.view]);
+    srv.get('/user/:id/edit', [user.load, user.edit]);
+    srv.put('/user/:id/edit', [user.load, user.update]);
+    srv.del('/user/:id', [user.load,user.remove]);
 
-    // Restify server has no method 'all'. See Alan.
-    // srv.all('/user/:username/:op?', user.load);
-    
-    srv.get('/user/:username/view', user.view);
-    srv.get('/user/:id/edit', user.edit);
-    srv.put('/user/:id/edit', user.update);
-    srv.del('/user/:id', user.remove);
-
-    srv.get('/asset/search/:tag', asset.search);
     srv.post('/asset', asset.create);
-
-    // See above
-    // srv.all('/asset/:id/:op?', asset.load);
-    
-    srv.get('/asset/:id', asset.view);
-    srv.get('/asset/:id/view', asset.view);
-    srv.get('/asset/:id/edit', asset.edit);
-    srv.put('/asset/:id/edit', asset.update);
-    srv.del('/asset/:id', asset.remove);
+    srv.get('/asset/search/:tag', asset.search);
+    srv.get('/asset/:id', [asset.load, asset.view]);
+    srv.get('/asset/:id/view', [asset.load, asset.view]);
+    srv.get('/asset/:id/edit', [asset.load, asset.edit]);
+    srv.put('/asset/:id/edit', [asset.load, asset.update]);
+    srv.del('/asset/:id', [asset.load, asset.remove]);
 
     srv.post('photo', photo.create);
-    // srv.all('photo/:id/:op?', photo.load);
-    srv.get('photo/:id', photo.view);
-    srv.get('photo/:id/view', photo.view);
-    srv.del('/photo/:id', photo.remove);
+    srv.get('photo/:id', [photo.load, photo.view]);
+    srv.get('photo/:id/view', [photo.load, photo.view]);
+    srv.del('/photo/:id', [photo.load, photo.remove]);
 }
 
 Server.prototype.listen = function(callback) {
