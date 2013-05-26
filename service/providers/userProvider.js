@@ -1,14 +1,17 @@
-var MongoClient = require('mongodb').MongoClient;
-var Server = require('mongodb').Server;
-var ObjectID = require('mongodb').ObjectID;
+var mongodb     = require('mongodb');
+var MongoClient = mongodb.MongoClient;
+var Server      = mongodb.Server;
+var ObjectID    = mongodb.ObjectID;
 
-UserProvider = function (database, host, port) {
-	this.client = new MongoClient(new Server(host, port, { auto_reconnect: true }, {}));
+function UserProvider(database, host, port) {
+    var server  = new Server(host, port, { auto_reconnect: true });
+
+    this.client = new MongoClient(server);
+
 	this.client.open(function (error, client) {
 		this.db = client.db(database);
 	});
 };
-
 UserProvider.prototype.getCollection = function (callback) {
 	this.db.collection('users', function (error, collection) {
 		if (error) callback(error);
@@ -83,4 +86,4 @@ UserProvider.prototype.remove = function (users, callback) {
 	});
 };
 
-exports.UserProvider = UserProvider;
+module.exports = UserProvider;
