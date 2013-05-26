@@ -17,6 +17,8 @@ Asset.prototype.search = function (request, response) {
 Asset.prototype.create = function (request, response) {
 	// TODO: check for authorization
 	var asset = request.body;
+    console.log(asset);
+
 	// TODO: validate the JSON against the schema
 	if (asset) {
 		request.assetProvider.create(asset, function (error, result) {
