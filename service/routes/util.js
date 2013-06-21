@@ -10,9 +10,10 @@ Util.prototype.ensureAuthenticated = function (request, response, next) {
 
 Util.prototype.login = function (request, response) {
 	if (!request.user) {
-		console.log('TODO: login-form');
+		response.redirect('/login');
 	} else {
-		console.log('TODO: login');
+		var id = request.user.id;
+		response.redirect('/users' + id);
 	}
 };
 

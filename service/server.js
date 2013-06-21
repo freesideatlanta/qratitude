@@ -33,13 +33,14 @@ function Server(config, routes, providers) {
         next();
     });
 
-	srv.get('/login', util.login);
+	srv.get('/login', [
+			function (request, response) { request.user = { username: 'emptyset', password: 'temp' }; }, 
+			util.login]);
 	srv.post('/login', util.authenticate);
 	srv.get('/logout', util.logout);
 
 	srv.get('/users', [
-			util.ensureAuthenticated, 
-			function (request, response) { request.body.user = { username: 'emptyset' }; }, 
+			function (request, response) { request.body.user = { username: 'emptyset', password: 'temp'  }; }, 
 			user.create]);
 	srv.get('/users/:id/', [util.ensureAuthenticated, user.load, user.view]);
 

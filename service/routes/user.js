@@ -35,6 +35,7 @@ User.prototype.authorize = function (request, response) {
 };
 
 User.prototype.create = function (request, response) {
+	console.log("User.create: user = " + user);
 	// TODO: check for admin authorization
 	var user = request.body.user;
 	// TODO: validate the JSON against the schema
@@ -43,9 +44,11 @@ User.prototype.create = function (request, response) {
 		else {
 			// TODO: stringify the result._id 
 			var id = result._id;
-			response.redirect('/users/' + id);
+			console.log("User.create: id = " + id);
+			//response.redirect('/users/' + id);
 		}
 	});
+	console.log("User.create: exit");
 };
 
 User.prototype.load = function (request, response, next) {
