@@ -1,4 +1,6 @@
 var restify = require('restify');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 function Server(config, routes, providers) {
 
@@ -10,13 +12,20 @@ function Server(config, routes, providers) {
     this.srv        = srv;
 
     // Routes
+	/*
     var user  = routes.user
       , asset = routes.asset
       , photo = routes.photo;
+	*/
+	var util = routes.util;
+	var user = routes.user;
 
     // Plugins
     srv.use(restify.queryParser());
     srv.use(restify.bodyParser());
+
+	srv.use(passport.initialize());
+	srv.use(passport.session());
 
     // Common handlers
     srv.use(function (request, response, next) {
@@ -24,12 +33,23 @@ function Server(config, routes, providers) {
         next();
     });
 
+	srv.get('/login', util.login);
+	srv.post('/login', util.authenticate);
+	srv.get('/logout', util.logout);
+
+	srv.get('/users', [
+			util.ensureAuthenticated, 
+			function (request, response) { request.body.user = { username: 'emptyset' }; }, 
+			user.create]);
+	srv.get('/users/:id/', [util.ensureAuthenticated, user.load, user.view]);
+
+/*
     srv.post('/user', user.create);
     srv.post('/user/authorize', user.authorize);
     srv.get('/user/:username/view', [user.load, user.view]);
     srv.get('/user/:id/edit', [user.load, user.edit]);
     srv.put('/user/:id/edit', [user.load, user.update]);
-    srv.del('/user/:id', [user.load,user.remove]);
+    srv.del('/user/:id', [user.load, user.remove]);
 
     srv.post('/asset', asset.create);
     srv.get('/asset/search/:tag', asset.search);
@@ -43,6 +63,7 @@ function Server(config, routes, providers) {
     srv.get('photo/:id', [photo.load, photo.view]);
     srv.get('photo/:id/view', [photo.load, photo.view]);
     srv.del('/photo/:id', [photo.load, photo.remove]);
+*/
 }
 
 Server.prototype.listen = function(callback) {

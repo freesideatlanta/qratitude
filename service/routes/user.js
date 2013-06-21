@@ -43,7 +43,7 @@ User.prototype.create = function (request, response) {
 		else {
 			// TODO: stringify the result._id 
 			var id = result._id;
-			response.redirect('/user/' + id + '/edit');
+			response.redirect('/users/' + id);
 		}
 	});
 };
