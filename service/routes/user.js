@@ -35,7 +35,6 @@ User.prototype.authorize = function (request, response) {
 };
 
 User.prototype.create = function (request, response) {
-	console.log("User.create: user = " + user);
 	// TODO: check for admin authorization
 	var user = request.body.user;
 	// TODO: validate the JSON against the schema

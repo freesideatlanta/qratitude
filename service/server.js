@@ -34,13 +34,16 @@ function Server(config, routes, providers) {
     });
 
 	srv.get('/login', [
-			function (request, response) { request.user = { username: 'emptyset', password: 'temp' }; }, 
+			function (request, response, next) { request.user = { username: 'emptyset', password: 'temp' }; next(); }, 
 			util.login]);
 	srv.post('/login', util.authenticate);
 	srv.get('/logout', util.logout);
 
 	srv.get('/users', [
-			function (request, response) { request.body.user = { username: 'emptyset', password: 'temp'  }; }, 
+			function (request, response, next) { 
+				console.log("setting the body user parameter"); 
+				request.body.user = { username: 'emptyset', password: 'temp'  }; 
+				next(); }, 
 			user.create]);
 	srv.get('/users/:id/', [util.ensureAuthenticated, user.load, user.view]);
 
