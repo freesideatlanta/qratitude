@@ -46,9 +46,14 @@ function Server(config, routes, providers) {
 			function (request, response, next) { 
 				console.log("setting the body user parameter"); 
 				request.body.user = { username: 'emptyset', password: 'temp' }; 
+				console.log("user.create = " + user.create);
+				console.log("routes.user = " + routes.user);
+				console.log("providers.users = " + providers.users);
 				next(); 
 			}, 
-			user.create]);
+			user.create
+		]
+	);
 	srv.get('/users/:id/', [util.ensureAuthenticated, user.load, user.view]);
 
 /*
