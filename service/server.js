@@ -34,7 +34,10 @@ function Server(config, routes, providers) {
     });
 
 	srv.get('/login', [
-			providers.users.findByUsername("emptyset"),
+			function (request, response, next) {
+				providers.users.findByUsername("emptyset");
+				next();
+			},
 			util.login]);
 	srv.post('/login', util.authenticate);
 	srv.get('/logout', util.logout);
@@ -42,8 +45,9 @@ function Server(config, routes, providers) {
 	srv.get('/users', [
 			function (request, response, next) { 
 				console.log("setting the body user parameter"); 
-				request.body.user = { username: 'emptyset', password: 'temp'  }; 
-				next(); }, 
+				request.body.user = { username: 'emptyset', password: 'temp' }; 
+				next(); 
+			}, 
 			user.create]);
 	srv.get('/users/:id/', [util.ensureAuthenticated, user.load, user.view]);
 
