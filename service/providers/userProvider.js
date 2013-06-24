@@ -21,7 +21,7 @@ UserProvider.prototype.findByUsername = function (username, callback) {
 	this.getCollection(function (error, collection) {
 		if (error) callback(error);
 		else {
-			collection.findOne({ username: username }, function (error, result) {
+			this.db.collection.findOne({ username: username }, function (error, result) {
 				if (error) callback(error);
 				else callback(null, result)
 			});

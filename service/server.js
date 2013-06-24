@@ -34,7 +34,7 @@ function Server(config, routes, providers) {
     });
 
 	srv.get('/login', [
-			function (request, response, next) { request.user = { username: 'emptyset', password: 'temp' }; next(); }, 
+			providers.users.findByUsername("emptyset"),
 			util.login]);
 	srv.post('/login', util.authenticate);
 	srv.get('/logout', util.logout);
