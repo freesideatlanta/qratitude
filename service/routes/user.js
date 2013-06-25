@@ -1,6 +1,7 @@
 
 function User(userProvider) {
 	console.log("userProvider = " + userProvider);
+	console.log("this = " + this);
 	this.userProvider = userProvider;
 	console.log("this.userProvider = " + this.userProvider);
 };
@@ -40,7 +41,8 @@ User.prototype.create = function (request, response) {
 	// TODO: check for admin authorization
 	var user = request.body.user;
 	console.log("user = " + user);
-	console.log("this.userProvider = " + this.userProvider);
+	console.log("this = " + this);
+	console.log("request.userProvider = " + request.userProvider);
 	// TODO: validate the JSON against the schema
 	this.userProvider.create(user, function (error, result) {
 		if (error) console.log(error);

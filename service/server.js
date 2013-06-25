@@ -24,7 +24,6 @@ function Server(config, routes, providers) {
 
     // Common handlers
     srv.use(function (request, response, next) {
-        request.assetProvider = providers.assets;
         next();
     });
 
