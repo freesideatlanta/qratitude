@@ -6,6 +6,10 @@ function User(userProvider) {
 	console.log("this.userProvider = " + this.userProvider);
 };
 
+User.prototype = {
+	userProvider: undefined
+}
+
 User.prototype.authorize = function (request, response) {
 	var username = request.body.username;
 	var code = request.body.code;
@@ -42,7 +46,8 @@ User.prototype.create = function (request, response) {
 	var user = request.body.user;
 	console.log("user = " + user);
 	console.log("this = " + this);
-	console.log("request.userProvider = " + request.userProvider);
+	console.log("this.userProvider = " + this.userProvider);
+	console.log("userProvider = " + userProvider);
 	// TODO: validate the JSON against the schema
 	this.userProvider.create(user, function (error, result) {
 		if (error) console.log(error);
