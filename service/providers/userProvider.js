@@ -7,10 +7,12 @@ UserProvider = function(database, host, port) {
     var server  = new Server(host, port, { auto_reconnect: true });
     this.client = new MongoClient(server);
 	this.database = database;
+	dbname = database;
 };
 
 UserProvider.prototype.findByUsername = function (username, callback) {
 	this.client.open(function (error, client) {
+		console.log("this.database = " + this.database);
 		var db = client.db(this.database);
 		db.collection('users').findOne({username: username }, function (error, result) {
 			if (error) callback(error);
@@ -22,7 +24,9 @@ UserProvider.prototype.findByUsername = function (username, callback) {
 
 UserProvider.prototype.create = function (users, callback) {
 	this.client.open(function (error, client) {
-		var db = client.db(this.database);
+		console.log("this.database = " + this.database);
+		console.log("dbname = " + dbname);
+		var db = client.db(dbname);
 		if (typeof(users.length) == "undefined") users = [users];
 		db.collection('users').insert(users, function() {
 			callback(null, users);

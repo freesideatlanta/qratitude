@@ -3,6 +3,7 @@ function User(userProvider) {
 	console.log("userProvider = " + userProvider);
 	console.log("this = " + this);
 	this.userProvider = userProvider;
+	up = userProvider;
 	console.log("this.userProvider = " + this.userProvider);
 };
 
@@ -46,10 +47,11 @@ User.prototype.create = function (request, response) {
 	var user = request.body.user;
 	console.log("user = " + user);
 	console.log("this = " + this);
-	console.log("this.userProvider = " + this.userProvider);
-	console.log("userProvider = " + userProvider);
+	//console.log("this.userProvider = " + this.userProvider);
+	//console.log("userProvider = " + userProvider);
 	// TODO: validate the JSON against the schema
-	this.userProvider.create(user, function (error, result) {
+	//this.userProvider.create(user, function (error, result) {
+	up.create(user, function (error, result) {
 		if (error) console.log(error);
 		else {
 			// TODO: stringify the result._id 
