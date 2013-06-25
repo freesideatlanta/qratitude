@@ -11,8 +11,8 @@ UserProvider = function(database, host, port) {
 
 UserProvider.prototype.findByUsername = function (username, callback) {
 	this.client.open(function (error, client) {
-		var db = client.db("users");
-		db.findOne({username: username }, function (error, result) {
+		var db = client.db(this.database);
+		db.collection('users').findOne({username: username }, function (error, result) {
 			if (error) callback(error);
 			else callback(null, result);
 		});
@@ -22,9 +22,9 @@ UserProvider.prototype.findByUsername = function (username, callback) {
 
 UserProvider.prototype.create = function (users, callback) {
 	this.client.open(function (error, client) {
-		var db = client.db("users");
+		var db = client.db(this.database);
 		if (typeof(users.length) == "undefined") users = [users];
-		db.insert(users, function() {
+		db.collection('users').insert(users, function() {
 			callback(null, users);
 		});
 		client.close();
