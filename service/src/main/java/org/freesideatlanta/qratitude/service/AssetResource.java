@@ -4,7 +4,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
 @Path("/asset")
-public class AssetService {
+public class AssetResource {
 
 	@POST
 	public Response createAsset(String json) {
