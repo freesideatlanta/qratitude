@@ -14,19 +14,43 @@
 		  <url>http://download.java.net/maven/2/</url>
 		  <layout>default</layout>
 	  </repository>
+	  <repository>
+		  <id>codehaus-snapshots</id>
+		  <name>Codehaus Snapshots</name>
+		  <url>http://nexus.codehaus.org/snapshots/</url>
+		  <releases>
+			  <enabled>false</enabled>
+		  </releases>
+		  <snapshots>
+			  <enabled>true</enabled>
+		  </snapshots>
+	  </repository>
   </repositories>
+  <pluginRepositories>
+	  <pluginRepository>
+		  <id>codehaus-snapshots</id>
+		  <name>Codehaus Snapshots</name>
+		  <url>http://nexus.codehaus.org/snapshots/</url>
+		  <releases>
+			  <enabled>false</enabled>
+		  </releases>
+		  <snapshots>
+			  <enabled>true</enabled>
+		  </snapshots>
+	  </pluginRepository>
+  </pluginRepositories>
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-	<dependency>
-		<groupId>com.sun.jersey</groupId>
-		<artifactId>jersey-server</artifactId>
-		<version>1.8</version>
-	</dependency>
+	  <dependency>
+		  <groupId>junit</groupId>
+		  <artifactId>junit</artifactId>
+		  <version>3.8.1</version>
+		  <scope>test</scope>
+	  </dependency>
+	  <dependency>
+		  <groupId>com.sun.jersey</groupId>
+		  <artifactId>jersey-server</artifactId>
+		  <version>1.8</version>
+	  </dependency>
   </dependencies>
   <build>
 	  <finalName>qratitude-service</finalName>
@@ -36,6 +60,22 @@
 			  <configuration>
 				  <source>1.6</source>
 				  <target>1.6</target>
+			  </configuration>
+		  </plugin>
+		  <plugin>
+			  <groupId>org.codehaus.cargo</groupId>
+			  <artifactId>cargo-maven2-plugin</artifactId>
+			  <version>1.1.1</version>
+			  <configuration>
+				  <wait>true</wait>
+				  <container>
+					  <containerId>tomcat6x</containerId>
+					  <zipUrlInstaller>
+						  <url>http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.32/bin/apache-tomcat-6.0.32.zip</url>
+						  <downloadDir>${project.build.directory}/downloads</downloadDir>
+						  <extractDir>${project.build.directory}/extracts</extractDir>
+					  </zipUrlInstaller>
+				  </container>
 			  </configuration>
 		  </plugin>
 	  </plugins>
