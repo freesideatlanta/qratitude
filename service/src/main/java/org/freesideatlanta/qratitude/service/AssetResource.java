@@ -26,16 +26,15 @@ public class AssetResource {
 
 	@GET
 	public Response readAssets() {
-		String json = "[ { _id: '123456', name: 'my asset' }, { _id: '789101', name: 'my other asset' } ]";
-		// TODO: use RESTEasy and Jackson to automagically produce the application/json
 		// TODO: return the list of all assets
-		return Response.status(200).entity(json).build();
+		String json = "[ { _id: '123456', name: 'my asset' }, { _id: '789101', name: 'my other asset' } ]";
+		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
 	@PUT 
 	public Response updateAssets(String json) {
 		// TODO: try to figure out how to automagically update all the assets
-		return Response.status(200).entity(json).build();
+		return Response.status(Response.Status.OK).entity(json).build();
 	}
 
 	@GET
@@ -68,15 +67,31 @@ public class AssetResource {
 	@PUT
 	@Path("/{id}")
 	public Response updateAsset(@PathParam("id") String id, String json) {
-		// TODO: find the asset with the id in the database
-		// TODO: parse the incoming json via the asset, set values
-		return Response.status(200).entity(json).build();
+		AssetStore store = StoreFactory.getAssetStore();
+		Response response = null;
+		// TODO: make sure the asset exists before updating
+		Asset original = store.read(id);
+		if (original != null) {			
+
+			Asset asset = new Asset();
+			asset.fromJson(json);
+			store.update(asset);
+
+			response = Response.status(Response.Status.OK).entity(json).build();
+		} else {
+			// TODO: handle better
+			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+
+		return response;
 	}
 
 	@DELETE
 	@Path("/{id}")
 	public Response deleteAsset(@PathParam("id") String id) {
-		// TODO: delete the asset with the id in the database
-		return Response.status(200).build();
+		AssetStore store = StoreFactory.getAssetStore();
+		store.delete(id);
+
+		return Response.status(Response.Status.OK).build();
 	}
 }

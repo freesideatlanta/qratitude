@@ -10,7 +10,7 @@ public class Asset {
 
 	private String id;
 	private Map<String, String> attributes;
-	private Collection<URI> photos;
+	private Set<URI> photos;
 
 	public String getId() {
 		return this.id;
@@ -23,13 +23,13 @@ public class Asset {
 		return this.attributes;
 	}
 
-	public Collection<URI> getPhotos() {
+	public Set<URI> getPhotos() {
 		return this.photos;
 	}
 
 	public Asset() {
 		this.attributes = new HashMap<String, String>();
-		this.photos = new ArrayList<URI>();
+		this.photos = new HashSet<URI>();
 	}
 
 	public void addPhoto(String url) throws NullPointerException, IllegalArgumentException {
@@ -38,6 +38,10 @@ public class Asset {
 	}
 
 	public void fromJson(String json) {
+		this.attributes.clear();
+		this.photos.clear();
+
+		// TODO: parse JSON and set values
 	}
 
 	public String toJson() throws IOException {
