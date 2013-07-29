@@ -1,6 +1,7 @@
 target/
 *.swp
 
+res
 src-data
 src-model
 src-service
