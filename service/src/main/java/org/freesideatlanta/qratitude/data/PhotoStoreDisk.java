@@ -5,26 +5,37 @@ import java.net.*;
 
 public class PhotoStoreDisk implements PhotoStore {
 
-	private static final int BUFFER_SIZE = 4096;
-	// TODO: define the "base" path and url
-	private static final String BASE_PATH = "/srv/qratitude/photos/";
-	private static final String BASE_URL = "http://qratitude.freesideatlanta.org/photos/";
+	private static final int DEFAULT_BUFFER_SIZE = 4096;
+
+	private int bufferSize;
+	private String basePath;
+	private String baseUrl;
+
+	public PhotoStoreDisk(String basePath, String baseUrl) {
+		this(basePath, baseUrl, DEFAULT_BUFFER_SIZE);
+	}
+
+	public PhotoStoreDisk(String basePath, String baseUrl, int bufferSize) {
+		this.basePath = basePath;
+		this.baseUrl = baseUrl;
+		this.bufferSize = bufferSize;
+	}
 
 	@Override
 	public URI create(InputStream is, String extension) throws IOException {
 		String id = this.createId(); 
-		String filename = BASE_PATH + id + "." + extension;
+		String filename = this.basePath + id + "." + extension;
 		File file = new File(filename);
 		FileOutputStream os = new FileOutputStream(file);
 
-		byte[] buffer = new byte[BUFFER_SIZE];
+		byte[] buffer = new byte[this.bufferSize];
 		int bytesRead;
 		while ((bytesRead = is.read(buffer)) != -1) {
 			os.write(buffer, 0, bytesRead);
 		}
 		os.close();
 
-		String url = BASE_URL + filename;
+		String url = this.baseUrl + filename;
 		URI uri = URI.create(url);
 
 		return uri;
