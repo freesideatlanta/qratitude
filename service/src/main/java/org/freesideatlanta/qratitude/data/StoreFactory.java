@@ -15,8 +15,20 @@ public class StoreFactory {
 	private static final String DATA_PHOTO_BASE_URL = "data.photo.base_url";
 
 	public static AssetStore getAssetStore() {
-		// TODO: pull configuration from the resources folder
-		AssetStoreMongo as = new AssetStoreMongo();
+		AssetStoreMongo as = null;
+
+		try {
+			Properties properties = loadDataProperties();
+			String host = properties.getProperty(DATA_HOST);
+			String value = properties.getProperty(DATA_PORT);
+			int port = Integer.parseInt(value);
+			String database = properties.getProperty(DATA_DATABASE);
+			
+			as = new AssetStoreMongo(host, port, database);
+		} catch (NumberFormatException e) {
+			// TODO: handle exception better
+		}
+
 		return as;
 	}
 

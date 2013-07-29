@@ -1,6 +1,7 @@
 target/
 *.swp
 
+fil
 res
 src-data
 src-model

@@ -4,6 +4,18 @@ import org.freesideatlanta.qratitude.model.*;
 
 public class AssetStoreMongo implements AssetStore {
 
+	private String host;
+	private int port;
+	private String database;
+
+	public AssetStoreMongo(String host, int port, String database) {
+		this.host = host;
+		this.port = port;
+		this.database = database;
+
+		// create a connection object (store?)
+	}
+
 	@Override
 	public Asset create() {
 		// TODO: create mongo object with id set
