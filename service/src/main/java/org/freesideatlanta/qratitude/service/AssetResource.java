@@ -1,7 +1,13 @@
 package org.freesideatlanta.qratitude.service;
 
+import java.io.*;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+
+import org.codehaus.jackson.*;
+
+import org.freesideatlanta.qratitude.model.*;
 
 @Path("/asset")
 public class AssetResource {
@@ -9,7 +15,7 @@ public class AssetResource {
 	@POST
 	public Response createAsset(String json) {
 		// TODO: create an asset in the database
-		return Response.status(201).entity(json).build();
+		return Response.status(Response.Status.CREATED).entity(json).build();
 	}
 
 	@GET
@@ -30,8 +36,27 @@ public class AssetResource {
 	@Path("/{id}")
 	public Response readAsset(@PathParam("id") String id) {
 		// TODO: find the asset with the id in the database
-		String json = "{ _id: '" + id + "', name: 'my asset' }";
-		return Response.status(200).entity(json).build();
+		Response response = null;
+		try {
+			Asset asset = new Asset();
+			asset.setId("4048675309");
+			asset.getAttributes().put("name", "TJI Joists");
+			asset.getAttributes().put("description", "Light use for sound stage during 4 weeks of filming");
+			asset.getAttributes().put("dimensions", "12ft and 16ft tall wood joists, ranging from 2 - 2.5in wide");
+			asset.getAttributes().put("quantity", "380");
+			asset.getAttributes().put("condition", "Excellent");
+			asset.getAttributes().put("color", "Woody");
+			asset.addPhoto("http://inventory.lifecyclebuildingcenter.org/img/tji_joists_md.jpg");
+			
+			String json = asset.toJson();
+			response = Response.status(Response.Status.OK).entity(json).build();
+
+		} catch (Exception e) {
+			// TODO: handle exceptions better
+			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+
+		return response;
 	}
 
 	@PUT
