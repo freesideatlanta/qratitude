@@ -37,6 +37,9 @@ public class Asset {
 		this.photos.add(uri);
 	}
 
+	public void fromJson(String json) {
+	}
+
 	public String toJson() throws IOException {
 		StringWriter sw = new StringWriter();
 		JsonFactory f = new JsonFactory();

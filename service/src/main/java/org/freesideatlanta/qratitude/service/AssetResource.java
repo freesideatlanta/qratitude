@@ -7,6 +7,7 @@ import javax.ws.rs.core.*;
 
 import org.codehaus.jackson.*;
 
+import org.freesideatlanta.qratitude.data.*;
 import org.freesideatlanta.qratitude.model.*;
 
 @Path("/asset")
@@ -14,7 +15,12 @@ public class AssetResource {
 
 	@POST
 	public Response createAsset(String json) {
-		// TODO: create an asset in the database
+		AssetStore store = StoreFactory.getAssetStore();
+		
+		Asset asset = store.create();
+		asset.fromJson(json);
+		store.update(asset);
+
 		return Response.status(Response.Status.CREATED).entity(json).build();
 	}
 
