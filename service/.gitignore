@@ -6,3 +6,6 @@ res
 src-data
 src-model
 src-service
+test-data
+test-model
+test-service
