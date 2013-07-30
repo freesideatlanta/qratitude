@@ -14,6 +14,24 @@ public class StoreFactory {
 	private static final String DATA_PHOTO_BASE_PATH = "data.photo.base_path";
 	private static final String DATA_PHOTO_BASE_URL = "data.photo.base_url";
 
+	public static CategoryStore getCategoryStore() {
+		CategoryStoreMongo cs = null;
+
+		try {
+			Properties properties = loadDataProperties();
+			String host = properties.getProperty(DATA_HOST);
+			String value = properties.getProperty(DATA_PORT);
+			int port = Integer.parseInt(value);
+			String database = properties.getProperty(DATA_DATABASE);
+			
+			cs = new CategoryStoreMongo(host, port, database);
+		} catch (NumberFormatException e) {
+			// TODO: handle exception better
+		}
+		
+		return cs;
+	}
+
 	public static AssetStore getAssetStore() {
 		AssetStoreMongo as = null;
 

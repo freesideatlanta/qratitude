@@ -52,10 +52,12 @@ public class Asset {
 		g.writeStartObject();
 		g.writeStringField("id", this.id);
 
+		g.writeObjectFieldStart("attributes");
 		for (String key : this.attributes.keySet()) {
 			String value = this.attributes.get(key);
 			g.writeStringField(key, value);
 		}
+		g.writeEndObject();
 
 		g.writeFieldName("photos");
 		g.writeStartArray();
