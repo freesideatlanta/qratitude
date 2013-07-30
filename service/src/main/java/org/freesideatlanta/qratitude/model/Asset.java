@@ -9,6 +9,7 @@ import org.codehaus.jackson.*;
 public class Asset {
 
 	private String id;
+	private String name;
 	private Map<String, String> attributes;
 	private Set<URI> photos;
 
@@ -17,6 +18,13 @@ public class Asset {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Map<String, String> getAttributes() {
@@ -37,11 +45,40 @@ public class Asset {
 		this.photos.add(uri);
 	}
 
-	public void fromJson(String json) {
+	public void fromJson(String json) throws IOException {
 		this.attributes.clear();
 		this.photos.clear();
 
-		// TODO: parse JSON and set values
+		JsonFactory f = new JsonFactory();
+		JsonParser p = f.createJsonParser(json);
+
+		while (p.nextToken() != JsonToken.END_OBJECT) {
+			String field = p.getCurrentName();
+			if ("id".equals(field)) {
+				p.nextToken();
+				String id = p.getText();
+				this.id = id;
+			} else if ("name".equals(field)) {
+				p.nextToken();
+				String name = p.getText();
+				this.name = name;
+			} else if ("attributes".equals(field)) {
+				while (p.nextToken() != JsonToken.END_OBJECT) {
+					String attribute = p.getCurrentName();
+					p.nextToken();
+					String value = p.getText();
+					this.attributes.put(attribute, value);
+				}
+			} else if ("photos".equals(field)) {
+				p.nextToken() // [
+				while (p.nextToken() != JsonToken.END_ARRAY) {
+					String url = p.getText();
+					this.addPhoto(url);
+				}
+			} else {
+				// TODO: throw some kind of error; or ignore
+			}
+		}
 	}
 
 	public String toJson() throws IOException {
@@ -51,6 +88,7 @@ public class Asset {
 
 		g.writeStartObject();
 		g.writeStringField("id", this.id);
+		g.writeStringField("name", this.name);
 
 		g.writeObjectFieldStart("attributes");
 		for (String key : this.attributes.keySet()) {
