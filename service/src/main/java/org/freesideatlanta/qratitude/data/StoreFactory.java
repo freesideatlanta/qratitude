@@ -27,6 +27,8 @@ public class StoreFactory {
 			cs = new CategoryStoreMongo(host, port, database);
 		} catch (NumberFormatException e) {
 			// TODO: handle exception better
+		} catch (IOException e) {
+			// TODO: handle exception better
 		}
 		
 		return cs;
@@ -44,6 +46,8 @@ public class StoreFactory {
 			
 			as = new AssetStoreMongo(host, port, database);
 		} catch (NumberFormatException e) {
+			// TODO: handle exception better
+		} catch (IOException e) {
 			// TODO: handle exception better
 		}
 
@@ -63,15 +67,18 @@ public class StoreFactory {
 			ps = new PhotoStoreDisk(basePath, baseUrl, bufferSize);
 		} catch (NumberFormatException e) {
 			// TODO: handle exception better
+		} catch (IOException e) {
+			// TODO: handle exception better
 		}
 		
 		return ps;
 	}
 
-	private static Properties loadDataProperties() {
+	private static Properties loadDataProperties() throws IOException {
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		Properties properties = new Properties();
 		InputStream is = cl.getResourceAsStream(DATA_PROPERTIES);
+		properties.load(is);
 
 		return properties;
 	}

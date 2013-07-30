@@ -46,6 +46,7 @@ public class CategoryResource {
 			CategoryStore store = StoreFactory.getCategoryStore();
 			Collection<String> categories = store.read();
 			json = toJson(categories);
+			System.out.println(json);
 
 			response = Response.status(Response.Status.OK).entity(json).build();
 		} catch (IOException e) {
@@ -102,12 +103,15 @@ public class CategoryResource {
 		g.writeFieldName("categories");
 		g.writeStartArray();
 		for (String category : categories) {
+			System.out.println("category: " + category);
 			g.writeString(category);
 		}
 		g.writeEndArray();
 		g.writeEndObject();
+		g.close();
 
 		String json = sw.toString();
+		System.out.println("sw: " + sw);
 		return json;
 	}
 }
