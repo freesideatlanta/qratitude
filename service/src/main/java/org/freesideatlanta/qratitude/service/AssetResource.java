@@ -15,13 +15,20 @@ public class AssetResource {
 
 	@POST
 	public Response createAsset(String json) {
-		AssetStore store = StoreFactory.getAssetStore();
-		
-		Asset asset = store.create();
-		asset.fromJson(json);
-		store.update(asset);
+		Response response = null;
+		try {
+			AssetStore store = StoreFactory.getAssetStore();
+			
+			Asset asset = store.create();
+			asset.fromJson(json);
+			store.update(asset);
 
-		return Response.status(Response.Status.CREATED).entity(json).build();
+			response = Response.status(Response.Status.CREATED).entity(json).build();
+		} catch (IOException e) {
+			// TODO: handle exception better
+		}
+
+		return response;
 	}
 
 	@GET
@@ -67,20 +74,24 @@ public class AssetResource {
 	@PUT
 	@Path("/{id}")
 	public Response updateAsset(@PathParam("id") String id, String json) {
-		AssetStore store = StoreFactory.getAssetStore();
 		Response response = null;
-		// TODO: make sure the asset exists before updating
-		Asset original = store.read(id);
-		if (original != null) {			
+		try {
+			AssetStore store = StoreFactory.getAssetStore();
+			// TODO: make sure the asset exists before updating
+			Asset original = store.read(id);
+			if (original != null) {			
 
-			Asset asset = new Asset();
-			asset.fromJson(json);
-			store.update(asset);
+				Asset asset = new Asset();
+				asset.fromJson(json);
+				store.update(asset);
 
-			response = Response.status(Response.Status.OK).entity(json).build();
-		} else {
-			// TODO: handle better
-			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+				response = Response.status(Response.Status.OK).entity(json).build();
+			} else {
+				// TODO: handle better
+				response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			}
+		} catch (IOException e) {
+			// TODO: handle exception better
 		}
 
 		return response;

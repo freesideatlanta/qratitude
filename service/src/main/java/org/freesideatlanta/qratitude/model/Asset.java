@@ -70,7 +70,7 @@ public class Asset {
 					this.attributes.put(attribute, value);
 				}
 			} else if ("photos".equals(field)) {
-				p.nextToken() // [
+				p.nextToken(); // [
 				while (p.nextToken() != JsonToken.END_ARRAY) {
 					String url = p.getText();
 					this.addPhoto(url);
