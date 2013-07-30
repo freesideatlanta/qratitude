@@ -77,7 +77,6 @@ public class AssetResource {
 		Response response = null;
 		try {
 			AssetStore store = StoreFactory.getAssetStore();
-			// TODO: make sure the asset exists before updating
 			Asset original = store.read(id);
 			if (original != null) {			
 
@@ -87,7 +86,7 @@ public class AssetResource {
 
 				response = Response.status(Response.Status.OK).entity(json).build();
 			} else {
-				// TODO: handle better
+				// TODO: handle error better
 				response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 			}
 		} catch (IOException e) {

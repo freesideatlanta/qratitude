@@ -4,9 +4,23 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import com.mongodb.*;
+import com.mongodb.util.*;
 import org.codehaus.jackson.*;
 
 public class Asset {
+
+	public static Set<URI> getPhotosToRemove(Asset original, Asset updated) {
+		Set<URI> toRemove = new HashSet<URI>();
+
+		for (URI uri : original.getPhotos()) {
+			if (!updated.getPhotos().contains(uri)) {
+				toRemove.add(uri);
+			}
+		}
+
+		return toRemove;
+	}
 
 	private String id;
 	private String name;
@@ -43,6 +57,16 @@ public class Asset {
 	public void addPhoto(String url) throws NullPointerException, IllegalArgumentException {
 		URI uri = URI.create(url);
 		this.photos.add(uri);
+	}
+
+	public void fromDbo(DBObject dbo) {
+
+	}
+
+	public DBObject toDbo() throws IOException {
+		String json = this.toJson();
+		DBObject dbo = (DBObject)JSON.parse(json);
+		return dbo;
 	}
 
 	public void fromJson(String json) throws IOException {

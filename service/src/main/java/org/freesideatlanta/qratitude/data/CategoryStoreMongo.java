@@ -9,11 +9,13 @@ public class CategoryStoreMongo implements CategoryStore {
 	private String host;
 	private int port;
 	private String database;
+	private String collection;
 
-	public CategoryStoreMongo(String host, int port, String database) {
+	public CategoryStoreMongo(String host, int port, String database, String collection) {
 		this.host = host;
 		this.port = port;
 		this.database = database;
+		this.collection = collection;
 
 		// create a connection object (store?)
 	}

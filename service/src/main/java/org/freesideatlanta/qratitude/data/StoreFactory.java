@@ -10,6 +10,8 @@ public class StoreFactory {
 	private static final String DATA_HOST = "data.host";
 	private static final String DATA_PORT = "data.port";
 	private static final String DATA_DATABASE = "data.database";
+	private static final String DATA_COLLECTION_ASSET = "data.collection.asset";
+	private static final String DATA_COLLECTION_CATEGORY = "data.collection.category";
 	private static final String DATA_PHOTO_BUFFER_SIZE = "data.photo.buffer_size";
 	private static final String DATA_PHOTO_BASE_PATH = "data.photo.base_path";
 	private static final String DATA_PHOTO_BASE_URL = "data.photo.base_url";
@@ -23,8 +25,9 @@ public class StoreFactory {
 			String value = properties.getProperty(DATA_PORT);
 			int port = Integer.parseInt(value);
 			String database = properties.getProperty(DATA_DATABASE);
+			String collection = properties.getProperty(DATA_COLLECTION_CATEGORY);
 			
-			cs = new CategoryStoreMongo(host, port, database);
+			cs = new CategoryStoreMongo(host, port, database, collection);
 		} catch (NumberFormatException e) {
 			// TODO: handle exception better
 		} catch (IOException e) {
@@ -43,8 +46,9 @@ public class StoreFactory {
 			String value = properties.getProperty(DATA_PORT);
 			int port = Integer.parseInt(value);
 			String database = properties.getProperty(DATA_DATABASE);
+			String collection = properties.getProperty(DATA_COLLECTION_ASSET);
 			
-			as = new AssetStoreMongo(host, port, database);
+			as = new AssetStoreMongo(host, port, database, collection);
 		} catch (NumberFormatException e) {
 			// TODO: handle exception better
 		} catch (IOException e) {
