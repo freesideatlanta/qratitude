@@ -52,7 +52,7 @@ public class AssetResource {
 		try {
 			Asset asset = new Asset();
 			asset.setId("4048675309");
-			asset.getAttributes().put("name", "TJI Joists");
+			asset.setName("TJI Joists");
 			asset.getAttributes().put("description", "Light use for sound stage during 4 weeks of filming");
 			asset.getAttributes().put("dimensions", "12ft and 16ft tall wood joists, ranging from 2 - 2.5in wide");
 			asset.getAttributes().put("quantity", "380");
