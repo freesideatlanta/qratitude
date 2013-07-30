@@ -87,10 +87,25 @@ public class CategoryResource {
 		return response;
 	}
 
-	private Collection<String> fromJson(String json) {
+	private Collection<String> fromJson(String json) throws IOException {
 		Collection<String> categories = new ArrayList<String>();
 		
+		JsonFactory f = new JsonFactory();
+		JsonParser p = f.createJsonParser(json);
 
+		while (p.nextToken() != JsonToken.END_OBJECT) {
+			String field = p.getCurrentName();
+			if ("categories".equals(field)) {
+				p.nextToken(); // [
+				while (p.nextToken() != JsonToken.END_ARRAY) {
+					String category = p.getText();
+					categories.add(category);
+				}
+			}
+		}
+
+		p.close();
+	
 		return categories;
 	}
 
