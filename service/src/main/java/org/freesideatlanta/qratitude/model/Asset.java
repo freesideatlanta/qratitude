@@ -6,9 +6,11 @@ import java.util.*;
 
 import com.mongodb.*;
 import com.mongodb.util.*;
+import org.apache.log4j.*;
 import org.codehaus.jackson.*;
 
 public class Asset {
+	private static Logger log = Logger.getLogger(Asset.class);
 
 	public static String toJson(Collection<Asset> assets) throws IOException {
 		StringWriter sw = new StringWriter();
@@ -100,28 +102,35 @@ public class Asset {
 
 		while (p.nextToken() != JsonToken.END_OBJECT) {
 			String field = p.getCurrentName();
+			log.debug(field);
 			if ("id".equals(field)) {
 				p.nextToken();
 				String id = p.getText();
+				log.debug(id);
 				this.id = id;
 			} else if ("name".equals(field)) {
 				p.nextToken();
 				String name = p.getText();
+				log.debug(name);
 				this.name = name;
 			} else if ("attributes".equals(field)) {
 				while (p.nextToken() != JsonToken.END_OBJECT) {
 					String attribute = p.getCurrentName();
 					p.nextToken();
 					String value = p.getText();
+					log.debug(attribute);
+					log.debug(value);
 					this.attributes.put(attribute, value);
 				}
 			} else if ("photos".equals(field)) {
 				p.nextToken(); // [
 				while (p.nextToken() != JsonToken.END_ARRAY) {
 					String url = p.getText();
+					log.debug(url);
 					this.addPhoto(url);
 				}
 			} else {
+				log.debug("unmatched field");
 				// TODO: throw some kind of error; or ignore
 			}
 		}

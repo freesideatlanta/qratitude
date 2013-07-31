@@ -6,6 +6,7 @@ import java.util.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
+import org.apache.log4j.*;
 import org.codehaus.jackson.*;
 
 import org.freesideatlanta.qratitude.data.*;
@@ -13,10 +14,13 @@ import org.freesideatlanta.qratitude.model.*;
 
 @Path("/asset")
 public class AssetResource {
+	private static Logger log = Logger.getLogger(AssetResource.class);
 
 	@POST
 	public Response createAsset(String json) {
+		log.debug(json);
 		Response response = null;
+
 		try {
 			AssetStore store = StoreFactory.getAssetStore();
 			
@@ -25,11 +29,14 @@ public class AssetResource {
 			store.update(asset);
 
 			response = Response.status(Response.Status.CREATED).entity(json).build();
+
 		} catch (IOException e) {
 			// TODO: handle exception better
+			log.debug(e);
 			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 
+		log.debug(response);
 		return response;
 	}
 

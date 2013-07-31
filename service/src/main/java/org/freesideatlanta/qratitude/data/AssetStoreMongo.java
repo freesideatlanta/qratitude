@@ -5,32 +5,16 @@ import java.net.*;
 import java.util.*;
 
 import com.mongodb.*;
+import org.apache.log4j.*;
 import org.bson.types.*;
 
 import org.freesideatlanta.qratitude.model.*;
 
-public class AssetStoreMongo implements AssetStore {
+public class AssetStoreMongo extends StoreMongo implements AssetStore {
+	private static Logger log = Logger.getLogger(AssetStoreMongo.class);
 
-	private String host;
-	private int port;
-	private String database;
-	private String collection;
-
-	private MongoClient client;
-	private DB db;
-	private DBCollection assets;
-
-	public AssetStoreMongo(String host, int port, String database, String collection) {
-		this.host = host;
-		this.port = port;
-		this.database = database;
-		this.collection = collection;
-	}
-
-	public void initialize() throws UnknownHostException {
-		this.client = new MongoClient(this.host, this.port);
-		this.db = this.client.getDB(this.database);
-		this.assets = this.db.getCollection(this.collection);
+	public AssetStoreMongo(String host, int port, String database, String name) {
+		super(host, port, database, name);
 	}
 
 	@Override 
@@ -48,9 +32,13 @@ public class AssetStoreMongo implements AssetStore {
 	public Asset create() {
 		Asset asset = null;
 		BasicDBObject dbo = new BasicDBObject();
-		dbo.put("id", new ObjectId());
+		ObjectId id = new ObjectId();
 
-		this.assets.insert(dbo);
+		log.debug(id);
+		dbo.put("id", id);
+
+		log.debug(this.collection);
+		this.collection.insert(dbo);
 
 		asset = new Asset();
 		asset.fromDbo(dbo);
@@ -63,7 +51,7 @@ public class AssetStoreMongo implements AssetStore {
 		Asset asset = null;
 		BasicDBObject query = new BasicDBObject();
 		query.put("id", new ObjectId(id));
-		DBObject dbo = this.assets.findOne(query);
+		DBObject dbo = this.collection.findOne(query);
 		
 		asset = new Asset();
 		asset.fromDbo(dbo);
@@ -87,16 +75,16 @@ public class AssetStoreMongo implements AssetStore {
 		// just override the mongo object with the updated (after photos are deleted)
 		BasicDBObject query = new BasicDBObject();
 		query.put("id", new ObjectId(id));
-		this.assets.remove(query);
+		this.collection.remove(query);
 
 		DBObject dbo = asset.toDbo();
-		this.assets.insert(dbo);
+		this.collection.insert(dbo);
 	}
 
 	@Override
 	public void delete(String id) {
 		BasicDBObject query = new BasicDBObject();
 		query.put("id", new ObjectId(id));
-		this.assets.remove(query);
+		this.collection.remove(query);
 	}
 }

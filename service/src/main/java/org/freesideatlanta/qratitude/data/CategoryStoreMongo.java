@@ -4,20 +4,10 @@ import java.util.*;
 
 import org.freesideatlanta.qratitude.model.*;
 
-public class CategoryStoreMongo implements CategoryStore {
-
-	private String host;
-	private int port;
-	private String database;
-	private String collection;
+public class CategoryStoreMongo extends StoreMongo implements CategoryStore {
 
 	public CategoryStoreMongo(String host, int port, String database, String collection) {
-		this.host = host;
-		this.port = port;
-		this.database = database;
-		this.collection = collection;
-
-		// create a connection object (store?)
+		super(host, port, database, collection);
 	}
 
 	@Override

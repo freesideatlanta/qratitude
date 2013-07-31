@@ -4,14 +4,17 @@ import java.io.*;
 import java.lang.*;
 import java.util.*;
 
+import org.apache.log4j.*;
+
 public class StoreFactory {
+	private static Logger log = Logger.getLogger(StoreFactory.class);
 
 	private static final String DATA_PROPERTIES = "data.properties";
 	private static final String DATA_HOST = "data.host";
 	private static final String DATA_PORT = "data.port";
 	private static final String DATA_DATABASE = "data.database";
-	private static final String DATA_COLLECTION_ASSET = "data.collection.asset";
-	private static final String DATA_COLLECTION_CATEGORY = "data.collection.category";
+	private static final String DATA_COLLECTION_ASSETS = "data.collection.assets";
+	private static final String DATA_COLLECTION_CATEGORIES = "data.collection.categories";
 	private static final String DATA_PHOTO_BUFFER_SIZE = "data.photo.buffer_size";
 	private static final String DATA_PHOTO_BASE_PATH = "data.photo.base_path";
 	private static final String DATA_PHOTO_BASE_URL = "data.photo.base_url";
@@ -25,9 +28,10 @@ public class StoreFactory {
 			String value = properties.getProperty(DATA_PORT);
 			int port = Integer.parseInt(value);
 			String database = properties.getProperty(DATA_DATABASE);
-			String collection = properties.getProperty(DATA_COLLECTION_CATEGORY);
+			String collection = properties.getProperty(DATA_COLLECTION_CATEGORIES);
 			
 			cs = new CategoryStoreMongo(host, port, database, collection);
+			cs.initialize();
 		} catch (NumberFormatException e) {
 			// TODO: handle exception better
 		} catch (IOException e) {
@@ -46,12 +50,15 @@ public class StoreFactory {
 			String value = properties.getProperty(DATA_PORT);
 			int port = Integer.parseInt(value);
 			String database = properties.getProperty(DATA_DATABASE);
-			String collection = properties.getProperty(DATA_COLLECTION_ASSET);
+			String collection = properties.getProperty(DATA_COLLECTION_ASSETS);
 			
 			as = new AssetStoreMongo(host, port, database, collection);
+			as.initialize();
 		} catch (NumberFormatException e) {
+			log.debug(e);
 			// TODO: handle exception better
 		} catch (IOException e) {
+			log.debug(e);
 			// TODO: handle exception better
 		}
 
