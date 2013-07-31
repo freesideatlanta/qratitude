@@ -1,6 +1,7 @@
 package org.freesideatlanta.qratitude.service;
 
 import java.io.*;
+import java.util.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -26,16 +27,33 @@ public class AssetResource {
 			response = Response.status(Response.Status.CREATED).entity(json).build();
 		} catch (IOException e) {
 			// TODO: handle exception better
+			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 
 		return response;
 	}
 
 	@GET
-	public Response readAssets() {
-		// TODO: return the list of all assets
-		String json = "[ { _id: '123456', name: 'my asset' }, { _id: '789101', name: 'my other asset' } ]";
-		return Response.status(Response.Status.OK).entity(json).build();
+	public Response readAssets(
+			@QueryParam("s") String searchText, 
+			@QueryParam("c") String category, 
+			@QueryParam("t") List<String> tags) {
+
+		Response response = null;
+		try {
+			AssetStore store = StoreFactory.getAssetStore();
+
+			AssetQuery query = new AssetQuery(searchText, category, tags);
+			Collection<Asset> assets = store.read(query);
+			
+			String json = Asset.toJson(assets);
+			response = Response.status(Response.Status.OK).entity(json).build();
+		} catch (IOException e) {
+			// TODO: handle exception better
+			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+
+		return response;
 	}
 
 	@PUT 

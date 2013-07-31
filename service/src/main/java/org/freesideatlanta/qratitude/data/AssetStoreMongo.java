@@ -33,6 +33,17 @@ public class AssetStoreMongo implements AssetStore {
 		this.assets = this.db.getCollection(this.collection);
 	}
 
+	@Override 
+	public Collection<Asset> read(AssetQuery query) {
+		Collection<Asset> assets = new ArrayList<Asset>();
+		BasicDBObject dbo = query.build();
+
+		// TODO: perform the query
+		// TODO: convert the result to a collection of Asset
+
+		return assets;
+	}
+
 	@Override
 	public Asset create() {
 		Asset asset = null;

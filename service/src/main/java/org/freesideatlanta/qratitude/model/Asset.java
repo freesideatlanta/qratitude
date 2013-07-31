@@ -10,6 +10,28 @@ import org.codehaus.jackson.*;
 
 public class Asset {
 
+	public static String toJson(Collection<Asset> assets) throws IOException {
+		StringWriter sw = new StringWriter();
+		JsonFactory f = new JsonFactory();
+		JsonGenerator g = f.createJsonGenerator(sw);
+
+		g.writeStartObject();
+
+		g.writeFieldName("assets");
+		g.writeStartArray();
+		for (Asset asset : assets) {
+			asset.write(g);
+		}
+		g.writeEndArray();
+
+		g.writeEndObject();
+		g.close();
+
+		String json = sw.toString();
+
+		return json;
+	}
+
 	public static Set<URI> getPhotosToRemove(Asset original, Asset updated) {
 		Set<URI> toRemove = new HashSet<URI>();
 
@@ -110,6 +132,14 @@ public class Asset {
 		JsonFactory f = new JsonFactory();
 		JsonGenerator g = f.createJsonGenerator(sw);
 
+		this.write(g);
+		g.close();
+
+		String json = sw.toString();
+		return json;
+	}
+
+	private void write(JsonGenerator g) throws IOException {
 		g.writeStartObject();
 		g.writeStringField("id", this.id);
 		g.writeStringField("name", this.name);
@@ -130,9 +160,5 @@ public class Asset {
 		g.writeEndArray();
 
 		g.writeEndObject();
-		g.close();
-
-		String json = sw.toString();
-		return json;
 	}
 }

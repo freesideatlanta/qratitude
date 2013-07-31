@@ -1,10 +1,13 @@
 package org.freesideatlanta.qratitude.data;
 
 import java.io.*;
+import java.util.*;
 
 import org.freesideatlanta.qratitude.model.*;
 
 public interface AssetStore {
+
+	Collection<Asset> read(AssetQuery query);
 
 	Asset create();
 	Asset read(String id);
