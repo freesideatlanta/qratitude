@@ -7,6 +7,7 @@ import org.freesideatlanta.qratitude.model.*;
 
 public interface AssetStore {
 
+	Collection<Asset> read();
 	Collection<Asset> read(AssetQuery query);
 
 	Asset create();

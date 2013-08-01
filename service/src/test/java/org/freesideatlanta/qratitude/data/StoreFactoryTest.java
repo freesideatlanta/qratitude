@@ -50,14 +50,14 @@ public class StoreFactoryTest {
 
 	@Test
 	public void testGetAssetStore() {
-		AssetStore cs = StoreFactory.getAssetStore();
-		assertTrue(cs != null);
+		AssetStore as = StoreFactory.getAssetStore();
+		assertTrue(as != null);
 
-		AssetStoreMongo csm = (AssetStoreMongo)cs;
-		assertTrue(HOST.equals(csm.getHost()));
-		assertTrue(PORT == csm.getPort());
-		assertTrue(DATABASE.equals(csm.getDatabase()));
-		assertTrue(COLLECTION_ASSETS.equals(csm.getName()));
+		AssetStoreMongo asm = (AssetStoreMongo)as;
+		assertTrue(HOST.equals(asm.getHost()));
+		assertTrue(PORT == asm.getPort());
+		assertTrue(DATABASE.equals(asm.getDatabase()));
+		assertTrue(COLLECTION_ASSETS.equals(asm.getName()));
 	}
 
 	@Test
