@@ -2,6 +2,9 @@ package org.freesideatlanta.qratitude.data;
 
 import java.util.*;
 
+import com.mongodb.*;
+import org.bson.types.*;
+
 import org.freesideatlanta.qratitude.model.*;
 
 public class CategoryStoreMongo extends StoreMongo implements CategoryStore {
@@ -12,42 +15,38 @@ public class CategoryStoreMongo extends StoreMongo implements CategoryStore {
 
 	@Override
 	public Collection<String> create(Collection<String> categories) {
-		// TODO: override the categories collection
+		for (String category : categories) {
+			BasicDBObject dbo = new BasicDBObject();
+			dbo.put("name", category);
+			this.collection.insert(dbo);
+		}
+
 		return categories;
 	}
 
 	@Override
 	public Collection<String> read() {
-		// TODO: query for the categories 
 		Collection<String> categories = new ArrayList<String>();
 
-		categories.add("Appliances");
-		categories.add("Architecture");
-		categories.add("Cabinets");
-		categories.add("Ceiling");
-		categories.add("Doors");
-		categories.add("Electrical");
-		categories.add("Flooring");
-		categories.add("Hardware");
-		categories.add("Life Safety");
-		categories.add("Lighting");
-		categories.add("Lumber / Wood");
-		categories.add("Office Furniture");
-		categories.add("Paint");
-		categories.add("Plumbing");
-		categories.add("Storage");
-		categories.add("Windows");
+		DBCursor cursor = this.collection.find();
+		while (cursor.hasNext()) {
+			DBObject dbo = cursor.next();
+			String category = (String)dbo.get("name");
+			categories.add(category);
+		}
 
 		return categories;
 	}
 
 	@Override
 	public void update(Collection<String> categories) {
-		// TODO: override the categories collection
+		// override the categories collection
+		this.delete();
+		Collection<String> results = this.create(categories);
 	}
 
 	@Override
 	public void delete() {
-		// TODO: delete all the categories
+		this.collection.drop();
 	}
 }

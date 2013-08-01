@@ -18,6 +18,19 @@ public abstract class StoreMongo {
 	protected DB db;
 	protected DBCollection collection;
 
+	public String getHost() {
+		return this.host;
+	}
+	public int getPort() {
+		return this.port;
+	}
+	public String getDatabase() {
+		return this.database;
+	}
+	public String getName() {
+		return this.name;
+	}
+
 	public StoreMongo(String host, int port, String database, String name) {
 		this.host = host;
 		this.port = port;
@@ -26,10 +39,6 @@ public abstract class StoreMongo {
 	}
 
 	public void initialize() throws UnknownHostException {
-		log.debug(this.host);
-		log.debug(this.port);
-		log.debug(this.database);
-		log.debug(this.name);
 		this.client = new MongoClient(this.host, this.port);
 		this.db = this.client.getDB(this.database);
 		this.collection = this.db.getCollection(this.name);
