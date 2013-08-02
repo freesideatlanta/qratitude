@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.*;
 
 import com.mongodb.*;
+import com.mongodb.util.*;
 import org.apache.log4j.*;
 import org.bson.types.*;
 
@@ -12,6 +13,58 @@ import org.freesideatlanta.qratitude.model.*;
 
 public class AssetStoreMongo extends StoreMongo implements AssetStore {
 	private static Logger log = Logger.getLogger(AssetStoreMongo.class);
+	
+	public static Asset fromDbo(DBObject dbo) {
+		// TODO: validation
+		ObjectId oid = (ObjectId)dbo.get("_id");
+		String id  = oid.toString();
+		String name = (String)dbo.get("name");
+
+		Asset asset = new Asset();
+		asset.setId(id);
+		asset.setName(name);
+
+		BasicDBList dboTags = (BasicDBList)dbo.get("tags");
+		if (dboTags != null) {
+			for (int index = 0; index < dboTags.size(); index++) {
+				String tag = (String)dboTags.get(index);
+				asset.getTags().add(tag);
+			}
+		}
+		
+		DBObject dboAttributes = (DBObject)dbo.get("attributes");
+		if (dboAttributes != null) {
+			Map attributes = dboAttributes.toMap();
+			Set<Map.Entry> entries = attributes.entrySet();
+			for (Map.Entry entry : entries) {
+				String key = (String)entry.getKey();
+				String value = (String)entry.getValue();
+				asset.getAttributes().put(key, value);
+			}
+		}
+
+		BasicDBList dboPhotos = (BasicDBList)dbo.get("photos");
+		if (dboPhotos != null) {
+			for (int index = 0; index < dboPhotos.size(); index++) {
+				String url = (String) dboPhotos.get(index);
+				asset.addPhoto(url);
+			}
+		}
+
+		return asset;
+	}
+
+	public static DBObject toDbo(Asset asset) throws IOException {
+		String json = asset.toJson();
+		DBObject dbo = (DBObject)JSON.parse(json);
+		dbo.removeField("id");
+
+		String id = asset.getId();
+		ObjectId oid = new ObjectId();
+		dbo.put("_id", oid);
+
+		return dbo;
+	}
 
 	public AssetStoreMongo(String host, int port, String database, String name) {
 		super(host, port, database, name);
@@ -23,8 +76,7 @@ public class AssetStoreMongo extends StoreMongo implements AssetStore {
 		DBCursor cursor = this.collection.find();
 		while (cursor.hasNext()) {
 			DBObject dbo = cursor.next();
-			Asset asset = new Asset();
-			asset.fromDbo(dbo);
+			Asset asset = fromDbo(dbo);
 			assets.add(asset);
 		}
 
@@ -44,31 +96,28 @@ public class AssetStoreMongo extends StoreMongo implements AssetStore {
 
 	@Override
 	public Asset create() {
-		Asset asset = null;
 		BasicDBObject dbo = new BasicDBObject();
-		ObjectId id = new ObjectId();
+		ObjectId oid = new ObjectId();
 
-		log.debug(id);
-		dbo.put("id", id);
+		log.debug(oid);
+		dbo.put("_id", oid);
 
 		log.debug(this.collection);
 		this.collection.insert(dbo);
 
-		asset = new Asset();
-		asset.fromDbo(dbo);
+		Asset asset = fromDbo(dbo); 
 
 		return asset;
 	}
 
 	@Override
 	public Asset read(String id) {
-		Asset asset = null;
 		BasicDBObject query = new BasicDBObject();
-		query.put("id", new ObjectId(id));
+		ObjectId oid = new ObjectId(id);
+		query.put("_id", oid);
 		DBObject dbo = this.collection.findOne(query);
 		
-		asset = new Asset();
-		asset.fromDbo(dbo);
+		Asset asset = fromDbo(dbo);
 
 		return asset;
 	}
@@ -91,7 +140,7 @@ public class AssetStoreMongo extends StoreMongo implements AssetStore {
 		query.put("id", new ObjectId(id));
 		this.collection.remove(query);
 
-		DBObject dbo = asset.toDbo();
+		DBObject dbo = toDbo(asset);
 		this.collection.insert(dbo);
 	}
 

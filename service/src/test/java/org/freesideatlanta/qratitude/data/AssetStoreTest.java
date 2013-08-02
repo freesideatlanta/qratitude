@@ -1,4 +1,4 @@
-package org.freesideatlanta.qratitude.service;
+package org.freesideatlanta.qratitude.data;
 
 import java.net.*;
 import java.util.*;
@@ -8,7 +8,6 @@ import org.bson.types.*;
 import org.junit.*;
 import static org.junit.Assert.*;
 
-import org.freesideatlanta.qratitude.data.*;
 import org.freesideatlanta.qratitude.model.*;
 
 public class AssetStoreTest {
@@ -41,7 +40,7 @@ public class AssetStoreTest {
 		this.collection.drop();
 	}
 
-	// @Test : enable after testing model appropriately
+	@Test 
 	public void testReadAll() {
 		AssetStore as = StoreFactory.getAssetStore();
 		Collection<Asset> assets = new ArrayList<Asset>();
@@ -57,8 +56,7 @@ public class AssetStoreTest {
 		while (cursor.hasNext()) {
 			boolean match = false;
 			DBObject dbo = (DBObject)cursor.next();
-			Asset found = new Asset();
-			found.fromDbo(dbo);
+			Asset found = AssetStoreMongo.fromDbo(dbo);
 			// make sure the original matches
 			for (Asset asset : assets) {
 				String id = asset.getId();

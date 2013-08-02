@@ -5,10 +5,7 @@ import java.net.*;
 import java.util.*;
 import java.util.Map.*;
 
-import com.mongodb.*;
-import com.mongodb.util.*;
 import org.apache.log4j.*;
-import org.bson.types.*;
 import org.codehaus.jackson.*;
 
 public class Asset {
@@ -89,48 +86,6 @@ public class Asset {
 	public void addPhoto(String url) throws NullPointerException, IllegalArgumentException {
 		URI uri = URI.create(url);
 		this.photos.add(uri);
-	}
-
-	public void fromDbo(DBObject dbo) {
-		// TODO: validation
-		ObjectId id = (ObjectId)dbo.get("_id");
-		this.id = id.toString();
-		this.name = (String)dbo.get("name");
-
-		this.tags.clear();
-		BasicDBList dboTags = (BasicDBList)dbo.get("tags");
-		for (int index = 0; index < dboTags.size(); index++) {
-			String tag = (String)dboTags.get(index);
-			this.tags.add(tag);
-		}
-		
-		this.attributes.clear();
-		DBObject dboAttributes = (DBObject)dbo.get("attributes");
-		Map attributes = dboAttributes.toMap();
-		Set<Map.Entry> entries = attributes.entrySet();
-		for (Map.Entry entry : entries) {
-			String key = (String)entry.getKey();
-			String value = (String)entry.getValue();
-			this.attributes.put(key, value);
-		}
-
-		this.photos.clear();
-		BasicDBList dboPhotos = (BasicDBList)dbo.get("photos");
-		for (int index = 0; index < dboPhotos.size(); index++) {
-			String url = (String) dboPhotos.get(index);
-			this.addPhoto(url);
-		}
-	}
-
-	public DBObject toDbo() throws IOException {
-		String json = this.toJson();
-		DBObject dbo = (DBObject)JSON.parse(json);
-		dbo.removeField("id");
-
-		ObjectId id = new ObjectId(this.id);
-		dbo.put("_id", id);
-
-		return dbo;
 	}
 
 	public void fromJson(String json) throws IOException {

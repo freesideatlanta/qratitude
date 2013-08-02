@@ -1,4 +1,4 @@
-package org.freesideatlanta.qratitude.service;
+package org.freesideatlanta.qratitude.data;
 
 import java.net.*;
 import java.util.*;
@@ -7,8 +7,6 @@ import com.mongodb.*;
 import org.bson.types.*;
 import org.junit.*;
 import static org.junit.Assert.*;
-
-import org.freesideatlanta.qratitude.data.*;
 
 public class CategoryStoreTest {
 
