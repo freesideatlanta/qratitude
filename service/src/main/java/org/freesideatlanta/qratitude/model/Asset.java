@@ -50,6 +50,7 @@ public class Asset {
 
 	private String id;
 	private String name;
+	private Set<String> tags;
 	private Map<String, String> attributes;
 	private Set<URI> photos;
 
@@ -67,6 +68,10 @@ public class Asset {
 		this.name = name;
 	}
 
+	public Set<String> getTags() {
+		return this.tags;
+	}
+
 	public Map<String, String> getAttributes() {
 		return this.attributes;
 	}
@@ -76,6 +81,7 @@ public class Asset {
 	}
 
 	public Asset() {
+		this.tags = new HashSet<String>();
 		this.attributes = new HashMap<String, String>();
 		this.photos = new HashSet<URI>();
 	}
@@ -90,6 +96,14 @@ public class Asset {
 		ObjectId id = (ObjectId)dbo.get("_id");
 		this.id = id.toString();
 		this.name = (String)dbo.get("name");
+
+		this.tags.clear();
+		BasicDBList dboTags = (BasicDBList)dbo.get("tags");
+		for (int index = 0; index < dboTags.size(); index++) {
+			String tag = (String)dboTags.get(index);
+			this.tags.add(tag);
+		}
+		
 		this.attributes.clear();
 		DBObject dboAttributes = (DBObject)dbo.get("attributes");
 		Map attributes = dboAttributes.toMap();
@@ -99,6 +113,7 @@ public class Asset {
 			String value = (String)entry.getValue();
 			this.attributes.put(key, value);
 		}
+
 		this.photos.clear();
 		BasicDBList dboPhotos = (BasicDBList)dbo.get("photos");
 		for (int index = 0; index < dboPhotos.size(); index++) {
@@ -110,6 +125,11 @@ public class Asset {
 	public DBObject toDbo() throws IOException {
 		String json = this.toJson();
 		DBObject dbo = (DBObject)JSON.parse(json);
+		dbo.removeField("id");
+
+		ObjectId id = new ObjectId(this.id);
+		dbo.put("_id", id);
+
 		return dbo;
 	}
 
@@ -121,39 +141,52 @@ public class Asset {
 		JsonFactory f = new JsonFactory();
 		JsonParser p = f.createJsonParser(json);
 
+		int breakpoint = 100;
+
 		while (p.nextToken() != JsonToken.END_OBJECT) {
 			String field = p.getCurrentName();
-			log.debug(field);
-			if ("_id".equals(field)) {
+			log.debug("field: " + field);
+			if ("id".equals(field)) {
 				p.nextToken();
 				String id = p.getText();
-				log.debug(id);
+				log.debug("id: " + id);
 				this.id = id;
 			} else if ("name".equals(field)) {
 				p.nextToken();
 				String name = p.getText();
-				log.debug(name);
+				log.debug("name: " + name);
 				this.name = name;
+			} else if ("tags".equals(field)) {
+				p.nextToken(); // [
+				while (p.nextToken() != JsonToken.END_ARRAY) {
+					String tag = p.getText();
+					log.debug("tag: " + tag);
+					this.tags.add(tag);
+				}
 			} else if ("attributes".equals(field)) {
+				p.nextToken(); // {
 				while (p.nextToken() != JsonToken.END_OBJECT) {
 					String attribute = p.getCurrentName();
 					p.nextToken();
 					String value = p.getText();
-					log.debug(attribute);
-					log.debug(value);
+					log.debug("attribute: " + attribute);
+					log.debug("value: " + value);
 					this.attributes.put(attribute, value);
 				}
 			} else if ("photos".equals(field)) {
 				p.nextToken(); // [
 				while (p.nextToken() != JsonToken.END_ARRAY) {
 					String url = p.getText();
-					log.debug(url);
+					log.debug("url: " + url);
 					this.addPhoto(url);
 				}
 			} else {
 				log.debug("unmatched field");
 				// TODO: throw some kind of error; or ignore
 			}
+			
+			breakpoint--;
+			if (breakpoint == 0) break;
 		}
 	}
 
@@ -171,8 +204,15 @@ public class Asset {
 
 	private void write(JsonGenerator g) throws IOException {
 		g.writeStartObject();
-		g.writeStringField("_id", this.id);
+		g.writeStringField("id", this.id);
 		g.writeStringField("name", this.name);
+
+		g.writeFieldName("tags");
+		g.writeStartArray();
+		for (String tag: this.tags) {
+			g.writeString(tag);
+		}
+		g.writeEndArray();
 
 		g.writeObjectFieldStart("attributes");
 		for (String key : this.attributes.keySet()) {
