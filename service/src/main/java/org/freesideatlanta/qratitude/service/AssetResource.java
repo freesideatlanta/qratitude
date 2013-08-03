@@ -43,14 +43,13 @@ public class AssetResource {
 	@GET
 	public Response readAssets(
 			@QueryParam("s") String searchText, 
-			@QueryParam("c") String category, 
 			@QueryParam("t") List<String> tags) {
 
 		Response response = null;
 		try {
 			AssetStore store = StoreFactory.getAssetStore();
 
-			AssetQuery query = new AssetQuery(searchText, category, tags);
+			AssetQuery query = new AssetQuery(searchText, tags);
 			Collection<Asset> assets = store.read(query);
 			
 			String json = Asset.toJson(assets);

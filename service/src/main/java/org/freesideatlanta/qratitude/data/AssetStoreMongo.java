@@ -86,10 +86,13 @@ public class AssetStoreMongo extends StoreMongo implements AssetStore {
 	@Override 
 	public Collection<Asset> read(AssetQuery query) {
 		Collection<Asset> assets = new ArrayList<Asset>();
-		BasicDBObject dbo = query.build();
-
-		// TODO: perform the query
-		// TODO: convert the result to a collection of Asset
+		DBObject q = query.build();
+		DBCursor cursor = this.collection.find(q);
+		while (cursor.hasNext()) {
+			DBObject dbo = cursor.next();
+			Asset asset = fromDbo(dbo);
+			assets.add(asset);
+		}
 
 		return assets;
 	}
