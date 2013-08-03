@@ -74,4 +74,13 @@ public class AssetStoreTest {
 			assertTrue(match);
 		}
 	}
+
+	@Test
+	public void testReadQuery() {
+		AssetStore as = StoreFactory.getAssetStore();
+		Collection<String> tags = new ArrayList<String>();
+		tags.add("Flooring");
+		// TODO: test all four cases of query (null/non-null s or t)
+		AssetQuery query = new AssetQuery("Joists", tags);
+	}
 }
