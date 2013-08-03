@@ -12,7 +12,7 @@ public class AssetQuery {
 	private Collection<String> tags;
 
 	public AssetQuery(String s, Collection<String> t) throws IllegalArgumentException {
-		if (tags == null && searchText == null) {
+		if (s == null && t == null) {
 			throw new IllegalArgumentException("AssetQuery arguments cannot all be null");
 		}
 

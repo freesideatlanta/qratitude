@@ -96,26 +96,26 @@ public class Asset {
 		JsonFactory f = new JsonFactory();
 		JsonParser p = f.createJsonParser(json);
 
-		int breakpoint = 100;
+		//int breakpoint = 100;
 
 		while (p.nextToken() != JsonToken.END_OBJECT) {
 			String field = p.getCurrentName();
-			log.debug("field: " + field);
+			//log.debug("field: " + field);
 			if ("id".equals(field)) {
 				p.nextToken();
 				String id = p.getText();
-				log.debug("id: " + id);
+				//log.debug("id: " + id);
 				this.id = id;
 			} else if ("name".equals(field)) {
 				p.nextToken();
 				String name = p.getText();
-				log.debug("name: " + name);
+				//log.debug("name: " + name);
 				this.name = name;
 			} else if ("tags".equals(field)) {
 				p.nextToken(); // [
 				while (p.nextToken() != JsonToken.END_ARRAY) {
 					String tag = p.getText();
-					log.debug("tag: " + tag);
+					//log.debug("tag: " + tag);
 					this.tags.add(tag);
 				}
 			} else if ("attributes".equals(field)) {
@@ -124,24 +124,24 @@ public class Asset {
 					String attribute = p.getCurrentName();
 					p.nextToken();
 					String value = p.getText();
-					log.debug("attribute: " + attribute);
-					log.debug("value: " + value);
+					//log.debug("attribute: " + attribute);
+					//log.debug("value: " + value);
 					this.attributes.put(attribute, value);
 				}
 			} else if ("photos".equals(field)) {
 				p.nextToken(); // [
 				while (p.nextToken() != JsonToken.END_ARRAY) {
 					String url = p.getText();
-					log.debug("url: " + url);
+					//log.debug("url: " + url);
 					this.addPhoto(url);
 				}
 			} else {
-				log.debug("unmatched field");
+				//log.debug("unmatched field");
 				// TODO: throw some kind of error; or ignore
 			}
 			
-			breakpoint--;
-			if (breakpoint == 0) break;
+			//breakpoint--;
+			//if (breakpoint == 0) break;
 		}
 	}
 

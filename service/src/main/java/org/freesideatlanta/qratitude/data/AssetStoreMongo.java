@@ -58,9 +58,8 @@ public class AssetStoreMongo extends StoreMongo implements AssetStore {
 		String json = asset.toJson();
 		DBObject dbo = (DBObject)JSON.parse(json);
 		dbo.removeField("id");
-
 		String id = asset.getId();
-		ObjectId oid = new ObjectId();
+		ObjectId oid = new ObjectId(id);
 		dbo.put("_id", oid);
 
 		return dbo;
@@ -80,6 +79,7 @@ public class AssetStoreMongo extends StoreMongo implements AssetStore {
 			assets.add(asset);
 		}
 
+		log.debug("assets.size(): " + assets.size());
 		return assets;
 	}
 
@@ -100,14 +100,7 @@ public class AssetStoreMongo extends StoreMongo implements AssetStore {
 	@Override
 	public Asset create() {
 		BasicDBObject dbo = new BasicDBObject();
-		ObjectId oid = new ObjectId();
-
-		log.debug(oid);
-		dbo.put("_id", oid);
-
-		log.debug(this.collection);
 		this.collection.insert(dbo);
-
 		Asset asset = fromDbo(dbo); 
 
 		return asset;
@@ -127,8 +120,10 @@ public class AssetStoreMongo extends StoreMongo implements AssetStore {
 
 	@Override
 	public void update(Asset asset) throws IOException {
+		log.debug("asset: " + asset.toJson());
 		String id = asset.getId();
 		Asset original = this.read(id);
+		log.debug("original: " + original.toJson());
 
 		// take the set difference on the photo URIs and then mark those for removal
 		Set<URI> photosToRemove = Asset.getPhotosToRemove(original, asset);
@@ -138,13 +133,8 @@ public class AssetStoreMongo extends StoreMongo implements AssetStore {
 			// TODO: setup a worker thread to delete each photo as it enters the queue
 		}
 
-		// just override the mongo object with the updated (after photos are deleted)
-		BasicDBObject query = new BasicDBObject();
-		query.put("id", new ObjectId(id));
-		this.collection.remove(query);
-
 		DBObject dbo = toDbo(asset);
-		this.collection.insert(dbo);
+		this.collection.save(dbo);
 	}
 
 	@Override

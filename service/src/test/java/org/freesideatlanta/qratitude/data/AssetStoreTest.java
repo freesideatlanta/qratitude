@@ -1,9 +1,11 @@
 package org.freesideatlanta.qratitude.data;
 
+import java.io.*;
 import java.net.*;
 import java.util.*;
 
 import com.mongodb.*;
+import org.apache.log4j.*;
 import org.bson.types.*;
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -11,26 +13,57 @@ import static org.junit.Assert.*;
 import org.freesideatlanta.qratitude.model.*;
 
 public class AssetStoreTest {
+	private static Logger log = Logger.getLogger(AssetStoreTest.class);
 
 	private static final String HOST = "localhost";
 	private static final int PORT = 27017;
 	private static final String DATABASE = "qratitude_local";
 	private static final String NAME = "assets";
 
-	private MongoClient client;
-	private DB db;
-	private DBCollection collection;
+	private static MongoClient client;
+	private static DB db;
+	private static DBCollection collection;
 
-	private Collection<String> categories;
+	private Asset testAsset;
+
+	@BeforeClass
+	public static void beforeClass() {
+		try {
+			client = new MongoClient(HOST, PORT);
+			db = client.getDB(DATABASE);
+			collection = db.getCollection(NAME);
+			collection.drop();
+		} catch (UnknownHostException e) {
+			fail(e.toString());
+		}
+	}
 
 	@Before
 	public void before() {
 		try {
-			this.client = new MongoClient(HOST, PORT);
-			this.db = this.client.getDB(DATABASE);
-			this.collection = this.db.getCollection(NAME);
-			this.collection.drop();
-		} catch (UnknownHostException e) {
+			// load the asset.json resource
+			InputStream is = AssetStoreTest.class.getClassLoader().getResourceAsStream("asset.json");
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			StringBuilder sb = new StringBuilder();
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+			br.close();
+
+			// restore test asset from json
+			String json = sb.toString();
+
+			// store the test asset in the database
+			AssetStore as = StoreFactory.getAssetStore();
+			this.testAsset = as.create();
+			this.testAsset.fromJson(json);
+			as.update(this.testAsset);
+
+			long count = collection.count();
+			assertTrue(count == 1);
+
+		} catch (IOException e) {
 			fail(e.toString());
 		}
 	}	
@@ -43,44 +76,72 @@ public class AssetStoreTest {
 	@Test 
 	public void testReadAll() {
 		AssetStore as = StoreFactory.getAssetStore();
-		Collection<Asset> assets = new ArrayList<Asset>();
-		Asset a1 = as.create();
-		assets.add(a1);
-		Asset a2 = as.create();
-		assets.add(a2);
-		Asset a3 = as.create();
-		assets.add(a3);
 		Collection<Asset> results = as.read();
+		assertTrue(results != null);
+		assertTrue(results.size() == 1);
 
-		DBCursor cursor = this.collection.find();
+		long count = collection.count();
+		assertTrue(count == 1);
+		DBCursor cursor = collection.find();
 		while (cursor.hasNext()) {
-			boolean match = false;
 			DBObject dbo = (DBObject)cursor.next();
 			Asset found = AssetStoreMongo.fromDbo(dbo);
 			// make sure the original matches
-			for (Asset asset : assets) {
-				String id = asset.getId();
-				if (id.equals(found.getId())) {
-					match = true;
-				}
-			}
-			// make sure the result matches
-			for (Asset result : results) {
-				String id = result.getId();
-				if (id.equals(found.getId())) {
-					match &= true;
-				}
-			}
-			assertTrue(match);
+			assertTrue(found != null);
+			String foundId = found.getId();
+			String testId = this.testAsset.getId();
+			log.debug("foundId: " + foundId);
+			log.debug("testId: " + testId);
+			assertTrue(foundId.equals(testId));
 		}
 	}
 
 	@Test
-	public void testReadQuery() {
+	public void testReadQueryFull() {
 		AssetStore as = StoreFactory.getAssetStore();
 		Collection<String> tags = new ArrayList<String>();
 		tags.add("Flooring");
-		// TODO: test all four cases of query (null/non-null s or t)
 		AssetQuery query = new AssetQuery("Joists", tags);
+
+		Collection<Asset> matches = as.read(query);
+		assertTrue(matches != null);
+		assertTrue(matches.size() == 1);
+		Asset match = matches.iterator().next();
+
+		assertTrue(match != null);
+		assertTrue(match.getId().equals(this.testAsset.getId()));
+		assertTrue(match.getName().equals(this.testAsset.getName()));
+	}
+
+	@Test
+	public void testReadQuerySearch() {
+		AssetStore as = StoreFactory.getAssetStore();
+		AssetQuery query = new AssetQuery("Joists", null);
+
+		Collection<Asset> matches = as.read(query);
+		assertTrue(matches != null);
+		assertTrue(matches.size() == 1);
+		Asset match = matches.iterator().next();
+
+		assertTrue(match != null);
+		assertTrue(match.getId().equals(this.testAsset.getId()));
+		assertTrue(match.getName().equals(this.testAsset.getName()));
+	}
+
+	@Test
+	public void testReadQueryTags() {
+		AssetStore as = StoreFactory.getAssetStore();
+		Collection<String> tags = new ArrayList<String>();
+		tags.add("Flooring");
+		AssetQuery query = new AssetQuery(null, tags);
+
+		Collection<Asset> matches = as.read(query);
+		assertTrue(matches != null);
+		assertTrue(matches.size() == 1);
+		Asset match = matches.iterator().next();
+
+		assertTrue(match != null);
+		assertTrue(match.getId().equals(this.testAsset.getId()));
+		assertTrue(match.getName().equals(this.testAsset.getName()));
 	}
 }
