@@ -1,0 +1,17 @@
+- AssetStore unit tests, including toDbo and fromDbo tests
+- PhotoStore unit tests
+- StoreFactory unit tests
+- AssetResource unit tests
+- CategoryResource unit tests
+- PhotoResource unit tests
+- modify GET /asset query parameters
+- examine how and when ID value is set on Asset
+- AssetQuery methods
+- AssetStoreMongo.update photo deletion
+- bootstrapper program and seed data
+- indexing on mongo database
+- production environment filter
+- authentication properties for mongo database in production
+- token-based authentication for API access
+- UserResource resource and unit tests
+- SessionResource resource and unit tests
