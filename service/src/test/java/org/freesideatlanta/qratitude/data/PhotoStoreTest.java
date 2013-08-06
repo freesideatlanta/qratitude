@@ -34,10 +34,11 @@ public class PhotoStoreTest {
 			assertTrue(ps != null);
 
 			URI uri = ps.create(is, "jpg");
+			assertTrue(url != null);
+
 			String url = uri.toString();
 			log.debug(url);
-
-
+			
 		} catch (IOException e) {
 			fail(e.toString());
 		}
