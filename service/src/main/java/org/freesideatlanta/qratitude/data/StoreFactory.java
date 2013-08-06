@@ -77,8 +77,10 @@ public class StoreFactory {
 
 			ps = new PhotoStoreDisk(basePath, baseUrl, bufferSize);
 		} catch (NumberFormatException e) {
+			log.debug(e);
 			// TODO: handle exception better
 		} catch (IOException e) {
+			log.debug(e);
 			// TODO: handle exception better
 		}
 		
