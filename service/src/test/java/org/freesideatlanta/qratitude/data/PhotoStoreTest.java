@@ -34,7 +34,7 @@ public class PhotoStoreTest {
 			assertTrue(ps != null);
 
 			URI uri = ps.create(is, "jpg");
-			assertTrue(url != null);
+			assertTrue(uri != null);
 
 			String url = uri.toString();
 			log.debug(url);
