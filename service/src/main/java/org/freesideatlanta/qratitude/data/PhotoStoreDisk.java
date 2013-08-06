@@ -2,6 +2,7 @@ package org.freesideatlanta.qratitude.data;
 
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 import org.apache.log4j.*;
 
@@ -56,8 +57,10 @@ public class PhotoStoreDisk implements PhotoStore {
 	}
 
 	private String createId() {
-		// TODO: generate a unique filename (id + extension)
-		String id = "4048675309";
+		UUID uuid = UUID.randomUUID();
+		String id = uuid.toString();
+
+		log.debug("id: " + id);
 		return id;
 	}
 }

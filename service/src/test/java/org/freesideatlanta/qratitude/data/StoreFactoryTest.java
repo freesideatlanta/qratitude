@@ -10,11 +10,15 @@ import static org.junit.Assert.*;
 
 public class StoreFactoryTest {
 
+	// TODO: independently fetch this information from the resource file directly
 	private static final String HOST = "localhost";
 	private static final int PORT = 27017;
 	private static final String DATABASE = "qratitude_local";
 	private static final String COLLECTION_CATEGORIES = "categories";
 	private static final String COLLECTION_ASSETS = "assets";
+
+	private static final String BASE_PATH = "/srv/qratitude/photos/";
+	private static final String BASE_URL = "http://localhost:8080/qratitude-service/photos/";
 
 	private MongoClient client;
 	private DB db;
@@ -60,7 +64,12 @@ public class StoreFactoryTest {
 
 	@Test
 	public void testGetPhotoStore() {
-		// TODO: testing disk noise!
-	}
+		PhotoStore ps = StoreFactory.getPhotoStore();
+		assertTrue(ps != null);
 
+		PhotoStoreDisk psd = (PhotoStoreDisk)ps;
+		assertTrue(BASE_PATH.equals(psd.getBasePath()));
+		assertTrue(BASE_URL.equals(psd.getBaseUrl()));
+
+	}
 }
