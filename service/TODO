@@ -1,4 +1,3 @@
-- AssetStore unit tests, including toDbo and fromDbo tests
 - PhotoStore unit tests
 - StoreFactory unit tests
 - AssetResource unit tests

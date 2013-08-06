@@ -144,4 +144,57 @@ public class AssetStoreTest {
 		assertTrue(match.getId().equals(this.testAsset.getId()));
 		assertTrue(match.getName().equals(this.testAsset.getName()));
 	}
+
+	@Test
+	public void testCreate() {
+		AssetStore as = StoreFactory.getAssetStore();
+		String id = this.testAsset.getId();
+
+		Asset match = as.read(id);
+		assertTrue(match != null);
+	}
+
+	@Test
+	public void testRead() {
+		AssetStore as = StoreFactory.getAssetStore();
+		String id = this.testAsset.getId();
+
+		Asset match = as.read(id);
+		assertTrue(match != null);
+	}
+
+	@Test
+	public void testUpdate() {
+		try {
+			AssetStore as = StoreFactory.getAssetStore();
+			this.testAsset.setName("Joists 2");
+			this.testAsset.getTags().add("Random");
+			
+			as.update(this.testAsset);
+
+			String id = this.testAsset.getId();
+			Asset match = as.read(id);
+			
+			assertTrue(match != null);
+			assertTrue(match.getId().equals(id));
+			assertEquals("Joists 2", match.getName());
+			assertTrue(match.getTags().contains("Random"));
+		} catch (IOException e) {
+			fail(e.toString());
+		}
+	}
+
+	@Test
+	public void testDelete() {
+		AssetStore as = StoreFactory.getAssetStore();
+		String id = this.testAsset.getId();
+		log.debug("id: " + id);
+		as.delete(id);
+
+		Asset match = as.read(id);
+		assertTrue(match == null);
+
+		long count = collection.count();
+		assertTrue(count == 0);
+	}
 }

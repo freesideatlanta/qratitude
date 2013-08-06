@@ -14,7 +14,11 @@ import org.freesideatlanta.qratitude.model.*;
 public class AssetStoreMongo extends StoreMongo implements AssetStore {
 	private static Logger log = Logger.getLogger(AssetStoreMongo.class);
 	
-	public static Asset fromDbo(DBObject dbo) {
+	public static Asset fromDbo(DBObject dbo) throws IllegalArgumentException {
+		if (dbo == null) {
+			throw new IllegalArgumentException("fromDbo argument dbo cannot be null");
+		}
+
 		// TODO: validation
 		ObjectId oid = (ObjectId)dbo.get("_id");
 		String id  = oid.toString();
@@ -112,8 +116,11 @@ public class AssetStoreMongo extends StoreMongo implements AssetStore {
 		ObjectId oid = new ObjectId(id);
 		query.put("_id", oid);
 		DBObject dbo = this.collection.findOne(query);
-		
-		Asset asset = fromDbo(dbo);
+	
+		Asset asset = null;
+		if (dbo != null) {	
+			asset = fromDbo(dbo);
+		}
 
 		return asset;
 	}
@@ -140,7 +147,7 @@ public class AssetStoreMongo extends StoreMongo implements AssetStore {
 	@Override
 	public void delete(String id) {
 		BasicDBObject query = new BasicDBObject();
-		query.put("id", new ObjectId(id));
+		query.put("_id", new ObjectId(id));
 		this.collection.remove(query);
 	}
 }
