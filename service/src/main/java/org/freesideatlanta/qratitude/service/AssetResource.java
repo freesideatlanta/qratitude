@@ -57,7 +57,11 @@ public class AssetResource {
 			Collection<Asset> assets = store.read(query);
 			
 			String json = Asset.toJson(assets);
-			response = Response.status(Response.Status.OK).entity(json).build();
+			response = Response
+				.status(Response.Status.OK)
+				.entity(json)
+				.type(MediaType.APPLICATION_JSON)	
+				.build();
 		} catch (IOException e) {
 			// TODO: handle exception better
 			log.debug(e);
@@ -81,7 +85,11 @@ public class AssetResource {
 			AssetStore store = StoreFactory.getAssetStore();
 			Asset asset = store.read(id);
 			String json = asset.toJson();
-			response = Response.status(Response.Status.OK).entity(json).build();
+			response = Response
+				.status(Response.Status.OK)
+				.entity(json)
+				.type(MediaType.APPLICATION_JSON)	
+				.build();
 
 		} catch (Exception e) {
 			// TODO: handle exceptions better
@@ -105,7 +113,11 @@ public class AssetResource {
 				asset.fromJson(json);
 				store.update(asset);
 
-				response = Response.status(Response.Status.OK).entity(json).build();
+				response = Response
+					.status(Response.Status.OK)
+					.entity(json)
+					.type(MediaType.APPLICATION_JSON)	
+					.build();
 			} else {
 				// TODO: handle error better
 				log.debug("asset id: " + id + " not found");
