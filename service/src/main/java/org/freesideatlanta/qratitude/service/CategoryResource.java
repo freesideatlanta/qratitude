@@ -10,6 +10,7 @@ import javax.ws.rs.core.*;
 import com.sun.jersey.core.header.*;
 import com.sun.jersey.multipart.*;
 import org.apache.commons.io.*;
+import org.apache.log4j.*;
 import org.codehaus.jackson.*;
 
 import org.freesideatlanta.qratitude.data.*;
@@ -17,6 +18,7 @@ import org.freesideatlanta.qratitude.model.*;
 
 @Path("/category")
 public class CategoryResource {
+	private static Logger log = Logger.getLogger(CategoryResource.class);
 
 	@POST
 	public Response createCategories(String json) {
@@ -29,9 +31,15 @@ public class CategoryResource {
 			categories = store.create(categories);
 			output = toJson(categories);
 
-			response = Response.status(Response.Status.CREATED).entity(output).build();
+			response = Response
+				.status(Response.Status.CREATED)
+				.entity(output)
+				.type(MediaType.APPLICATION_JSON)
+				.build();
 		} catch (IOException e) {
 			// TODO: handle exception better
+			log.debug(e);
+			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 
 		return response;
@@ -48,9 +56,15 @@ public class CategoryResource {
 			json = toJson(categories);
 			System.out.println(json);
 
-			response = Response.status(Response.Status.OK).entity(json).build();
+			response = Response
+				.status(Response.Status.OK)
+				.entity(json)
+				.type(MediaType.APPLICATION_JSON)
+				.build();
 		} catch (IOException e) {
 			// TODO: handle exception better
+			log.debug(e);
+			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 
 		return response;
@@ -67,9 +81,15 @@ public class CategoryResource {
 			store.update(categories);
 			output = toJson(categories);
 
-			response = Response.status(Response.Status.OK).entity(json).build();
+			response = Response
+				.status(Response.Status.OK)
+				.entity(json)
+				.type(MediaType.APPLICATION_JSON)
+				.build();
 		} catch (IOException e) {
 			// TODO: handle exception better
+			log.debug(e);
+			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 
 		return response;
