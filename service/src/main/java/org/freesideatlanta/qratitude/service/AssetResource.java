@@ -17,6 +17,7 @@ public class AssetResource {
 	private static Logger log = Logger.getLogger(AssetResource.class);
 
 	@POST
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response createAsset(String json) {
 		log.debug(json);
 		Response response = null;
@@ -28,7 +29,11 @@ public class AssetResource {
 			asset.fromJson(json);
 			store.update(asset);
 
-			response = Response.status(Response.Status.CREATED).entity(json).build();
+			response = Response
+				.status(Response.Status.CREATED)
+				.entity(json)
+				.type(MediaType.APPLICATION_JSON)	
+				.build();
 
 		} catch (IOException e) {
 			// TODO: handle exception better
