@@ -17,7 +17,6 @@ public class AssetResource {
 	private static Logger log = Logger.getLogger(AssetResource.class);
 
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response createAsset(String json) {
 		log.debug(json);
 		Response response = null;
@@ -61,6 +60,7 @@ public class AssetResource {
 			response = Response.status(Response.Status.OK).entity(json).build();
 		} catch (IOException e) {
 			// TODO: handle exception better
+			log.debug(e);
 			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 
@@ -70,30 +70,22 @@ public class AssetResource {
 	@PUT 
 	public Response updateAssets(String json) {
 		// TODO: try to figure out how to automagically update all the assets
-		return Response.status(Response.Status.OK).entity(json).build();
+		return Response.status(501).build();
 	}
 
 	@GET
 	@Path("/{id}")
 	public Response readAsset(@PathParam("id") String id) {
-		// TODO: find the asset with the id in the database
 		Response response = null;
 		try {
-			Asset asset = new Asset();
-			asset.setId("4048675309");
-			asset.setName("TJI Joists");
-			asset.getAttributes().put("description", "Light use for sound stage during 4 weeks of filming");
-			asset.getAttributes().put("dimensions", "12ft and 16ft tall wood joists, ranging from 2 - 2.5in wide");
-			asset.getAttributes().put("quantity", "380");
-			asset.getAttributes().put("condition", "Excellent");
-			asset.getAttributes().put("color", "Woody");
-			asset.addPhoto("http://inventory.lifecyclebuildingcenter.org/img/tji_joists_md.jpg");
-			
+			AssetStore store = StoreFactory.getAssetStore();
+			Asset asset = store.read(id);
 			String json = asset.toJson();
 			response = Response.status(Response.Status.OK).entity(json).build();
 
 		} catch (Exception e) {
 			// TODO: handle exceptions better
+			log.debug(e);
 			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 
@@ -116,10 +108,12 @@ public class AssetResource {
 				response = Response.status(Response.Status.OK).entity(json).build();
 			} else {
 				// TODO: handle error better
-				response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+				log.debug("asset id: " + id + " not found");
+				response = Response.status(Response.Status.NOT_FOUND).build();
 			}
 		} catch (IOException e) {
 			// TODO: handle exception better
+			log.debug(e);
 		}
 
 		return response;
