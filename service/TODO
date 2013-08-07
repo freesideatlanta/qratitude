@@ -1,6 +1,3 @@
-- modify GET /asset query parameters
-- examine how and when ID value is set on Asset
-- AssetQuery methods
 - AssetStoreMongo.update photo deletion
 - bootstrapper program and seed data
 - indexing on mongo database
