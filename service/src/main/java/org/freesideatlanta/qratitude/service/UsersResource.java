@@ -37,6 +37,9 @@ public class UsersResource {
 		} catch (IOException e) {
 			log.debug(e);
 			response = response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		} catch (Exception e) {
+			log.debug(e);
+			response = response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 
 		log.debug(response);
@@ -116,6 +119,8 @@ public class UsersResource {
 				response = Response.status(Response.Status.NOT_FOUND).build();
 			}
 		} catch (IOException e) {
+			log.debug(e);
+		} catch (Exception e) {
 			log.debug(e);
 		}
 

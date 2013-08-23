@@ -8,19 +8,18 @@ import org.bson.types.*;
 
 public class UserQuery {
 
-	private String searchText;
+	private String username;
 
-	public UserQuery(String s) throws IllegalArgumentException {
-		if (s == null) {
+	public UserQuery(String username) throws IllegalArgumentException {
+		if (username == null) {
 			throw new IllegalArgumentException("AssetQuery arguments cannot all be null");
 		}
 
-		this.searchText = s;
+		this.username = username;
 	}
 
 	public DBObject build() {
-		Pattern p = Pattern.compile(this.searchText);
-		QueryBuilder qb = QueryBuilder.start("username").regex(p);
+		QueryBuilder qb = QueryBuilder.start("username").is(this.username);
 
 		DBObject dbo = qb.get();
 		return dbo;

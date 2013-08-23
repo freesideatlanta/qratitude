@@ -23,10 +23,25 @@ public class UserStoreMongo extends StoreMongo implements UserStore {
 		ObjectId oid = (ObjectId)dbo.get("_id");
 		String id  = oid.toString();
 		String username = (String)dbo.get("username");
+		String password = (String)dbo.get("password");
+		String token = (String)dbo.get("token");
 
 		User user = new User();
 		user.setId(id);
 		user.setUsername(username);
+		user.setPassword(password);
+		user.setToken(token);
+
+		DBObject dboAttributes = (DBObject)dbo.get("attributes");
+		if (dboAttributes != null) {
+			Map attributes = dboAttributes.toMap();
+			Set<Map.Entry> entries = attributes.entrySet();
+			for (Map.Entry entry : entries) {
+				String key = (String)entry.getKey();
+				String value = (String)entry.getValue();
+				user.getAttributes().put(key, value);
+			}
+		}
 
 		return user;
 	}
@@ -102,11 +117,6 @@ public class UserStoreMongo extends StoreMongo implements UserStore {
 	public void update(User user) throws IOException {
 		log.debug("user: " + user.toJson());
 		String id = user.getId();
-		
-		// TODO: any reason to reference the original?
-		User original = this.read(id);
-		log.debug("original: " + original.toJson());
-
 
 		DBObject dbo = toDbo(user);
 		this.collection.save(dbo);

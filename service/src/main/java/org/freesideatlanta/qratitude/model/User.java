@@ -8,6 +8,8 @@ import java.util.Map.*;
 import org.apache.log4j.*;
 import org.codehaus.jackson.*;
 
+import org.freesideatlanta.qratitude.data.*;
+
 public class User {
 	private static Logger log = Logger.getLogger(User.class);
 
@@ -54,6 +56,20 @@ public class User {
 		this.username = username;
 	}
 
+	public String getPassword() {
+		return this.password;
+	}
+	public void setPassword(String hash) {
+		this.password = hash;
+	}
+
+	public String getToken() {
+		return this.token;
+	}
+	public void setToken(String hash) {
+		this.token = hash;
+	}
+
 	public Map<String, String> getAttributes() {
 		return this.attributes;
 	}
@@ -62,7 +78,7 @@ public class User {
 		this.attributes = new HashMap<String, String>();
 	}
 
-	public void fromJson(String json) throws IOException {
+	public void fromJson(String json) throws IOException, Exception {
 		// TODO: validation
 		this.attributes.clear();
 
@@ -79,6 +95,11 @@ public class User {
 				p.nextToken();
 				String username = p.getText();
 				this.username = username;
+			} else if ("password".equals(field)) {
+				p.nextToken();
+				String password = p.getText();
+				String hash = CryptUtil.getSaltedHash(password);
+				this.password = hash;
 			} else if ("attributes".equals(field)) {
 				p.nextToken(); // {
 				while (p.nextToken() != JsonToken.END_OBJECT) {
@@ -109,6 +130,7 @@ public class User {
 		g.writeStartObject();
 		g.writeStringField("id", this.id);
 		g.writeStringField("username", this.username);
+		g.writeStringField("token", this.token);
 
 		g.writeObjectFieldStart("attributes");
 		for (String key : this.attributes.keySet()) {

@@ -1,6 +1,7 @@
 package org.freesideatlanta.qratitude.service;
 
 import java.io.*;
+import java.net.*;
 import java.util.*;
 
 import javax.ws.rs.*;
@@ -22,10 +23,44 @@ public class TokensResource {
 		Response response = null;
 
 		// TODO: SSL required throughout the site
-		// TODO: validate the username, password credentials
-		// TODO: generate a unique token to return to the client
-		// TODO: store the hash of the token with the user
-		
+		try {
+
+			Credentials credentials = new Credentials();
+			credentials.fromJson(json);
+			String username = credentials.getUsername();
+			String password = credentials.getPassword();
+
+			UserStore us = StoreFactory.getUserStore();
+			User user = us.read(username);
+
+			boolean valid = false;
+			if (user != null) {
+				String hash = user.getPassword();
+				valid = CryptUtil.check(password, hash);
+			}
+
+			if (valid) {
+				String token = UUID.randomUUID().toString();
+				String hash = CryptUtil.getSaltedHash(token);
+				user.setToken(hash);
+				us.update(user);
+				String userJson = user.toJson();
+
+				response = Response
+					.status(Response.Status.OK)
+					.entity(userJson)
+					.type(MediaType.APPLICATION_JSON)
+					.build();
+			} else {
+				response = Response
+					.status(Response.Status.FORBIDDEN)
+					.build();
+			}
+
+		} catch (Exception e) {
+			log.debug(e);
+		}
+
 		// NOTE: Android app will store the token in the AccountManager
 		// NOTE: website may store the token in a cookie or browser
 
