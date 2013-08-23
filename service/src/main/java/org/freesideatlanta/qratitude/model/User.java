@@ -59,15 +59,15 @@ public class User {
 	public String getPassword() {
 		return this.password;
 	}
-	public void setPassword(String hash) {
-		this.password = hash;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getToken() {
 		return this.token;
 	}
-	public void setToken(String hash) {
-		this.token = hash;
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public Map<String, String> getAttributes() {
@@ -98,8 +98,7 @@ public class User {
 			} else if ("password".equals(field)) {
 				p.nextToken();
 				String password = p.getText();
-				String hash = CryptUtil.getSaltedHash(password);
-				this.password = hash;
+				this.password = password;
 			} else if ("attributes".equals(field)) {
 				p.nextToken(); // {
 				while (p.nextToken() != JsonToken.END_OBJECT) {

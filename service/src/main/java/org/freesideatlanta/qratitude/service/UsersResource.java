@@ -26,6 +26,11 @@ public class UsersResource {
 
 			User user = store.create();
 			user.fromJson(json);
+
+			String password = user.getPassword();
+			String hash = CryptUtil.getSaltedHash(password);
+			user.setPassword(hash);
+
 			store.update(user);
 
 			response = Response
@@ -98,7 +103,7 @@ public class UsersResource {
 	}
 
 	@PUT
-	@Path("/{id")
+	@Path("/{id}")
 	public Response updateUser(@PathParam("id") String id, String json) {
 		Response response = null;
 		try {
@@ -107,6 +112,16 @@ public class UsersResource {
 			if (original != null) {
 				User user = new User();
 				user.fromJson(json);
+
+				String password = user.getPassword();
+
+				if (password.isEmpty()) {
+					user.setPassword(original.getPassword());
+				} else {
+					String hash = CryptUtil.getSaltedHash(password);
+					user.setPassword(hash);			
+				}
+
 				store.update(user);
 
 				response = Response

@@ -116,8 +116,6 @@ public class UserStoreMongo extends StoreMongo implements UserStore {
 	@Override
 	public void update(User user) throws IOException {
 		log.debug("user: " + user.toJson());
-		String id = user.getId();
-
 		DBObject dbo = toDbo(user);
 		this.collection.save(dbo);
 	}
