@@ -14,9 +14,9 @@ import org.apache.log4j.*;
 import org.freesideatlanta.qratitude.data.*;
 import org.freesideatlanta.qratitude.model.*;
 
-@Path("/photo")
-public class PhotoResource {
-	private static Logger log = Logger.getLogger(PhotoResource.class);
+@Path("/photos")
+public class PhotosResource {
+	private static Logger log = Logger.getLogger(PhotosResource.class);
 
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)

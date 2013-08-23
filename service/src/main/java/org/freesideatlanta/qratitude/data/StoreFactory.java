@@ -15,6 +15,7 @@ public class StoreFactory {
 	private static final String DATA_DATABASE = "data.database";
 	private static final String DATA_COLLECTION_ASSETS = "data.collection.assets";
 	private static final String DATA_COLLECTION_CATEGORIES = "data.collection.categories";
+	private static final String DATA_COLLECTION_USERS = "data.collection.users";
 	private static final String DATA_PHOTO_BUFFER_SIZE = "data.photo.buffer_size";
 	private static final String DATA_PHOTO_BASE_PATH = "data.photo.base_path";
 	private static final String DATA_PHOTO_BASE_URL = "data.photo.base_url";
@@ -63,6 +64,30 @@ public class StoreFactory {
 		}
 
 		return as;
+	}
+
+	public static UserStore getUserStore() {
+		UserStoreMongo us = null;
+
+		try {
+			Properties properties = loadDataProperties();
+			String host = properties.getProperty(DATA_HOST);
+			String value = properties.getProperty(DATA_PORT);
+			int port = Integer.parseInt(value);
+			String database = properties.getProperty(DATA_DATABASE);
+			String collection = properties.getProperty(DATA_COLLECTION_USERS);
+			
+			us = new UserStoreMongo(host, port, database, collection);
+			us.initialize();
+		} catch (NumberFormatException e) {
+			log.debug(e);
+			// TODO: handle exception better
+		} catch (IOException e) {
+			log.debug(e);
+			// TODO: handle exception better
+		}
+
+		return us;
 	}
 
 	public static PhotoStore getPhotoStore() {

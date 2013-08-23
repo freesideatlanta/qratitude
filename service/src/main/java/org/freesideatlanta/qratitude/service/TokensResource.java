@@ -1,0 +1,55 @@
+package org.freesideatlanta.qratitude.service;
+
+import java.io.*;
+import java.util.*;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+
+import org.apache.log4j.*;
+import org.codehaus.jackson.*;
+
+import org.freesideatlanta.qratitude.data.*;
+import org.freesideatlanta.qratitude.model.*;
+
+@Path("/tokens")
+public class TokensResource {
+	private static Logger log = Logger.getLogger(TokensResource.class);
+
+	@POST
+	public Response createToken(String json) {
+		log.debug(json);
+		Response response = null;
+
+		// TODO: SSL required throughout the site
+		// TODO: validate the username, password credentials
+		// TODO: generate a unique token to return to the client
+		// TODO: store the hash of the token with the user
+		
+		// NOTE: Android app will store the token in the AccountManager
+		// NOTE: website may store the token in a cookie or browser
+
+		return response;
+	}
+
+	@GET
+	@Path("/{hash}")
+	public Response readToken(@PathParam("hash") String hash) {
+		Response response = null;
+		
+		// TODO: return OK if the hash of the token is both present and valid
+
+		return response;
+	}
+
+	@DELETE
+	@Path("/{hash}")
+	public Response deleteToken(@PathParam("hash") String hash) {
+		Response response = null;
+
+		// TODO: destroy the token (user-initiated logout admin-initiated expiration)
+		// TODO: do this by clearing the entry in the 
+
+		return response;
+	}
+}

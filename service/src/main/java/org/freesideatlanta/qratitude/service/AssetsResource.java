@@ -12,9 +12,9 @@ import org.codehaus.jackson.*;
 import org.freesideatlanta.qratitude.data.*;
 import org.freesideatlanta.qratitude.model.*;
 
-@Path("/asset")
-public class AssetResource {
-	private static Logger log = Logger.getLogger(AssetResource.class);
+@Path("/assets")
+public class AssetsResource {
+	private static Logger log = Logger.getLogger(AssetsResource.class);
 
 	@POST
 	public Response createAsset(String json) {

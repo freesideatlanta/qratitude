@@ -16,9 +16,9 @@ import org.codehaus.jackson.*;
 import org.freesideatlanta.qratitude.data.*;
 import org.freesideatlanta.qratitude.model.*;
 
-@Path("/category")
-public class CategoryResource {
-	private static Logger log = Logger.getLogger(CategoryResource.class);
+@Path("/categories")
+public class CategoriesResource {
+	private static Logger log = Logger.getLogger(CategoriesResource.class);
 
 	@POST
 	public Response createCategories(String json) {
