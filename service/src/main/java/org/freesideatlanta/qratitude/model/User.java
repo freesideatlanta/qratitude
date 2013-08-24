@@ -36,6 +36,7 @@ public class User {
 	}
 
 	private String id;
+	private String role; // admin, manager, customer
 	private String username;
 	// NOTE: these are temporary placeholders for plaintext values that will get hashed
 	private String password;
@@ -47,6 +48,13 @@ public class User {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getRole() {
+		return this.role;
+	}
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	public String getUsername() {
@@ -91,6 +99,9 @@ public class User {
 				p.nextToken();
 				String id = p.getText();
 				this.id = id;
+			} else if ("role".equals(field)) {
+				p.nextToken();
+				this.role = role;
 			} else if ("username".equals(field)) {
 				p.nextToken();
 				String username = p.getText();
@@ -128,6 +139,7 @@ public class User {
 	private void write(JsonGenerator g) throws IOException {
 		g.writeStartObject();
 		g.writeStringField("id", this.id);
+		g.writeStringField("role", this.role);
 		g.writeStringField("username", this.username);
 		g.writeStringField("token", this.token);
 
