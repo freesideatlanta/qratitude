@@ -30,9 +30,8 @@ public class TokensResource {
 			String username = credentials.getUsername();
 			String password = credentials.getPassword();
 
-			UserStore us = StoreFactory.getUserStore();
-			User user = us.read(username);
-
+			User user = this.queryUser(username);
+			
 			boolean valid = false;
 			if (user != null) {
 				String hash = user.getPassword();
@@ -43,6 +42,8 @@ public class TokensResource {
 				String token = UUID.randomUUID().toString();
 				String hash = CryptUtil.getSaltedHash(token);
 				user.setToken(hash);
+			
+				UserStore us = StoreFactory.getUserStore();
 				us.update(user);
 				String userJson = user.toJson();
 
@@ -68,23 +69,92 @@ public class TokensResource {
 	}
 
 	@GET
-	@Path("/{hash}")
-	public Response readToken(@PathParam("hash") String hash) {
+	@Path("/{username}")
+	public Response checkToken(
+			@HeaderParam("token") String token, 
+			@PathParam("username") String username) {
 		Response response = null;
-		
-		// TODO: return OK if the hash of the token is both present and valid
+
+		try {
+			User user = this.queryUser(username);
+			boolean valid = this.checkToken(user, token);
+
+			if (valid) {
+				String json = user.toJson();
+
+				response = Response
+					.status(Response.Status.OK)
+					.entity(json)
+					.type(MediaType.APPLICATION_JSON)
+					.build();
+			} else {
+				response = Response
+					.status(Response.Status.FORBIDDEN)
+					.build();
+			}
+
+		} catch (IOException e) {
+			log.debug(e);
+			response = Response
+				.status(Response.Status.INTERNAL_SERVER_ERROR)
+				.build();
+		}
 
 		return response;
 	}
 
 	@DELETE
-	@Path("/{hash}")
-	public Response deleteToken(@PathParam("hash") String hash) {
+	@Path("/{username}")
+	public Response deleteToken(
+			@HeaderParam("token") String token, 
+			@PathParam("username") String username) {
 		Response response = null;
+		User user = this.queryUser(username);
+		boolean valid = this.checkToken(user, token);
 
-		// TODO: destroy the token (user-initiated logout admin-initiated expiration)
-		// TODO: do this by clearing the entry in the 
+		if (valid) {
+			user.setToken("");
+
+			response = Response
+				.status(Response.Status.OK)
+				.build();
+		} else {
+			response = Response
+				.status(Response.Status.FORBIDDEN)
+				.build();
+		}
 
 		return response;
+	}
+
+	private User queryUser(String username) {
+		UserStore us = StoreFactory.getUserStore();
+		UserQuery query = new UserQuery(username);
+		Collection<User> matches = us.read(query);
+
+		User user = null;
+		if (matches.size() == 0) {
+			user = null;
+		} else if (matches.size() == 1) {
+			Iterator<User> iterator = matches.iterator();
+			user = iterator.next();
+		} else { // matches.size() > 1
+			// TODO: throw an exception
+			user = null;
+		}
+
+		return user;
+	}
+
+	private boolean checkToken(User user, String token) {
+		boolean valid = false;
+		if (user != null) {
+			String hash = user.getToken();
+			if (hash != null && !hash.isEmpty()) {
+				valid = hash.equals(token);
+			}
+		}
+
+		return valid;
 	}
 }
