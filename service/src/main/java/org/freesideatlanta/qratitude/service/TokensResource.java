@@ -1,7 +1,6 @@
 package org.freesideatlanta.qratitude.service;
 
 import java.io.*;
-import java.net.*;
 import java.util.*;
 
 import javax.ws.rs.*;
@@ -30,21 +29,10 @@ public class TokensResource {
 			String username = credentials.getUsername();
 			String password = credentials.getPassword();
 
-			User user = this.queryUser(username);
-			
-			boolean valid = false;
-			if (user != null) {
-				String hash = user.getPassword();
-				valid = CryptUtil.check(password, hash);
-			}
+			Authenticator a = new Authenticator();
+			User user = a.login(username, password);
 
-			if (valid) {
-				String token = UUID.randomUUID().toString();
-				String hash = CryptUtil.getSaltedHash(token);
-				user.setToken(hash);
-			
-				UserStore us = StoreFactory.getUserStore();
-				us.update(user);
+			if (user != null) {
 				String userJson = user.toJson();
 
 				response = Response
@@ -69,52 +57,15 @@ public class TokensResource {
 	}
 
 	@GET
-	@Path("/{username}")
 	public Response checkToken(
-			@HeaderParam("token") String token, 
-			@PathParam("username") String username) {
+			@HeaderParam("username") String username,
+			@HeaderParam("token") String token) {
 		Response response = null;
 
-		try {
-			User user = this.queryUser(username);
-			boolean valid = this.checkToken(user, token);
-
-			if (valid) {
-				String json = user.toJson();
-
-				response = Response
-					.status(Response.Status.OK)
-					.entity(json)
-					.type(MediaType.APPLICATION_JSON)
-					.build();
-			} else {
-				response = Response
-					.status(Response.Status.FORBIDDEN)
-					.build();
-			}
-
-		} catch (IOException e) {
-			log.debug(e);
-			response = Response
-				.status(Response.Status.INTERNAL_SERVER_ERROR)
-				.build();
-		}
-
-		return response;
-	}
-
-	@DELETE
-	@Path("/{username}")
-	public Response deleteToken(
-			@HeaderParam("token") String token, 
-			@PathParam("username") String username) {
-		Response response = null;
-		User user = this.queryUser(username);
-		boolean valid = this.checkToken(user, token);
+		Authenticator a = new Authenticator();
+		boolean valid = a.authenticate(username, token);
 
 		if (valid) {
-			user.setToken("");
-
 			response = Response
 				.status(Response.Status.OK)
 				.build();
@@ -127,34 +78,26 @@ public class TokensResource {
 		return response;
 	}
 
-	private User queryUser(String username) {
-		UserStore us = StoreFactory.getUserStore();
-		UserQuery query = new UserQuery(username);
-		Collection<User> matches = us.read(query);
+	@DELETE
+	public Response deleteToken(
+			@HeaderParam("username") String username,
+			@HeaderParam("token") String token) {
+		Response response = null;
+		Authenticator a = new Authenticator();
+		boolean valid = a.authenticate(username, token);
 
-		User user = null;
-		if (matches.size() == 0) {
-			user = null;
-		} else if (matches.size() == 1) {
-			Iterator<User> iterator = matches.iterator();
-			user = iterator.next();
-		} else { // matches.size() > 1
-			// TODO: throw an exception
-			user = null;
+		if (valid) {
+			a.logout(username);	
+
+			response = Response
+				.status(Response.Status.OK)
+				.build();
+		} else {
+			response = Response
+				.status(Response.Status.FORBIDDEN)
+				.build();
 		}
 
-		return user;
-	}
-
-	private boolean checkToken(User user, String token) {
-		boolean valid = false;
-		if (user != null) {
-			String hash = user.getToken();
-			if (hash != null && !hash.isEmpty()) {
-				valid = hash.equals(token);
-			}
-		}
-
-		return valid;
+		return response;
 	}
 }

@@ -1,4 +1,4 @@
-package org.freesideatlanta.qratitude.data;
+package org.freesideatlanta.qratitude.model;
 
 import java.security.*;
 
