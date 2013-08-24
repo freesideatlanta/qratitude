@@ -1,8 +1,7 @@
 # QRatitude Inventory System
 QRatitude is an inventory management system consisting of:
 * an Android app for scanning QR codes (encoded psuedo-GUIDs) and uploading associated product data
-* a Node.js web service that exposes an API to store and query the product data
-* (coming soon) a website front-end that consumes the API
+* a java REST web service that exposes an API to store and query the product data
 
 ## Development Setup
 There are several handy scripts to setup, build, and run the QRatitude system from CLI.  
@@ -10,7 +9,7 @@ Your mileage may vary with Eclipse or non-*nix environments.
 
 ### Installs
 * install mongodb
-* install node.js
+* install java SDK
 * install [Android SDK](http://developer.android.com/sdk/index.html)
 
 ### App Setup
@@ -21,8 +20,8 @@ Your mileage may vary with Eclipse or non-*nix environments.
 * run `app/stage.sh` to build `bin/qratitude-debug.apk` and load QRatitude to AVD
 
 ### Service Setup
-* run `service/database/mongo/create.sh` to bootstrap database
-* run `node service/app.js` to run the web service
+* run `mvn clean install` to build web service
+* run `mvn cargo:start` to run the web service on `localhost:8080`
 
 ## License/Legal
 Copyright (c) 2013 Freeside Technology Spaces.
