@@ -13,6 +13,15 @@ public class CryptUtil {
 	private static final int saltLength = 32;
 	private static final int keyLength = 256;
 
+	public static String encrypt(String source) throws Exception {
+		if (source == null || source.length() == 0)
+			throw new IllegalArgumentException("source to be encrypted cannot be empty");
+		SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+		byte[] salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLength);
+		SecretKey key = f.generateSecret(new PBEKeySpec(source.toCharArray(), salt, iterations, keyLength));
+		return Base64.encodeBase64String(key.getEncoded());
+	}
+
 	public static String getSaltedHash(String source) throws Exception {
 		byte[] salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLength);
 		return Base64.encodeBase64String(salt) + "$" + hash(source, salt);

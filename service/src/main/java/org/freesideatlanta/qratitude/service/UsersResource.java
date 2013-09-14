@@ -32,10 +32,11 @@ public class UsersResource {
 			user.setPassword(hash);
 
 			store.update(user);
+			String userJson = user.toJson();
 
 			response = Response
 				.status(Response.Status.CREATED)
-				.entity(json)
+				.entity(userJson)
 				.type(MediaType.APPLICATION_JSON)
 				.build();
 

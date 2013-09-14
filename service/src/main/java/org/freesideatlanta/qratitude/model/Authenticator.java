@@ -13,43 +13,49 @@ public class Authenticator {
 		this.store = StoreFactory.getUserStore();
 	}
 
-	public User login(String username, String password) throws Exception {
+	public Token login(String username, String password) throws Exception {
 		User user = this.queryUser(username);
 		
-		User modified = null;
+		Token token = null;
 		if (user != null) {
-			modified = this.login(user, password);
+			token = this.login(user, password);
 		}
 
-		return modified;
+		return token;
 	}
 
-	public User login(User user, String password) throws Exception {
+	public Token login(User user, String password) throws Exception {
 		boolean valid = false;
+		Token token = null;
+
 		if (user != null) {
 			String hash = user.getPassword();
 			valid = CryptUtil.check(password, hash);
 		}
 
 		if (valid) {
-			String token = UUID.randomUUID().toString();
-			String hash = CryptUtil.getSaltedHash(token);
+			token = new Token();
+			token.generate(user);
 
+			// NOTE: the hash of the token string is stored in the database
+			String tokenText = token.getToken();
+			String hash = CryptUtil.getSaltedHash(tokenText);
 			user.setToken(hash);
 			this.store.update(user);
 		}
 
-		return user; 
+		return token; 
 	}
 
-	public void logout(String username) {
+	public void logout(String username) throws Exception {
 		User user = this.queryUser(username);
 		if (user != null) {
 			user.setToken("");
+			this.store.update(user);
 		}
 	}
 
-	public boolean authenticate(String username, String token) {
+	public boolean authenticate(String username, String token) throws Exception {
 		User user = this.queryUser(username);
 
 		boolean valid = false;
@@ -60,12 +66,12 @@ public class Authenticator {
 		return valid;
 	}
 
-	public boolean authenticate(User user, String token) {
+	public boolean authenticate(User user, String token) throws Exception {
 		boolean valid = false;
 		if (user != null) {
 			String hash = user.getToken();
 			if (hash != null && !hash.isEmpty()) {
-				valid = hash.equals(token);
+				valid = CryptUtil.check(token, hash);
 			}
 		}
 

@@ -54,6 +54,12 @@ public class UserStoreMongo extends StoreMongo implements UserStore {
 		ObjectId oid = new ObjectId(id);
 		dbo.put("_id", oid);
 
+		String passwordHash = user.getPassword();
+		dbo.put("password", passwordHash);
+
+		String tokenHash = user.getToken();
+		dbo.put("token", tokenHash);
+
 		return dbo;
 	}
 

@@ -30,14 +30,14 @@ public class TokensResource {
 			String password = credentials.getPassword();
 
 			Authenticator a = new Authenticator();
-			User user = a.login(username, password);
+			Token token = a.login(username, password);
 
-			if (user != null) {
-				String userJson = user.toJson();
+			if (token != null) {
+				String tokenJson = token.toJson();
 
 				response = Response
 					.status(Response.Status.OK)
-					.entity(userJson)
+					.entity(tokenJson)
 					.type(MediaType.APPLICATION_JSON)
 					.build();
 			} else {
@@ -60,19 +60,26 @@ public class TokensResource {
 	public Response checkToken(
 			@HeaderParam("username") String username,
 			@HeaderParam("token") String token) {
+		log.debug(username);
+		log.debug(token);
+
 		Response response = null;
 
-		Authenticator a = new Authenticator();
-		boolean valid = a.authenticate(username, token);
+		try {
+			Authenticator a = new Authenticator();
+			boolean valid = a.authenticate(username, token);
 
-		if (valid) {
-			response = Response
-				.status(Response.Status.OK)
-				.build();
-		} else {
-			response = Response
-				.status(Response.Status.FORBIDDEN)
-				.build();
+			if (valid) {
+				response = Response
+					.status(Response.Status.OK)
+					.build();
+			} else {
+				response = Response
+					.status(Response.Status.FORBIDDEN)
+					.build();
+			}
+		} catch (Exception e) {
+			log.debug(e);
 		}
 
 		return response;
@@ -83,19 +90,24 @@ public class TokensResource {
 			@HeaderParam("username") String username,
 			@HeaderParam("token") String token) {
 		Response response = null;
-		Authenticator a = new Authenticator();
-		boolean valid = a.authenticate(username, token);
 
-		if (valid) {
-			a.logout(username);	
+		try {
+			Authenticator a = new Authenticator();
+			boolean valid = a.authenticate(username, token);
 
-			response = Response
-				.status(Response.Status.OK)
-				.build();
-		} else {
-			response = Response
-				.status(Response.Status.FORBIDDEN)
-				.build();
+			if (valid) {
+				a.logout(username);	
+
+				response = Response
+					.status(Response.Status.OK)
+					.build();
+			} else {
+				response = Response
+					.status(Response.Status.FORBIDDEN)
+					.build();
+			}
+		} catch (Exception e) {
+			log.debug(e);
 		}
 
 		return response;

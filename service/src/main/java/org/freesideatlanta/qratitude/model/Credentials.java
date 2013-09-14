@@ -11,7 +11,7 @@ import org.codehaus.jackson.*;
 import org.freesideatlanta.qratitude.data.*;
 
 public class Credentials {
-	private static Logger log = Logger.getLogger(User.class);
+	private static Logger log = Logger.getLogger(Credentials.class);
 
 	private String username;
 	private String password;

@@ -38,9 +38,11 @@ public class User {
 	private String id;
 	private String role; // admin, manager, customer
 	private String username;
-	// NOTE: these are temporary placeholders for plaintext values that will get hashed
+
+	// NOTE: password and token are (temporary) placeholders for plaintext values that will get hashed
 	private String password;
 	private String token;
+
 	private Map<String, String> attributes;
 
 	public String getId() {
@@ -141,7 +143,6 @@ public class User {
 		g.writeStringField("id", this.id);
 		g.writeStringField("role", this.role);
 		g.writeStringField("username", this.username);
-		g.writeStringField("token", this.token);
 
 		g.writeObjectFieldStart("attributes");
 		for (String key : this.attributes.keySet()) {
