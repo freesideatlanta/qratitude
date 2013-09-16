@@ -10,12 +10,12 @@ import android.app.IntentService;
 import android.content.Intent;
 
 import org.freesideatlanta.qratitude.common.Logger;
-import org.freesideatlanta.qratitude.common.Proxy;
+import org.freesideatlanta.qratitude.common.AssetsProxy;
 
 public class UploadAssetService extends IntentService {
 	private final Logger log;
 	private final AccountManager accountManager;
-	private final Proxy proxy;
+	private final AssetsProxy proxy;
 
 	public UploadAssetService(String name) {
 		super(name);
@@ -24,7 +24,7 @@ public class UploadAssetService extends IntentService {
 		this.log = new Logger(this, n);
 
 		this.accountManager = AccountManager.get(this);
-		this.proxy = new Proxy(this);
+		this.proxy = new AssetsProxy(this);
 	}
 
 	@Override

@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import org.freesideatlanta.qratitude.common.Logger;
-import org.freesideatlanta.qratitude.common.Proxy;
+import org.freesideatlanta.qratitude.common.TokensProxy;
 import org.freesideatlanta.qratitude.R;
 
 public class Authenticator extends AbstractAccountAuthenticator {
@@ -103,7 +103,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
 		final AccountManager am = AccountManager.get(this.context);
 		final String p = am.getPassword(account);
 		if (p != null) {
-			final Proxy proxy = new Proxy(this.context);
+			final TokensProxy proxy = new TokensProxy(this.context);
 			final String token = proxy.authenticate(account.name, p);
 			if (!TextUtils.isEmpty(token)) {
 				String type = this.context.getString(R.string.account_type);

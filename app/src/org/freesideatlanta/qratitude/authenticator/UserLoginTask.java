@@ -1,13 +1,11 @@
 package org.freesideatlanta.qratitude.authenticator;
 
-import java.net.URI;
-
 import android.app.Activity;
 import android.os.AsyncTask;
 
 import org.freesideatlanta.qratitude.R;
 import org.freesideatlanta.qratitude.common.Logger;
-import org.freesideatlanta.qratitude.common.Proxy;
+import org.freesideatlanta.qratitude.common.TokensProxy;
 
 public class UserLoginTask extends AsyncTask<Void, Void, String> {
 	private Logger log;
@@ -19,7 +17,6 @@ public class UserLoginTask extends AsyncTask<Void, Void, String> {
 	}
 
 	private Credentials credentials;
-	private URI authenticationUri;
 
 	public UserLoginTask(Activity a, Credentials c) {
 		String n = a.getString(R.string.app_name);
@@ -27,14 +24,12 @@ public class UserLoginTask extends AsyncTask<Void, Void, String> {
 
 		this.activity = a;
 		this.credentials = c;
-		String url = a.getString(R.string.base_url) + a.getString(R.string.auth_path);
-		this.authenticationUri = URI.create(url);
 	}
 
 	@Override
 	protected String doInBackground(Void... params) {
 		try {
-			Proxy proxy = new Proxy(this.activity);
+			TokensProxy proxy = new TokensProxy(this.activity);
 			log.d("this.credentials = " + this.credentials.toString());
 			String token = proxy.authenticate(this.credentials);
 			log.d("token = " + token);
