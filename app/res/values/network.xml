@@ -2,7 +2,8 @@
 <resources>
 	<integer name="http_request_timeout_ms">30000</integer>
 	<!-- <string name="base_url">https://qratitude.freesideatlanta.org</string> -->
-	<string name="base_url">http://localhost:8080/qratitude-service/api</string>
+	<!-- 10.0.2.2 is localhost on the computer hosting the emulated device -->
+	<string name="base_url">http://10.0.2.2:8080/qratitude-service/api</string>
 	<string name="assets_path">/assets</string>
 	<string name="tokens_path">/tokens</string>
 </resources>

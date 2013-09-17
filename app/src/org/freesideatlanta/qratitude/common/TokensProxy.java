@@ -96,6 +96,7 @@ public class TokensProxy {
 	}
 
 	private HttpPost postTokens(JSONObject credentials) throws UnsupportedEncodingException {
+		log.d("this.authenticationUri = " + this.authenticationUri.toString());
 		final HttpPost post = new HttpPost(this.authenticationUri);
 		StringEntity e = new StringEntity(credentials.toString());
 		e.setContentEncoding("UTF-8");
