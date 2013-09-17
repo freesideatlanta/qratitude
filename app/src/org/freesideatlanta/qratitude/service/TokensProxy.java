@@ -1,4 +1,4 @@
-package org.freesideatlanta.qratitude.common;
+package org.freesideatlanta.qratitude.service;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -19,8 +19,10 @@ import org.json.JSONObject;
 
 import android.content.Context;
 
-import org.freesideatlanta.qratitude.R;
 import org.freesideatlanta.qratitude.authenticator.Credentials;
+import org.freesideatlanta.qratitude.common.Logger;
+import org.freesideatlanta.qratitude.common.NetworkUtil;
+import org.freesideatlanta.qratitude.R;
 
 public class TokensProxy {
 	private final Context context;

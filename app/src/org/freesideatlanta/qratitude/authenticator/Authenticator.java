@@ -11,8 +11,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import org.freesideatlanta.qratitude.common.Logger;
-import org.freesideatlanta.qratitude.common.TokensProxy;
 import org.freesideatlanta.qratitude.R;
+import org.freesideatlanta.qratitude.service.TokensProxy;
 
 public class Authenticator extends AbstractAccountAuthenticator {
 	private final Logger log;

@@ -3,9 +3,9 @@ package org.freesideatlanta.qratitude.authenticator;
 import android.app.Activity;
 import android.os.AsyncTask;
 
-import org.freesideatlanta.qratitude.R;
 import org.freesideatlanta.qratitude.common.Logger;
-import org.freesideatlanta.qratitude.common.TokensProxy;
+import org.freesideatlanta.qratitude.R;
+import org.freesideatlanta.qratitude.service.TokensProxy;
 
 public class UserLoginTask extends AsyncTask<Void, Void, String> {
 	private Logger log;

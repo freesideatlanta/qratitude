@@ -10,7 +10,7 @@ import android.app.IntentService;
 import android.content.Intent;
 
 import org.freesideatlanta.qratitude.common.Logger;
-import org.freesideatlanta.qratitude.common.AssetsProxy;
+import org.freesideatlanta.qratitude.service.AssetsProxy;
 
 public class UploadAssetService extends IntentService {
 	private final Logger log;

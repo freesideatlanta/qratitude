@@ -1,4 +1,4 @@
-package org.freesideatlanta.qratitude.common;
+package org.freesideatlanta.qratitude.service;
 
 //import java.io.BufferedReader;
 //import java.io.InputStream;
@@ -16,8 +16,9 @@ import java.net.URI;
 import android.accounts.Account;
 import android.content.Context;
 
-import org.freesideatlanta.qratitude.R;
 import org.freesideatlanta.qratitude.Asset;
+import org.freesideatlanta.qratitude.common.Logger;
+import org.freesideatlanta.qratitude.R;
 
 public class AssetsProxy {
 	private final Context context;
