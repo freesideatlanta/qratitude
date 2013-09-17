@@ -18,6 +18,7 @@
 	<EditText android:id="@+id/edit_password"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
+		android:inputType="textPassword"
 		android:hint="@string/edit_password" />
 	<Button android:id="@+id/button_authenticate"
 		android:layout_width="fill_parent"
