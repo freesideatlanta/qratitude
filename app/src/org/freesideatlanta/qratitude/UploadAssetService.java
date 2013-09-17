@@ -34,12 +34,13 @@ public class UploadAssetService extends IntentService {
 		try {
 			// authenticate
 			Account account = getAccount();
+			String username = account.name;
 			String type = this.getString(R.string.account_type);
 			boolean notifyAuthFailure = true;
 			String token = this.accountManager.blockingGetAuthToken(account, type, notifyAuthFailure); 
 
 			// upload
-			this.proxy.uploadAsset(account, token, asset);	
+			this.proxy.uploadAsset(username, token, asset);
 		} catch (OperationCanceledException ex) {
 			log.e(ex.toString());
 			// TODO: handle

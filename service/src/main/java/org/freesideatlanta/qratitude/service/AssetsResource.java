@@ -17,24 +17,40 @@ public class AssetsResource {
 	private static Logger log = Logger.getLogger(AssetsResource.class);
 
 	@POST
-	public Response createAsset(String json) {
+	public Response createAsset(
+			@HeaderParam("username") String username,
+			@HeaderParam("token") String token,
+			String json) {
 		log.debug(json);
 		Response response = null;
 
 		try {
-			AssetStore store = StoreFactory.getAssetStore();
-			
-			Asset asset = store.create();
-			asset.fromJson(json);
-			store.update(asset);
+			Authenticator a = new Authenticator();
+			boolean valid = a.authenticate(username, token);
 
-			response = Response
-				.status(Response.Status.CREATED)
-				.entity(json)
-				.type(MediaType.APPLICATION_JSON)	
-				.build();
+			if (valid) {
+				AssetStore store = StoreFactory.getAssetStore();
+			
+				Asset asset = store.create();
+				asset.fromJson(json);
+				store.update(asset);
+
+				response = Response
+					.status(Response.Status.CREATED)
+					.entity(json)
+					.type(MediaType.APPLICATION_JSON)	
+					.build();
+			} else {
+				response = Response
+					.status(Response.Status.FORBIDDEN)
+					.build();
+			}
 
 		} catch (IOException e) {
+			// TODO: handle exception better
+			log.debug(e);
+			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		} catch (Exception e) {
 			// TODO: handle exception better
 			log.debug(e);
 			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();

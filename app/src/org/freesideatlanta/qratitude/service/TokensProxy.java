@@ -78,7 +78,8 @@ public class TokensProxy {
 		} catch (final JSONException ex) {
 			log.d(ex.toString());
 			log.e(ex.getMessage());
-			log.e(R.string.token_read_error);
+			// TODO: replace with useful information
+			//log.e(R.string.token_read_error);
 			token = null;
 		} catch (final IOException ex) {
 			log.d(ex.toString());

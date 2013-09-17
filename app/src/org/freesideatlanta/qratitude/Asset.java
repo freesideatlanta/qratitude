@@ -3,6 +3,10 @@ package org.freesideatlanta.qratitude;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -18,6 +22,11 @@ public class Asset implements Parcelable {
 		return this.id;
 	}
 
+	private String name;
+	public void setName(String n) {
+		this.name = n;
+	}
+
 	private String category;
 	public void setCategory(String c) {
 		this.category = c;
@@ -28,7 +37,12 @@ public class Asset implements Parcelable {
 	private String quantity;
 	private String condition;
 	private String color;
-	
+
+	private List<String> tags;
+	public List<String> getTags() {
+		return this.tags;
+	}
+
 	private List<Uri> photos;
 	public List<Uri> getPhotos() {
 		return this.photos;
@@ -44,6 +58,7 @@ public class Asset implements Parcelable {
 	};
 
 	public Asset() {
+		this.tags = new ArrayList<String>();
 		this.photos = new ArrayList<Uri>();
 	}
 
@@ -75,5 +90,28 @@ public class Asset implements Parcelable {
 		out.writeString(this.condition);
 		out.writeString(this.color);
 		out.writeTypedList(this.photos);
+	}
+
+	public JSONObject toJSON() throws JSONException {
+		JSONObject o = new JSONObject();
+		o.put("id", this.id);
+		o.put("name", this.name);
+
+		JSONArray tags = new JSONArray(this.tags);
+		o.put("tags", tags);
+
+		JSONObject attributes = new JSONObject();
+		attributes.put("category", this.category);
+		attributes.put("description", this.description);
+		attributes.put("dimensions", this.dimensions);
+		attributes.put("quantity", this.quantity);
+		attributes.put("condition", this.condition);
+		attributes.put("color", this.color);
+		o.put("attributes", attributes);
+
+		JSONArray photos = new JSONArray(this.photos);
+		o.put("photos", photos);
+
+		return o;
 	}
 }
