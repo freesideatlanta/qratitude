@@ -130,9 +130,9 @@ public class ProductDataEntryActivity extends Activity implements View.OnClickLi
 	}
 
 	private void uploadAsset() {
-		Intent i = new Intent(this, UploadAssetActivity.class);
-		i.putExtra(Asset.EXTRA_ASSET, this.asset); 
-		startActivity(i);
+		Intent i = new Intent(this, UploadAssetService.class);
+		i.putExtra(Asset.EXTRA_ASSET, this.asset);
+		startService(i);
 	}
 
 	private View viewFromPhoto(File photo) {

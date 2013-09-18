@@ -18,6 +18,7 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
 	public static final String EXTRA_AUTHORIZATION_TOKEN_TYPE = "authorization_token_type";
 
 	private Logger log;
+	private AccountManager accountManager;
 	private UserLoginTask loginTask;
 
 	@Override
@@ -31,6 +32,8 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
 
 		final Intent i = this.getIntent();
 		String username = i.getStringExtra(Credentials.EXTRA_USERNAME);
+
+		this.accountManager = AccountManager.get(this);
 
 		// initialize controls
 		EditText ut = (EditText) findViewById(R.id.edit_username);
@@ -67,6 +70,14 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
 		boolean success = ((token != null) && (token.length() > 0));
 
 		if (success) {
+			Credentials c = this.getCredentials();
+			String username = c.getUsername();
+			Account match = readAccount(username);
+
+			if (match == null) {
+				this.createAccount(username);
+			}
+
 			updateAccount(token);
 			advance();
 		} else {
@@ -84,14 +95,31 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
 		// TODO: hide progress dialog
 	}
 
+	private Account readAccount(String username) {
+		Account[] accounts = this.accountManager.getAccountsByType(getString(R.string.account_type));
+		Account match = null;
+
+		for (int index = 0; index < accounts.length; index++) {
+			Account account = accounts[index];
+			if (username.equals(account.name)) {
+				match = account;
+			}
+		}
+
+		return match;
+	}
+
+	private void createAccount(String username) {
+		this.accountManager.addAccount(username, getString(R.string.account_type), null, null, null, null, null);
+	}
+
 	private void updateAccount(String token) {
-		Credentials credentials = this.getCredentials();
-		String username = credentials.getUsername();
+		Credentials c = this.getCredentials();
+		String username = c.getUsername();
 		String accountType = getString(R.string.account_type);
 		final Account account = new Account(username, accountType);
 
-		AccountManager am = AccountManager.get(this);
-		am.setPassword(account, token);
+		this.accountManager.setPassword(account, token);
 	}
 
 	private void advance() {

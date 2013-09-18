@@ -13,18 +13,23 @@ import org.freesideatlanta.qratitude.common.Logger;
 import org.freesideatlanta.qratitude.service.AssetsProxy;
 
 public class UploadAssetService extends IntentService {
-	private final Logger log;
-	private final AccountManager accountManager;
-	private final AssetsProxy proxy;
+	private Logger log;
+	private AccountManager accountManager;
+	private AssetsProxy proxy;
 
-	public UploadAssetService(String name) {
-		super(name);
+	public UploadAssetService() {
+		super("UploadAssetService");
+	}
 
+	@Override 
+	public int onStartCommand(Intent intent, int flags, int startId) {
 		String n = this.getString(R.string.app_name);
 		this.log = new Logger(this, n);
 
 		this.accountManager = AccountManager.get(this);
 		this.proxy = new AssetsProxy(this);
+
+		return super.onStartCommand(intent, flags, startId);
 	}
 
 	@Override
@@ -34,13 +39,19 @@ public class UploadAssetService extends IntentService {
 		try {
 			// authenticate
 			Account account = getAccount();
-			String username = account.name;
-			String type = this.getString(R.string.account_type);
-			boolean notifyAuthFailure = true;
-			String token = this.accountManager.blockingGetAuthToken(account, type, notifyAuthFailure); 
 
-			// upload
-			this.proxy.uploadAsset(username, token, asset);
+			if (account != null) {
+				String username = account.name;
+				String type = this.getString(R.string.account_type);
+				boolean notifyAuthFailure = true;
+				String token = this.accountManager.blockingGetAuthToken(account, type, notifyAuthFailure); 
+
+				// upload
+				this.proxy.uploadAsset(username, token, asset);
+			} else {
+				// TODO: handle
+			}
+
 		} catch (OperationCanceledException ex) {
 			log.e(ex.toString());
 			// TODO: handle
@@ -57,6 +68,8 @@ public class UploadAssetService extends IntentService {
 		String type = this.getString(R.string.account_type);
 		Account[] matches = this.accountManager.getAccountsByType(type);
 		Account account = null;
+
+		log.d("matches.length = " + matches.length);
 
 		if (matches.length > 0) {
 			if (matches.length == 1) {
