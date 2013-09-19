@@ -72,13 +72,13 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
 		if (success) {
 			Credentials c = this.getCredentials();
 			String username = c.getUsername();
-			Account match = readAccount(username);
+			Account account = readAccount(username);
 
-			if (match == null) {
-				this.createAccount(username);
+			if (account == null) {
+				account = this.createAccount(username);
 			}
 
-			updateAccount(token);
+			updateAccount(account, token);
 			advance();
 		} else {
 			log.e(R.string.failed_authentication);
@@ -109,21 +109,20 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
 		return match;
 	}
 
-	private void createAccount(String username) {
+	private Account createAccount(String username) {
 		String type = getString(R.string.account_type);
 		log.d("about to create account");
 		log.d("username = " + username);
 		log.d("type = " + type);
-		this.accountManager.addAccount(username, type, null, null, null, null, null);
+		final Account account = new Account(username, type);
+		this.accountManager.addAccountExplicitly(account, type, null);
+
+		return account;
 	}
 
-	private void updateAccount(String token) {
-		Credentials c = this.getCredentials();
-		String username = c.getUsername();
-		String accountType = getString(R.string.account_type);
-		final Account account = new Account(username, accountType);
-
-		this.accountManager.setPassword(account, token);
+	private void updateAccount(Account account, String token) {
+		// TODO: make authTokenType not null...
+		this.accountManager.setAuthToken(account, null, token);
 	}
 
 	private void advance() {
