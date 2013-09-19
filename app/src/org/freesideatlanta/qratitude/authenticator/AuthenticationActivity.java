@@ -110,7 +110,11 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
 	}
 
 	private void createAccount(String username) {
-		this.accountManager.addAccount(username, getString(R.string.account_type), null, null, null, null, null);
+		String type = getString(R.string.account_type);
+		log.d("about to create account");
+		log.d("username = " + username);
+		log.d("type = " + type);
+		this.accountManager.addAccount(username, type, null, null, null, null, null);
 	}
 
 	private void updateAccount(String token) {

@@ -35,6 +35,7 @@ public class UploadAssetService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		Asset asset = intent.getParcelableExtra(Asset.EXTRA_ASSET);
+		log.d("asset = " + asset.toString());
 
 		try {
 			// authenticate
@@ -69,6 +70,7 @@ public class UploadAssetService extends IntentService {
 		Account[] matches = this.accountManager.getAccountsByType(type);
 		Account account = null;
 
+		log.d("type = " + type);
 		log.d("matches.length = " + matches.length);
 
 		if (matches.length > 0) {
