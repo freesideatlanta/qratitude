@@ -121,8 +121,8 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
 	}
 
 	private void updateAccount(Account account, String token) {
-		// TODO: make authTokenType not null...
-		this.accountManager.setAuthToken(account, null, token);
+		String type = getString(R.string.authorization_token_type);
+		this.accountManager.setAuthToken(account, type, token);
 	}
 
 	private void advance() {
