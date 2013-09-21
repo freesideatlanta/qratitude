@@ -1,7 +1,9 @@
 package org.freesideatlanta.qratitude;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,9 +24,22 @@ public class Asset implements Parcelable {
 		return this.id;
 	}
 
+	private String code;
+	public void setCode(String c) {
+		this.code = c;
+	}
+	public String getCode() {
+		return this.code;
+	}
+
 	private String name;
 	public void setName(String n) {
 		this.name = n;
+	}
+
+	private Map<String, String> attributes;
+	public Map<String, String> getAttributes() {
+		return this.attributes;
 	}
 
 	private String category;
@@ -33,10 +48,29 @@ public class Asset implements Parcelable {
 	}
 
 	private String description;
+	public void setDescription(String d) {
+		this.description = d;
+	}
+
 	private String dimensions;
+	public void setDimensions(String d) {
+		this.dimensions = d;
+	}
+
 	private String quantity;
+	public void setQuantity(String q) {
+		this.quantity = q;
+	}
+
 	private String condition;
+	public void setCondition(String c) {
+		this.condition = c;
+	}
+
 	private String color;
+	public void setColor(String c) {
+		this.color = c;
+	}
 
 	private List<String> tags;
 	public List<String> getTags() {
@@ -58,6 +92,7 @@ public class Asset implements Parcelable {
 	};
 
 	public Asset() {
+		this.attributes = new LinkedHashMap<String, String>();
 		this.tags = new ArrayList<String>();
 		this.photos = new ArrayList<Uri>();
 	}
@@ -66,6 +101,8 @@ public class Asset implements Parcelable {
 		this();
 
 		this.id = in.readString();
+		this.code = in.readString();
+		this.name = in.readString();
 		this.category = in.readString();
 		this.description = in.readString();
 		this.dimensions = in.readString();
@@ -83,6 +120,8 @@ public class Asset implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel out, int flags) {
 		out.writeString(this.id);
+		out.writeString(this.code);
+		out.writeString(this.name);
 		out.writeString(this.category);
 		out.writeString(this.description);
 		out.writeString(this.dimensions);
@@ -95,6 +134,7 @@ public class Asset implements Parcelable {
 	public JSONObject toJSON() throws JSONException {
 		JSONObject o = new JSONObject();
 		o.put("id", this.id);
+		o.put("code", this.code);
 		o.put("name", this.name);
 
 		JSONArray tags = new JSONArray(this.tags);

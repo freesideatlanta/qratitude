@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -56,7 +57,7 @@ public class ProductDataEntryActivity extends Activity implements View.OnClickLi
 		Intent i = this.getIntent();
 		this.asset = (Asset) i.getParcelableExtra(Asset.EXTRA_ASSET);
 
-		log.d("asset.id = " + this.asset.getId());
+		log.d("asset.code = " + this.asset.getCode());
 
 		// sets up the categories spinner control
 		final Spinner s = (Spinner) findViewById(R.id.spinner_category);
@@ -86,6 +87,7 @@ public class ProductDataEntryActivity extends Activity implements View.OnClickLi
 	public void onClick(View view) {
 		final Button b = (Button) findViewById(R.id.button_upload);
 		if (view.equals(b)) {
+			this.updateModel();
 			this.uploadAsset();
 		}
 	}
@@ -127,6 +129,29 @@ public class ProductDataEntryActivity extends Activity implements View.OnClickLi
 				log.d(R.string.photo_result_failed);
 			}
 		}
+	}
+
+	private void updateModel() {
+		EditText et = null;
+
+		// TODO: refactor to write Parcelable Asset (ordered list of attributes, LinkedHashMap)
+		et = (EditText)findViewById(R.id.edit_title);
+		this.asset.setName(et.getText().toString());
+
+		et = (EditText)findViewById(R.id.edit_description);
+		this.asset.setDescription(et.getText().toString());
+
+		et = (EditText)findViewById(R.id.edit_size);
+		this.asset.setDimensions(et.getText().toString());
+
+		et = (EditText)findViewById(R.id.edit_quantity);
+		this.asset.setQuantity(et.getText().toString());
+
+		et = (EditText)findViewById(R.id.edit_condition);
+		this.asset.setCondition(et.getText().toString());
+
+		et = (EditText)findViewById(R.id.edit_color);
+		this.asset.setColor(et.getText().toString());
 	}
 
 	private void uploadAsset() {

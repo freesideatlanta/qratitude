@@ -60,14 +60,14 @@ public class ScanActivity extends Activity implements View.OnClickListener {
 		IntentResult r = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 		if (r != null) {
 			if (InDebugMode) {
-				this.asset.setId("4048675309");
+				this.asset.setCode("4048675309");
 			} else {
 				// obtain scanned string (the psuedo-GUID)
-				String id = r.getContents();
-				this.asset.setId(id);
+				String code = r.getContents();
+				this.asset.setCode(code);
 			}
 
-			log.d("asset.id = " + this.asset.getId());
+			log.d("asset.code = " + this.asset.getCode());
 
 			// pass the asset to the product data entry activity
 			Intent i = new Intent(this, ProductDataEntryActivity.class);

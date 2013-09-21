@@ -102,7 +102,7 @@ public class AssetsResource {
 
 	@GET
 	@Path("/{id}")
-	public Response readAsset(@PathParam("") String id) {
+	public Response readAsset(@PathParam("id") String id) {
 		Response response = null;
 		try {
 			AssetStore store = StoreFactory.getAssetStore();
