@@ -23,10 +23,12 @@ public class AssetStoreMongo extends StoreMongo implements AssetStore {
 		ObjectId oid = (ObjectId)dbo.get("_id");
 		String id  = oid.toString();
 		String name = (String)dbo.get("name");
+		String code = (String)dbo.get("code");
 
 		Asset asset = new Asset();
 		asset.setId(id);
 		asset.setName(name);
+		asset.setCode(code);
 
 		BasicDBList dboTags = (BasicDBList)dbo.get("tags");
 		if (dboTags != null) {
@@ -149,5 +151,16 @@ public class AssetStoreMongo extends StoreMongo implements AssetStore {
 		BasicDBObject query = new BasicDBObject();
 		query.put("_id", new ObjectId(id));
 		this.collection.remove(query);
+	}
+
+	@Override
+	public void delete(AssetQuery query) {
+		Collection<Asset> assets = this.read(query);
+		for (Asset asset : assets) {
+			BasicDBObject q = new BasicDBObject();
+			String id = asset.getId();
+			q.put("_id", new ObjectId(id));
+			this.collection.remove(q);
+		}
 	}
 }

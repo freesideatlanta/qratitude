@@ -97,11 +97,26 @@ public class AssetStoreTest {
 	}
 
 	@Test
+	public void testReadQueryCode() {
+		AssetStore as = StoreFactory.getAssetStore();
+		AssetQuery query = new AssetCodeQuery("4048675309");
+
+		Collection<Asset> matches = as.read(query);
+		assertTrue(matches != null);
+		assertTrue(matches.size() == 1);
+		Asset match = matches.iterator().next();
+
+		assertTrue(match != null);
+		assertTrue(match.getId().equals(this.testAsset.getId()));
+		assertTrue(match.getName().equals(this.testAsset.getName()));
+	}
+
+	@Test
 	public void testReadQueryFull() {
 		AssetStore as = StoreFactory.getAssetStore();
 		Collection<String> tags = new ArrayList<String>();
 		tags.add("Flooring");
-		AssetQuery query = new AssetQuery("Joists", tags);
+		AssetQuery query = new AssetSearchQuery("Joists", tags);
 
 		Collection<Asset> matches = as.read(query);
 		assertTrue(matches != null);
@@ -116,7 +131,7 @@ public class AssetStoreTest {
 	@Test
 	public void testReadQuerySearch() {
 		AssetStore as = StoreFactory.getAssetStore();
-		AssetQuery query = new AssetQuery("Joists", null);
+		AssetQuery query = new AssetSearchQuery("Joists", null);
 
 		Collection<Asset> matches = as.read(query);
 		assertTrue(matches != null);
@@ -133,7 +148,7 @@ public class AssetStoreTest {
 		AssetStore as = StoreFactory.getAssetStore();
 		Collection<String> tags = new ArrayList<String>();
 		tags.add("Flooring");
-		AssetQuery query = new AssetQuery(null, tags);
+		AssetQuery query = new AssetSearchQuery(null, tags);
 
 		Collection<Asset> matches = as.read(query);
 		assertTrue(matches != null);
@@ -196,5 +211,18 @@ public class AssetStoreTest {
 
 		long count = collection.count();
 		assertTrue(count == 0);
+	}
+
+	@Test
+	public void testDeleteQuery() {
+		AssetStore as = StoreFactory.getAssetStore();
+		String code = this.testAsset.getCode();
+		log.debug("code: " + code);
+		AssetQuery query = new AssetCodeQuery(code);
+		as.delete(query);
+
+		Collection<Asset> matches = as.read(query);
+		assertTrue(matches != null);
+		assertTrue(matches.size() == 0);
 	}
 }

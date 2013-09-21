@@ -62,14 +62,21 @@ public class AssetsResource {
 
 	@GET
 	public Response readAssets(
+			@QueryParam("c") String code,
 			@QueryParam("s") String searchText, 
 			@QueryParam("t") List<String> tags) {
 
 		Response response = null;
 		try {
 			AssetStore store = StoreFactory.getAssetStore();
+			AssetQuery query = null;
 
-			AssetQuery query = new AssetQuery(searchText, tags);
+			if (code != null) {
+				query = new AssetCodeQuery(code);
+			} else {
+				query = new AssetSearchQuery(searchText, tags);
+			}
+				
 			Collection<Asset> assets = store.read(query);
 			
 			String json = Asset.toJson(assets);
@@ -95,11 +102,12 @@ public class AssetsResource {
 
 	@GET
 	@Path("/{id}")
-	public Response readAsset(@PathParam("id") String id) {
+	public Response readAsset(@PathParam("") String id) {
 		Response response = null;
 		try {
 			AssetStore store = StoreFactory.getAssetStore();
 			Asset asset = store.read(id);
+
 			String json = asset.toJson();
 			response = Response
 				.status(Response.Status.OK)
@@ -123,6 +131,7 @@ public class AssetsResource {
 		try {
 			AssetStore store = StoreFactory.getAssetStore();
 			Asset original = store.read(id);
+
 			if (original != null) {			
 
 				Asset asset = new Asset();

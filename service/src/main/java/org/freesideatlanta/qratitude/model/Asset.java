@@ -46,6 +46,7 @@ public class Asset {
 	}
 
 	private String id;
+	private String code;
 	private String name;
 	private Set<String> tags;
 	private Map<String, String> attributes;
@@ -56,6 +57,13 @@ public class Asset {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getCode() {
+		return this.code;
+	}
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getName() {
@@ -106,6 +114,10 @@ public class Asset {
 				String id = p.getText();
 				//log.debug("id: " + id);
 				this.id = id;
+			} else if ("code".equals(field)) {
+				p.nextToken();
+				String code = p.getText();
+				this.code = code;
 			} else if ("name".equals(field)) {
 				p.nextToken();
 				String name = p.getText();
@@ -160,6 +172,7 @@ public class Asset {
 	private void write(JsonGenerator g) throws IOException {
 		g.writeStartObject();
 		g.writeStringField("id", this.id);
+		g.writeStringField("code", this.code);
 		g.writeStringField("name", this.name);
 
 		g.writeFieldName("tags");
