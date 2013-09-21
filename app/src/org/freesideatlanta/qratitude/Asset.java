@@ -37,39 +37,14 @@ public class Asset implements Parcelable {
 		this.name = n;
 	}
 
+	private List<String> keys;
+
 	private Map<String, String> attributes;
-	public Map<String, String> getAttributes() {
-		return this.attributes;
+	public void putAttribute(String attribute, String value) {
+		this.attributes.put(attribute, value);
 	}
-
-	private String category;
-	public void setCategory(String c) {
-		this.category = c;
-	}
-
-	private String description;
-	public void setDescription(String d) {
-		this.description = d;
-	}
-
-	private String dimensions;
-	public void setDimensions(String d) {
-		this.dimensions = d;
-	}
-
-	private String quantity;
-	public void setQuantity(String q) {
-		this.quantity = q;
-	}
-
-	private String condition;
-	public void setCondition(String c) {
-		this.condition = c;
-	}
-
-	private String color;
-	public void setColor(String c) {
-		this.color = c;
+	public void removeAttribute(String attribute) {
+		this.attributes.remove(attribute);
 	}
 
 	private List<String> tags;
@@ -92,6 +67,15 @@ public class Asset implements Parcelable {
 	};
 
 	public Asset() {
+		// TODO: make this dynamic to the app/client/customer
+		this.keys = new ArrayList<String>();
+		this.keys.add("category");
+		this.keys.add("description");
+		this.keys.add("dimensions");
+		this.keys.add("quantity");
+		this.keys.add("condition");
+		this.keys.add("color");
+
 		this.attributes = new LinkedHashMap<String, String>();
 		this.tags = new ArrayList<String>();
 		this.photos = new ArrayList<Uri>();
@@ -101,14 +85,14 @@ public class Asset implements Parcelable {
 		this();
 
 		this.id = in.readString();
+		// TODO: push both code and name to attributes?
 		this.code = in.readString();
 		this.name = in.readString();
-		this.category = in.readString();
-		this.description = in.readString();
-		this.dimensions = in.readString();
-		this.quantity = in.readString();
-		this.condition = in.readString();
-		this.color = in.readString();
+
+		for (String key : this.keys) {
+			this.attributes.put(key, in.readString());
+		}
+		
 		in.readTypedList(this.photos, Uri.CREATOR);
 	}
 
@@ -122,12 +106,11 @@ public class Asset implements Parcelable {
 		out.writeString(this.id);
 		out.writeString(this.code);
 		out.writeString(this.name);
-		out.writeString(this.category);
-		out.writeString(this.description);
-		out.writeString(this.dimensions);
-		out.writeString(this.quantity);
-		out.writeString(this.condition);
-		out.writeString(this.color);
+
+		for (String key : keys) {
+			out.writeString(this.attributes.get(key));
+		}
+
 		out.writeTypedList(this.photos);
 	}
 
@@ -140,14 +123,11 @@ public class Asset implements Parcelable {
 		JSONArray tags = new JSONArray(this.tags);
 		o.put("tags", tags);
 
-		JSONObject attributes = new JSONObject();
-		attributes.put("category", this.category);
-		attributes.put("description", this.description);
-		attributes.put("dimensions", this.dimensions);
-		attributes.put("quantity", this.quantity);
-		attributes.put("condition", this.condition);
-		attributes.put("color", this.color);
-		o.put("attributes", attributes);
+		JSONObject attrs = new JSONObject();
+		for (String key : this.keys) {
+			attrs.put(key, this.attributes.get(key));
+		}
+		o.put("attributes", attrs);
 
 		JSONArray photos = new JSONArray(this.photos);
 		o.put("photos", photos);

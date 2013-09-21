@@ -1,6 +1,8 @@
 package org.freesideatlanta.qratitude;
 
 import java.io.File;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
@@ -33,6 +35,8 @@ public class ProductDataEntryActivity extends Activity implements View.OnClickLi
 	private BitmapManager bitmapManager; 
 	private MediaManager mediaManager;
 
+	private Map<Integer,String> assetViewAttributeMap;
+
 	private Uri fileUri;
 	private Asset asset;
 	
@@ -53,6 +57,13 @@ public class ProductDataEntryActivity extends Activity implements View.OnClickLi
 		this.mediaManager = new MediaManager(d);
 		this.mediaManager.setLog(log);
 
+		this.assetViewAttributeMap = new LinkedHashMap<Integer,String>();
+		this.assetViewAttributeMap.put(R.id.edit_description, "description");
+		this.assetViewAttributeMap.put(R.id.edit_size, "dimensions");
+		this.assetViewAttributeMap.put(R.id.edit_quantity, "quantity");
+		this.assetViewAttributeMap.put(R.id.edit_condition, "condition");
+		this.assetViewAttributeMap.put(R.id.edit_color, "color");
+
 		// extract asset from the intent bundle 
 		Intent i = this.getIntent();
 		this.asset = (Asset) i.getParcelableExtra(Asset.EXTRA_ASSET);
@@ -70,7 +81,7 @@ public class ProductDataEntryActivity extends Activity implements View.OnClickLi
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				String c = s.getSelectedItem().toString();
-				asset.setCategory(c);
+				asset.putAttribute("category", c);
 				log.d("category = " + c);
 			}
 			@Override
@@ -132,26 +143,17 @@ public class ProductDataEntryActivity extends Activity implements View.OnClickLi
 	}
 
 	private void updateModel() {
-		EditText et = null;
-
-		// TODO: refactor to write Parcelable Asset (ordered list of attributes, LinkedHashMap)
-		et = (EditText)findViewById(R.id.edit_title);
+		EditText et = (EditText)findViewById(R.id.edit_title);
 		this.asset.setName(et.getText().toString());
 
-		et = (EditText)findViewById(R.id.edit_description);
-		this.asset.setDescription(et.getText().toString());
-
-		et = (EditText)findViewById(R.id.edit_size);
-		this.asset.setDimensions(et.getText().toString());
-
-		et = (EditText)findViewById(R.id.edit_quantity);
-		this.asset.setQuantity(et.getText().toString());
-
-		et = (EditText)findViewById(R.id.edit_condition);
-		this.asset.setCondition(et.getText().toString());
-
-		et = (EditText)findViewById(R.id.edit_color);
-		this.asset.setColor(et.getText().toString());
+		for (Map.Entry<Integer,String> entry : this.assetViewAttributeMap.entrySet()) {
+			int id = entry.getKey();
+			et = (EditText)findViewById(id);
+			String value = et.getText().toString();
+			String attribute = entry.getValue();
+			
+			this.asset.putAttribute(attribute, value);
+		}
 	}
 
 	private void uploadAsset() {
