@@ -24,15 +24,20 @@ public class UsersResource {
 		try {
 			UserStore store = StoreFactory.getUserStore();
 
+			log.debug("creating the user from JSON: " + json);
 			User user = store.create();
 			user.fromJson(json);
 
 			String password = user.getPassword();
+			log.debug("computing the salted hash of the password for user, user.username = " + user.getUsername());
 			String hash = CryptUtil.getSaltedHash(password);
 			user.setPassword(hash);
 
+			log.debug("updating user, user.id = " + user.getId());
 			store.update(user);
 			String userJson = user.toJson();
+
+			log.debug("responding with HTTP status CREATED (201) with user JSON: " + userJson);
 
 			response = Response
 				.status(Response.Status.CREATED)
