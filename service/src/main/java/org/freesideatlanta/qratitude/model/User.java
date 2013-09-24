@@ -122,6 +122,8 @@ public class User {
 				}
 			} else {
 				// TODO: throw some kind of error; or ignore
+				log.debug("unexpected token while parsing user");
+				log.debug("field = " + field);
 			}
 		}
 	}

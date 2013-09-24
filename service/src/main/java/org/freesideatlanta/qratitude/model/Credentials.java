@@ -47,6 +47,8 @@ public class Credentials {
 				this.password = password;
 			} else {
 				// TODO: throw some kind of error; or ignore
+				log.debug("unexpected token found while parsing credentials");
+				log.debug("field = " + field);
 			}
 		}
 	}

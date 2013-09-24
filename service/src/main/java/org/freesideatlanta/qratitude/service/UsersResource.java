@@ -18,6 +18,13 @@ public class UsersResource {
 
 	@POST
 	public Response createUser(String json) {
+		// TODO: validate JSON
+		if (json == null) {
+			log.debug("json = null");
+		} else if (json.isEmpty()) {
+			log.debug("json is empty");
+		}
+
 		log.debug(json);
 		Response response = null;
 
