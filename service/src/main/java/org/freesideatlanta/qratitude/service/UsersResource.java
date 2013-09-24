@@ -32,35 +32,50 @@ public class UsersResource {
 			UserStore store = StoreFactory.getUserStore();
 
 			log.debug("creating the user from JSON: " + json);
-			User user = store.create();
+			User user = new User();
 			user.fromJson(json);
 
-			String password = user.getPassword();
-			log.debug("computing the salted hash of the password for user, user.username = " + user.getUsername());
-			String hash = CryptUtil.getSaltedHash(password);
-			user.setPassword(hash);
+			log.debug("checking to see if the user already exists");
+			String username = user.getUsername();
+			UserQuery query = new UserQuery(username);
+			Collection<User> matches = store.read(query);
 
-			log.debug("updating user, user.id = " + user.getId());
-			store.update(user);
-			String userJson = user.toJson();
+			if (matches.size() == 0) {
+				log.debug("inserting the user into the database");
+				user = store.create(user);
 
-			log.debug("responding with HTTP status CREATED (201) with user JSON: " + userJson);
+				String password = user.getPassword();
+				log.debug("computing the salted hash of the password for user, user.username = " + user.getUsername());
+				String hash = CryptUtil.getSaltedHash(password);
+				user.setPassword(hash);
 
-			response = Response
-				.status(Response.Status.CREATED)
-				.entity(userJson)
-				.type(MediaType.APPLICATION_JSON)
-				.build();
+				log.debug("updating user, user.id = " + user.getId());
+				store.update(user);
+				String userJson = user.toJson();
 
+				log.debug("responding with HTTP status CREATED (201) with user JSON: " + userJson);
+
+				response = Response
+					.status(Response.Status.CREATED)
+					.entity(userJson)
+					.type(MediaType.APPLICATION_JSON)
+					.build();
+			} else {
+				response = Response
+					.status(Response.Status.CONFLICT)
+					.entity("Requested username already exists")
+					.type(MediaType.TEXT_PLAIN)
+					.build();
+			}
 		} catch (IOException e) {
 			log.debug(e);
-			response = response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		} catch (Exception e) {
 			log.debug(e);
-			response = response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 
-		log.debug(response);
+		log.debug(response.toString());
 		return response;
 	}
 

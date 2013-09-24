@@ -83,16 +83,16 @@ public class UserStoreMongo extends StoreMongo implements UserStore {
 
 	@Override 
 	public Collection<User> read(UserQuery query) {
-		Collection<User> assets = new ArrayList<User>();
+		Collection<User> users = new ArrayList<User>();
 		DBObject q = query.build();
 		DBCursor cursor = this.collection.find(q);
 		while (cursor.hasNext()) {
 			DBObject dbo = cursor.next();
-			User asset = fromDbo(dbo);
-			assets.add(asset);
+			User user = fromDbo(dbo);
+			users.add(user);
 		}
 
-		return assets;
+		return users;
 	}
 
 	@Override
@@ -100,6 +100,15 @@ public class UserStoreMongo extends StoreMongo implements UserStore {
 		BasicDBObject dbo = new BasicDBObject();
 		this.collection.insert(dbo);
 		User user = fromDbo(dbo); 
+
+		return user;
+	}
+
+	@Override
+	public User create(User user) throws IOException {
+		User result = this.create();
+		user.setId(result.getId());
+		this.update(user);
 
 		return user;
 	}
