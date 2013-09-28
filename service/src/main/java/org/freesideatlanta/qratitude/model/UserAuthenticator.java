@@ -3,10 +3,12 @@ package org.freesideatlanta.qratitude.model;
 import java.net.*;
 import java.util.*;
 
+import org.apache.log4j.*;
+
 import org.freesideatlanta.qratitude.data.*;
 
 public class UserAuthenticator {
-
+	private static Logger log = Logger.getLogger(UserAuthenticator.class);
 	private UserStore store;
 
 	public UserAuthenticator() {
@@ -14,6 +16,7 @@ public class UserAuthenticator {
 	}
 
 	public Token login(String username, String password) throws Exception {
+		log.debug("about to query for user: " + username);		
 		User user = this.queryUser(username);
 		
 		Token token = null;
@@ -30,17 +33,21 @@ public class UserAuthenticator {
 
 		if (user != null) {
 			String hash = user.getPassword();
+			log.debug("checking password hash for validity");
 			valid = CryptUtil.check(password, hash);
 		}
 
 		if (valid) {
 			token = new Token();
+			log.debug("generating the token for the user");
 			token.generate(user);
 
 			// NOTE: the hash of the token string is stored in the database
 			String tokenText = token.getToken();
+			log.debug("get the salted hash of the token");
 			String hash = CryptUtil.getSaltedHash(tokenText);
 			user.setToken(hash);
+			log.debug("update the user with the token hash value");
 			this.store.update(user);
 		}
 
