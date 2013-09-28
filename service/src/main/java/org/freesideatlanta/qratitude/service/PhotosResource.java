@@ -27,8 +27,10 @@ public class PhotosResource {
 			@FormDataParam("file") FormDataContentDisposition detail) {
 		Response response = null;
 		try {
+			boolean valid = token != null && !token.isEmpty();
+
 			UserAuthenticator ua = new UserAuthenticator();
-			boolean valid = ua.authenticate(token);
+			valid &= ua.authenticate(token);
 
 			if (valid) {
 				String filename = detail.getFileName();
