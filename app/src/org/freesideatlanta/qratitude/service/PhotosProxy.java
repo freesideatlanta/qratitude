@@ -3,18 +3,20 @@ package org.freesideatlanta.qratitude.service;
 //import java.io.BufferedReader;
 //import java.io.InputStream;
 //import java.io.InputStreamReader;
-//import java.io.File;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
 import org.apache.http.client.HttpClient;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-//import org.apache.http.entity.mime.HttpMultipartMode;
-//import org.apache.http.entity.mime.MultipartEntity;
+//import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 //import org.apache.http.entity.mime.content.FileBody;
 
 import org.json.JSONException;
@@ -47,7 +49,6 @@ public class PhotosProxy {
 		try {
 			final HttpPost post = this.postPhotos(file);
 			// TODO: specify the header keys in the configuration
-			post.addHeader("username", username);
 			post.addHeader("token", token);
 
 			HttpClient client = NetworkUtil.getHttpClient();
@@ -84,15 +85,13 @@ public class PhotosProxy {
 
 	private HttpPost postPhotos(Uri file) throws UnsupportedEncodingException {
 		final HttpPost post = new HttpPost(this.photosUri);
-		// TODO: figure out how to do this properly
-		/*
-		MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 		String path = file.getPath();
 		File toUpload = new File(path);
-		FileBody body = new FileBody(toUpload);
-		entity.addPart("file", body);
+		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+		builder.addBinaryBody("file", toUpload);
+		builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+		HttpEntity entity = builder.build();
 		post.setEntity(entity);
-		*/
 
 		return post;
 	}
