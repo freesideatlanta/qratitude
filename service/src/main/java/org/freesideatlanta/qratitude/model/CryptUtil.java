@@ -62,8 +62,16 @@ public class CryptUtil {
 		InputStream is = cl.getResourceAsStream(CRYPTO_PROPERTIES);
 		properties.load(is);
 
-		iterations = Integer.parseInt(properties.getProperty(CRYPTO_ITERATIONS));
-		saltLength = Integer.parseInt(properties.getProperty(CRYPTO_SALT_LENGTH));
-		keyLength = Integer.parseInt(properties.getProperty(CRYPTO_KEY_LENGTH));
+		String v = properties.getProperty(CRYPTO_ITERATIONS);
+		log.debug("iterations value = " + v);
+		iterations = Integer.parseInt(v);
+
+		v = properties.getProperty(CRYPTO_SALT_LENGTH);
+		log.debug("salt_length value = " + v);
+		saltLength = Integer.parseInt(v);
+
+		v = properties.getProperty(CRYPTO_KEY_LENGTH);
+		log.debug("key_length value = " + v);
+		keyLength = Integer.parseInt(v);
 	}
 }
