@@ -78,8 +78,10 @@ public class UserAuthenticator {
 		boolean valid = false;
 		if (user != null) {
 			String hash = user.getToken();
+			log.debug("token = " + token);
 			log.debug("hash = " + hash);
 			if (hash != null && !hash.isEmpty()) {
+				log.debug("checking token against hash stored in the database");
 				valid = CryptUtil.check(token, hash);
 				log.debug("valid = " + valid);
 			}

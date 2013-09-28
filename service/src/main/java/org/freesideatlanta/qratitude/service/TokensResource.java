@@ -34,6 +34,7 @@ public class TokensResource {
 
 			if (token != null) {
 				String tokenJson = token.toJson();
+				log.debug("tokenJson = " + tokenJson);
 
 				response = Response
 					.status(Response.Status.OK)

@@ -47,6 +47,7 @@ public class CryptUtil {
 		if (saltAndPass.length != 2)
 			return false;
 		String hashOfInput = hash(source, Base64.decodeBase64(saltAndPass[0]));
+		log.debug("hashOfInput = " + hashOfInput);
 		return hashOfInput.equals(saltAndPass[1]);
 	}
 
