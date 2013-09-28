@@ -14,10 +14,14 @@ public class CryptUtil {
 	private static Logger log = Logger.getLogger(CryptUtil.class);
 
 	private static final String CRYPTO_PROPERTIES = "crypto.properties";
+	private static final String CRYPTO_KEY_ALGORITHM = "crypto.key_algorithm";
+	private static final String CRYPTO_RNG_ALGORITHM = "crypto.rng_algorithm";
 	private static final String CRYPTO_ITERATIONS = "crypto.iterations";
 	private static final String CRYPTO_SALT_LENGTH = "crypto.salt_length";
 	private static final String CRYPTO_KEY_LENGTH = "crypto.key_length";
 
+	private static String keyAlgorithm = "PBKDF2WithHmacSHA1";
+	private static String rngAlgorithm = "SHA1PRNG";
 	private static int iterations = 10 * 1024;
 	private static int saltLength = 32;
 	private static int keyLength = 256;
@@ -25,17 +29,16 @@ public class CryptUtil {
 	public static String encrypt(String source) throws Exception {
 		if (source == null || source.length() == 0)
 			throw new IllegalArgumentException("source to be encrypted cannot be empty");
-		// TODO: move the instance parameters out to the crypto properties
 		loadCryptoProperties();
-		SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-		byte[] salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLength);
+		SecretKeyFactory f = SecretKeyFactory.getInstance(keyAlgorithm);
+		byte[] salt = SecureRandom.getInstance(rngAlgorithm).generateSeed(saltLength);
 		SecretKey key = f.generateSecret(new PBEKeySpec(source.toCharArray(), salt, iterations, keyLength));
 		return Base64.encodeBase64String(key.getEncoded());
 	}
 
 	public static String getSaltedHash(String source) throws Exception {
 		loadCryptoProperties();
-		byte[] salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLength);
+		byte[] salt = SecureRandom.getInstance(rngAlgorithm).generateSeed(saltLength);
 		return Base64.encodeBase64String(salt) + "$" + hash(source, salt);
 	}
 
@@ -51,7 +54,7 @@ public class CryptUtil {
 		if (source == null || source.length() == 0)
 			throw new IllegalArgumentException("source to be hashed cannot be empty");
 		loadCryptoProperties();
-		SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+		SecretKeyFactory f = SecretKeyFactory.getInstance(keyAlgorithm);
 		SecretKey key = f.generateSecret(new PBEKeySpec(source.toCharArray(), salt, iterations, keyLength));
 		return Base64.encodeBase64String(key.getEncoded());
 	}
@@ -62,16 +65,16 @@ public class CryptUtil {
 		InputStream is = cl.getResourceAsStream(CRYPTO_PROPERTIES);
 		properties.load(is);
 
+		keyAlgorithm = properties.getProperty(CRYPTO_KEY_ALGORITHM);
+		rngAlgorithm = properties.getProperty(CRYPTO_RNG_ALGORITHM);
+
 		String v = properties.getProperty(CRYPTO_ITERATIONS);
-		log.debug("iterations value = " + v);
 		iterations = Integer.parseInt(v);
 
 		v = properties.getProperty(CRYPTO_SALT_LENGTH);
-		log.debug("salt_length value = " + v);
 		saltLength = Integer.parseInt(v);
 
 		v = properties.getProperty(CRYPTO_KEY_LENGTH);
-		log.debug("key_length value = " + v);
 		keyLength = Integer.parseInt(v);
 	}
 }
