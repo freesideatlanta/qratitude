@@ -14,6 +14,7 @@ import org.freesideatlanta.qratitude.data.*;
 public class Token {
 	private static Logger log = Logger.getLogger(Token.class);
 
+	private String userId;
 	// NOTE: this is the token returned to the client
 	private String token;
 
@@ -21,9 +22,18 @@ public class Token {
 		return this.token;
 	}
 
+	public Token() {
+	}
+
+	public Token(String userId, String token) {
+		this.userId = userId;
+		this.token = token;
+	}
+
 	public void generate(User user) throws Exception {
 		String random = UUID.randomUUID().toString().toUpperCase();
 		String username = user.getUsername();
+		this.userId = user.getId();
 		
 		DateFormat df = getISODateFormat();
 		Date date = new Date();
@@ -52,6 +62,7 @@ public class Token {
 
 	private void write(JsonGenerator g) throws IOException {
 		g.writeStartObject();
+		g.writeStringField("userid", this.userId);
 		g.writeStringField("token", this.token);
 		g.writeEndObject();
 	}

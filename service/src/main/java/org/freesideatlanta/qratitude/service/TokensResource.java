@@ -70,9 +70,36 @@ public class TokensResource {
 			boolean valid = ua.authenticate(username, token);
 
 			if (valid) {
-				response = Response
-					.status(Response.Status.OK)
-					.build();
+				UserStore us = StoreFactory.getUserStore();
+				UserQuery query = new UserQuery(username);
+				Collection<User> matches = us.read(query);
+
+				User user = null;
+				if (matches.size() == 0) {
+					user = null;
+				} else if (matches.size() == 1) {
+					Iterator<User> it = matches.iterator();
+					user = it.next();
+				} else {
+					user = null;
+				}
+
+				if (user != null) {
+					String userId = user.getId();
+					Token t = new Token(userId, token);
+					String json = t.toJson();
+
+					response = Response
+						.status(Response.Status.OK)
+						.entity(json)
+						.type(MediaType.APPLICATION_JSON)
+						.build();
+				} else {
+					// TODO: make this more clear
+					response = Response
+						.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.build();
+				}
 			} else {
 				response = Response
 					.status(Response.Status.FORBIDDEN)
