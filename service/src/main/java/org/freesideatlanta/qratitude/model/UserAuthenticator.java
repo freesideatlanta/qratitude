@@ -17,7 +17,7 @@ public class UserAuthenticator {
 
 	public Token login(String username, String password) throws Exception {
 		log.debug("about to query for user: " + username);		
-		User user = this.queryUser(username);
+		User user = this.queryUserByUsername(username);
 		
 		Token token = null;
 		if (user != null) {
@@ -54,16 +54,16 @@ public class UserAuthenticator {
 		return token; 
 	}
 
-	public void logout(String username) throws Exception {
-		User user = this.queryUser(username);
+	public void logout(String token) throws Exception {
+		User user = this.queryUserByToken(token);
 		if (user != null) {
 			user.setToken("");
 			this.store.update(user);
 		}
 	}
 
-	public boolean authenticate(String username, String token) throws Exception {
-		User user = this.queryUser(username);
+	public boolean authenticate(String token) throws Exception {
+		User user = this.queryUserByToken(token);
 
 		boolean valid = false;
 		if (user != null) {
@@ -85,10 +85,19 @@ public class UserAuthenticator {
 		return valid;
 	}
 
-	private User queryUser(String username) {
-		UserQuery query = new UserQuery(username);
+	private User queryUserByUsername(String username) {
+		UserQuery query = new UserUsernameQuery(username);
 		Collection<User> matches = this.store.read(query);
+		return this.takeOne(matches);
+	}
 
+	private User queryUserByToken(String token) {
+		UserQuery query = new UserTokenQuery(token);
+		Collection<User> matches = this.store.read(query);
+		return this.takeOne(matches);
+	}
+
+	private User takeOne(Collection<User> matches) {
 		User user = null;
 		if (matches.size() == 0) {
 			user = null;

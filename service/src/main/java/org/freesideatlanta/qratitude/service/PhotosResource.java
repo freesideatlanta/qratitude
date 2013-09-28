@@ -22,14 +22,13 @@ public class PhotosResource {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response createPhoto(
-			@HeaderParam("username") String username,
 			@HeaderParam("token") String token,
 			@FormDataParam("file") InputStream is, 
 			@FormDataParam("file") FormDataContentDisposition detail) {
 		Response response = null;
 		try {
 			UserAuthenticator ua = new UserAuthenticator();
-			boolean valid = ua.authenticate(username, token);
+			boolean valid = ua.authenticate(token);
 
 			if (valid) {
 				String filename = detail.getFileName();

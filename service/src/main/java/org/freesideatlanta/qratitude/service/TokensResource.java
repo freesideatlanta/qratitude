@@ -57,21 +57,18 @@ public class TokensResource {
 	}
 
 	@GET
-	public Response checkToken(
-			@HeaderParam("username") String username,
-			@HeaderParam("token") String token) {
-		log.debug(username);
+	public Response checkToken(@HeaderParam("token") String token) {
 		log.debug(token);
 
 		Response response = null;
 
 		try {
 			UserAuthenticator ua = new UserAuthenticator();
-			boolean valid = ua.authenticate(username, token);
+			boolean valid = ua.authenticate(token);
 
 			if (valid) {
 				UserStore us = StoreFactory.getUserStore();
-				UserQuery query = new UserQuery(username);
+				UserQuery query = new UserTokenQuery(token);
 				Collection<User> matches = us.read(query);
 
 				User user = null;
@@ -113,17 +110,15 @@ public class TokensResource {
 	}
 
 	@DELETE
-	public Response deleteToken(
-			@HeaderParam("username") String username,
-			@HeaderParam("token") String token) {
+	public Response deleteToken(@HeaderParam("token") String token) {
 		Response response = null;
 
 		try {
 			UserAuthenticator ua = new UserAuthenticator();
-			boolean valid = ua.authenticate(username, token);
+			boolean valid = ua.authenticate(token);
 
 			if (valid) {
-				ua.logout(username);	
+				ua.logout(token);	
 
 				response = Response
 					.status(Response.Status.OK)

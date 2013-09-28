@@ -103,7 +103,7 @@ public class UserStoreTest {
 	@Test
 	public void testReadQueryExists() {
 		UserStore us = StoreFactory.getUserStore();
-		UserQuery query = new UserQuery("orange_julius");
+		UserQuery query = new UserUsernameQuery("orange_julius");
 
 		Collection<User> matches = us.read(query);
 		assertTrue(matches != null);
@@ -118,7 +118,7 @@ public class UserStoreTest {
 	@Test
 	public void testReadQueryNotExists() {
 		UserStore us = StoreFactory.getUserStore();
-		UserQuery query = new UserQuery("orange_julius2");
+		UserQuery query = new UserUsernameQuery("orange_julius2");
 
 		Collection<User> matches = us.read(query);
 		assertTrue(matches != null);

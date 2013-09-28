@@ -29,6 +29,7 @@ public class UsersResource {
 		Response response = null;
 
 		try {
+			// TODO: check to see if the caller has permissions to create a user
 			UserStore store = StoreFactory.getUserStore();
 
 			log.debug("creating the user from JSON: " + json);
@@ -37,7 +38,7 @@ public class UsersResource {
 
 			log.debug("checking to see if the user already exists");
 			String username = user.getUsername();
-			UserQuery query = new UserQuery(username);
+			UserQuery query = new UserUsernameQuery(username);
 			Collection<User> matches = store.read(query);
 
 			if (matches.size() == 0) {
@@ -86,7 +87,7 @@ public class UsersResource {
 		Response response = null;
 		try {
 			UserStore store = StoreFactory.getUserStore();
-			UserQuery query = new UserQuery(searchText);
+			UserQuery query = new UserSearchQuery(searchText);
 			Collection<User> users = store.read(query);
 
 			String json = User.toJson(users);
