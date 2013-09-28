@@ -27,6 +27,7 @@ public class PhotosResource {
 			@FormDataParam("file") FormDataContentDisposition detail) {
 		Response response = null;
 		try {
+			log.debug("token = " + token);
 			boolean valid = token != null && !token.isEmpty();
 
 			UserAuthenticator ua = new UserAuthenticator();
@@ -56,6 +57,7 @@ public class PhotosResource {
 		} catch (Exception e) {
 			// TODO: better exception handling
 			log.debug(e);	
+			log.debug(e.getMessage());
 			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 
