@@ -124,12 +124,39 @@
 	</build>
 	<profiles>
 		<profile>
-			<id>development</id>
+			<id>metasw</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>env</name>
+					<value>metasw</value>
+				</property>
 			</activation>
 			<properties>
-				<build.profile.id>development</build.profile.id>
+				<build.profile.id>metasw</build.profile.id>
+			</properties>
+			<build>
+				<filters>
+					<filter>src/main/filters/${build.profile.id}.properties</filter>
+				</filters>
+				<resources>
+					<resource>
+						<filtering>true</filtering>
+						<directory>src/main/resources</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<profile>
+			<id>local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>env</name>
+					<value>local</value>
+				</property>
+			</activation>
+			<properties>
+				<build.profile.id>local</build.profile.id>
 			</properties>
 			<build>
 				<filters>
