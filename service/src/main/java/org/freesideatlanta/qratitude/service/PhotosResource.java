@@ -32,10 +32,14 @@ public class PhotosResource {
 
 			UserAuthenticator ua = new UserAuthenticator();
 			valid &= ua.authenticate(token);
+			log.debug("valid = " + valid);
 
 			if (valid) {
 				String filename = detail.getFileName();
 				String extension = FilenameUtils.getExtension(filename);
+
+				log.debug("filename = " + filename);
+				log.debug("extension = " + extension);
 
 				PhotoStore store = StoreFactory.getPhotoStore();
 				URI uri = store.create(is, extension);

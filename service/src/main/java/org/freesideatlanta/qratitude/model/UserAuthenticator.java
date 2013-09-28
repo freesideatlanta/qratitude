@@ -67,6 +67,7 @@ public class UserAuthenticator {
 
 		boolean valid = false;
 		if (user != null) {
+			log.debug("user.getUsername() = " + user.getUsername());
 			valid = this.authenticate(user, token);
 		}
 
@@ -77,8 +78,10 @@ public class UserAuthenticator {
 		boolean valid = false;
 		if (user != null) {
 			String hash = user.getToken();
+			log.debug("hash = " + hash);
 			if (hash != null && !hash.isEmpty()) {
 				valid = CryptUtil.check(token, hash);
+				log.debug("valid = " + valid);
 			}
 		}
 
@@ -100,11 +103,14 @@ public class UserAuthenticator {
 	private User takeOne(Collection<User> matches) {
 		User user = null;
 		if (matches.size() == 0) {
+			log.debug("matches.size() == 0");
 			user = null;
 		} else if (matches.size() == 1) {
+			log.debug("matches.size() == 1");
 			Iterator<User> iterator = matches.iterator();
 			user = iterator.next();
 		} else { // matches.size() > 1
+			log.debug("matches.size() > 1");
 			// TODO: throw an exception
 			user = null;
 		}
