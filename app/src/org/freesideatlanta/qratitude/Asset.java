@@ -56,6 +56,9 @@ public class Asset implements Parcelable {
 	public List<Uri> getPhotos() {
 		return this.photos;
 	}
+	public void setPhotos(List<Uri> photos) {
+		this.photos = photos;
+	}
 
 	public static final Parcelable.Creator<Asset> CREATOR = new Parcelable.Creator<Asset>() {
 		public Asset createFromParcel(Parcel in) {

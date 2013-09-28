@@ -5,5 +5,6 @@
 	<!-- 10.0.2.2 is localhost on the computer hosting the emulated device -->
 	<string name="base_url">http://10.0.2.2:8080/qratitude-service/api</string>
 	<string name="assets_path">/assets</string>
+	<string name="photos_path">/photos</string>
 	<string name="tokens_path">/tokens</string>
 </resources>

@@ -25,8 +25,8 @@ public class AssetsResource {
 		Response response = null;
 
 		try {
-			Authenticator a = new Authenticator();
-			boolean valid = a.authenticate(username, token);
+			UserAuthenticator ua = new UserAuthenticator();
+			boolean valid = ua.authenticate(username, token);
 
 			if (valid) {
 				AssetStore store = StoreFactory.getAssetStore();

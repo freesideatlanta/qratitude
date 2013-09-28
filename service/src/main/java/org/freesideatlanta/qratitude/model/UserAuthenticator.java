@@ -5,11 +5,11 @@ import java.util.*;
 
 import org.freesideatlanta.qratitude.data.*;
 
-public class Authenticator {
+public class UserAuthenticator {
 
 	private UserStore store;
 
-	public Authenticator() {
+	public UserAuthenticator() {
 		this.store = StoreFactory.getUserStore();
 	}
 

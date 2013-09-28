@@ -1,6 +1,8 @@
 package org.freesideatlanta.qratitude;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -8,14 +10,17 @@ import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.IntentService;
 import android.content.Intent;
+import android.net.Uri;
 
 import org.freesideatlanta.qratitude.common.Logger;
 import org.freesideatlanta.qratitude.service.AssetsProxy;
+import org.freesideatlanta.qratitude.service.PhotosProxy;
 
 public class UploadAssetService extends IntentService {
 	private Logger log;
 	private AccountManager accountManager;
-	private AssetsProxy proxy;
+	private AssetsProxy assetsProxy;
+	private PhotosProxy photosProxy;
 
 	public UploadAssetService() {
 		super("UploadAssetService");
@@ -27,7 +32,8 @@ public class UploadAssetService extends IntentService {
 		this.log = new Logger(this, n);
 
 		this.accountManager = AccountManager.get(this);
-		this.proxy = new AssetsProxy(this);
+		this.assetsProxy = new AssetsProxy(this);
+		this.photosProxy = new PhotosProxy(this);
 
 		return super.onStartCommand(intent, flags, startId);
 	}
@@ -47,8 +53,19 @@ public class UploadAssetService extends IntentService {
 				boolean notifyAuthFailure = true;
 				String token = this.accountManager.blockingGetAuthToken(account, type, notifyAuthFailure); 
 
-				// upload
-				this.proxy.uploadAsset(username, token, asset);
+				// cycle through each photo
+				List<Uri> files = asset.getPhotos();
+				List<Uri> remotes = new ArrayList<Uri>();
+				for (Uri file : files) {
+					// upload the photo 
+					Uri remote = this.photosProxy.uploadPhoto(username, token, file);
+					remotes.add(remote);
+				}
+				// replace the local paths with remote paths
+				asset.setPhotos(remotes);
+
+				// upload the asset
+				this.assetsProxy.uploadAsset(username, token, asset);
 			} else {
 				// TODO: handle
 			}

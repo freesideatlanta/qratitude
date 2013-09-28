@@ -29,8 +29,8 @@ public class TokensResource {
 			String username = credentials.getUsername();
 			String password = credentials.getPassword();
 
-			Authenticator a = new Authenticator();
-			Token token = a.login(username, password);
+			UserAuthenticator ua = new UserAuthenticator();
+			Token token = ua.login(username, password);
 
 			if (token != null) {
 				String tokenJson = token.toJson();
@@ -66,8 +66,8 @@ public class TokensResource {
 		Response response = null;
 
 		try {
-			Authenticator a = new Authenticator();
-			boolean valid = a.authenticate(username, token);
+			UserAuthenticator ua = new UserAuthenticator();
+			boolean valid = ua.authenticate(username, token);
 
 			if (valid) {
 				response = Response
@@ -92,11 +92,11 @@ public class TokensResource {
 		Response response = null;
 
 		try {
-			Authenticator a = new Authenticator();
-			boolean valid = a.authenticate(username, token);
+			UserAuthenticator ua = new UserAuthenticator();
+			boolean valid = ua.authenticate(username, token);
 
 			if (valid) {
-				a.logout(username);	
+				ua.logout(username);	
 
 				response = Response
 					.status(Response.Status.OK)
