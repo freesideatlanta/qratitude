@@ -65,27 +65,39 @@ public class AssetsResource {
 			@QueryParam("s") String searchText, 
 			@QueryParam("t") List<String> tags) {
 
+		log.debug("code = " + code);
+		log.debug("searchText = " + searchText);
+		StringBuilder sb = new StringBuilder();
+		for (String tag : tags)
+			sb.append(tag + " ");
+		log.debug("tags = " + sb.toString());
+
 		Response response = null;
 		try {
 			AssetStore store = StoreFactory.getAssetStore();
 			AssetQuery query = null;
 
 			if (code != null) {
+				log.debug("constructing an asset code query");
 				query = new AssetCodeQuery(code);
 			} else {
-				if (searchText != null || tags != null) {
+				if (searchText != null || tags.size() > 0) {
+					log.debug("constructing an asset search query");
 					query = new AssetSearchQuery(searchText, tags);
 				}
 			}
 			
 			Collection<Asset> assets = null;
 			if (query == null) {					
+				log.debug("query null; read all assets");
 				assets = store.read();
 			} else {
+				log.debug("query not null; query assets");
 				assets = store.read(query);
 			}
 			
 			String json = Asset.toJson(assets);
+			log.debug("json = " + json);
 			response = Response
 				.status(Response.Status.OK)
 				.entity(json)
