@@ -91,9 +91,14 @@ public class AssetStoreMongo extends StoreMongo implements AssetStore {
 
 	@Override 
 	public Collection<Asset> read(AssetQuery query) {
+		if (query == null) {
+			throw new IllegalArgumentException("query cannot be null");
+		}
+
 		Collection<Asset> assets = new ArrayList<Asset>();
 		DBObject q = query.build();
 		DBCursor cursor = this.collection.find(q);
+
 		while (cursor.hasNext()) {
 			DBObject dbo = cursor.next();
 			Asset asset = fromDbo(dbo);

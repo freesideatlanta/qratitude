@@ -73,10 +73,17 @@ public class AssetsResource {
 			if (code != null) {
 				query = new AssetCodeQuery(code);
 			} else {
-				query = new AssetSearchQuery(searchText, tags);
+				if (searchText != null || tags != null) {
+					query = new AssetSearchQuery(searchText, tags);
+				}
 			}
-				
-			Collection<Asset> assets = store.read(query);
+			
+			Collection<Asset> assets = null;
+			if (query == null) {					
+				assets = store.read();
+			} else {
+				assets = store.read(query);
+			}
 			
 			String json = Asset.toJson(assets);
 			response = Response
