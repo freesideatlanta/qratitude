@@ -4,9 +4,11 @@ import java.util.*;
 import java.util.regex.*;
 
 import com.mongodb.*;
+import org.apache.log4j.*;
 import org.bson.types.*;
 
 public class AssetSearchQuery implements AssetQuery {
+	private static Logger log = Logger.getLogger(AssetSearchQuery.class);
 
 	private String searchText;
 	private Collection<String> tags;
@@ -33,11 +35,13 @@ public class AssetSearchQuery implements AssetQuery {
 			qb = QueryBuilder.start("name").regex(p);
 		}
 
-		if (tags != null && !done) {
+		if (tags != null && tags.size() > 0 && !done) {
 			qb.and("tags").all(tags);
 		}
 
 		DBObject dbo = qb.get();
+		log.debug("dbo = " + dbo.toString());
+
 		return dbo;
 	} 
 }
