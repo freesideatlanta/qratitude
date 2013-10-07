@@ -31,7 +31,7 @@ public class AssetSearchQuery implements AssetQuery {
 			qb = QueryBuilder.start("tags").all(tags);
 			done = true;
 		} else {
-			Pattern p = Pattern.compile(searchText);
+			Pattern p = Pattern.compile(searchText, Pattern.CASE_INSENSITIVE);
 			qb = QueryBuilder.start("name").regex(p);
 		}
 
