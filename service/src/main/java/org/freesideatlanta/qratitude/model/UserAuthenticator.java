@@ -45,11 +45,12 @@ public class UserAuthenticator {
 			token.generate(user);
 
 			// NOTE: the hash of the token string is stored in the database
-			String tokenText = token.getToken();
-			log.debug("tokenText = " + tokenText);
+			String encryptedToken = token.getToken();
+			log.debug("encryptedToken = " + encryptedToken);
 			log.debug("get the salted hash of the token");
-			String hash = CryptUtil.getSaltedHash(tokenText);
+			String hash = CryptUtil.getSaltedHash(encryptedToken);
 			log.debug("hash = " + hash);
+			log.debug("storing the salted hash with the user record");
 			user.setToken(hash);
 			log.debug("update the user with the token hash value");
 			this.store.update(user);
@@ -58,18 +59,23 @@ public class UserAuthenticator {
 		return token; 
 	}
 
-	public void logout(String token) throws Exception {
+	public void logout(String username, String token) throws Exception {
+		log.debug("username = " + username);
 		log.debug("token = " + token);
-		User user = this.queryUserByToken(token);
+		log.debug("query the user by username");
+		User user = this.queryUserByUsername(username);
 		if (user != null) {
+			log.debug("clearing the token on the user record");
 			user.setToken("");
 			this.store.update(user);
 		}
 	}
 
-	public boolean authenticate(String token) throws Exception {
+	public boolean authenticate(String username, String token) throws Exception {
+		log.debug("username = " + username);
 		log.debug("token = " + token);
-		User user = this.queryUserByToken(token);
+		log.debug("query the user by username");
+		User user = this.queryUserByUsername(username);
 
 		boolean valid = false;
 		if (user != null) {
@@ -87,7 +93,6 @@ public class UserAuthenticator {
 			String username = user.getUsername();
 			log.debug("username = " + username);
 			String hash = user.getToken();
-			log.debug("token = " + token);
 			log.debug("hash = " + hash);
 			if (hash != null && !hash.isEmpty()) {
 				log.debug("checking token against hash stored in the database");
@@ -102,15 +107,6 @@ public class UserAuthenticator {
 	private User queryUserByUsername(String username) {
 		log.debug("username = " + username);
 		UserQuery query = new UserUsernameQuery(username);
-		Collection<User> matches = this.store.read(query);
-		return this.takeOne(matches);
-	}
-
-	private User queryUserByToken(String token) throws Exception {
-		log.debug("token = " + token);
-		String hash = CryptUtil.getSaltedHash(token);
-		log.debug("hash = " + hash);
-		UserQuery query = new UserTokenHashQuery(hash);
 		Collection<User> matches = this.store.read(query);
 		return this.takeOne(matches);
 	}

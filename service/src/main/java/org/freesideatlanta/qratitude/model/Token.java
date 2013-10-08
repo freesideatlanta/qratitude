@@ -15,9 +15,9 @@ public class Token {
 	private static Logger log = Logger.getLogger(Token.class);
 
 	private String userId;
-	// NOTE: this is the token returned to the client
 	private String token;
 
+	// NOTE: this is the token returned to the client
 	public String getToken() {
 		return this.token;
 	}
@@ -26,6 +26,8 @@ public class Token {
 	}
 
 	public Token(String userId, String token) {
+		log.debug("userId = " + userId);
+		log.debug("token = " + token);
 		this.userId = userId;
 		this.token = token;
 	}
@@ -34,6 +36,7 @@ public class Token {
 		String random = UUID.randomUUID().toString().toUpperCase();
 		String username = user.getUsername();
 		this.userId = user.getId();
+		log.debug("userId = " + userId);
 		
 		DateFormat df = getISODateFormat();
 		Date date = new Date();
@@ -44,8 +47,11 @@ public class Token {
 		b.append(username).append("|");
 		b.append(creationDate);
 		String tokenText = b.toString();
+		log.debug("tokenText = " + tokenText);
 
+		log.debug("encrypting the token text");
 		this.token = CryptUtil.encrypt(tokenText);
+		log.debug("this.token = " + this.token);
 	}
 
 	public String toJson() throws IOException {
@@ -57,6 +63,7 @@ public class Token {
 		g.close();
 
 		String json = sw.toString();
+		log.debug("json = " + json);
 		return json;
 	}
 

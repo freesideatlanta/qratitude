@@ -48,7 +48,8 @@ public class PhotosProxy {
 		Uri remote = null;
 		try {
 			final HttpPost post = this.postPhotos(file);
-			// TODO: specify the header key in the configuration
+			// TODO: specify the header keys in the configuration
+			post.addHeader("username", username);
 			post.addHeader("token", token);
 
 			HttpClient client = NetworkUtil.getHttpClient();
@@ -89,8 +90,6 @@ public class PhotosProxy {
 		String path = file.getPath();
 		File binary = new File(path);
 		ContentBody toUpload = new FileBody(binary, "application/octet-stream");
-		//ByteArrayBody toUpload = new ByteArrayBody(bytes, name);
-		//ContentBody toUpload = new FileBody(binary);
 
 		MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 		entity.addPart("file", toUpload);

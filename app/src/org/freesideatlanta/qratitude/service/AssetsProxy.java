@@ -45,6 +45,7 @@ public class AssetsProxy {
 			log.d("asset.toJSON = " + o.toString());
 
 			final HttpPost post = this.postAssets(o);
+			post.addHeader("username", username);
 			post.addHeader("token", token);
 
 			HttpClient client = NetworkUtil.getHttpClient();

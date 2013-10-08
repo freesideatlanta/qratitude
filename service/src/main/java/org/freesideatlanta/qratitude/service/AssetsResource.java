@@ -18,6 +18,7 @@ public class AssetsResource {
 
 	@POST
 	public Response createAsset(
+			@HeaderParam("username") String username,
 			@HeaderParam("token") String token,
 			String json) {
 		log.debug(json);
@@ -25,7 +26,7 @@ public class AssetsResource {
 
 		try {
 			UserAuthenticator ua = new UserAuthenticator();
-			boolean valid = ua.authenticate(token);
+			boolean valid = ua.authenticate(username, token);
 
 			if (valid) {
 				AssetStore store = StoreFactory.getAssetStore();

@@ -22,6 +22,7 @@ public class PhotosResource {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response createPhoto(
+			@HeaderParam("username") String username,
 			@HeaderParam("token") String token,
 			@FormDataParam("file") InputStream is, 
 			@FormDataParam("file") FormDataContentDisposition detail) {
@@ -31,10 +32,14 @@ public class PhotosResource {
 			boolean valid = token != null && !token.isEmpty();
 
 			UserAuthenticator ua = new UserAuthenticator();
-			valid &= ua.authenticate(token);
+			valid &= ua.authenticate(username, token);
 			log.debug("valid = " + valid);
 
 			if (valid) {
+				if (detail == null) {
+					log.debug("detail is null");
+				}
+
 				String filename = detail.getFileName();
 				String extension = FilenameUtils.getExtension(filename);
 

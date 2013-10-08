@@ -58,20 +58,20 @@ public class TokensResource {
 	}
 
 	@GET
-	public Response checkToken(@HeaderParam("token") String token) {
+	public Response checkToken(
+			@HeaderParam("username") String username,
+			@HeaderParam("token") String token) {
 		log.debug("token = " + token);
 
 		Response response = null;
 
 		try {
 			UserAuthenticator ua = new UserAuthenticator();
-			boolean valid = ua.authenticate(token);
+			boolean valid = ua.authenticate(username, token);
 
 			if (valid) {
 				UserStore us = StoreFactory.getUserStore();
-				String hash = CryptUtil.getSaltedHash(token);
-				log.debug("hash = " + hash);
-				UserQuery query = new UserTokenHashQuery(hash);
+				UserQuery query = new UserUsernameQuery(username);
 				Collection<User> matches = us.read(query);
 
 				User user = null;
@@ -113,15 +113,17 @@ public class TokensResource {
 	}
 
 	@DELETE
-	public Response deleteToken(@HeaderParam("token") String token) {
+	public Response deleteToken(
+			@HeaderParam("username") String username,
+			@HeaderParam("token") String token) {
 		Response response = null;
 
 		try {
 			UserAuthenticator ua = new UserAuthenticator();
-			boolean valid = ua.authenticate(token);
+			boolean valid = ua.authenticate(username, token);
 
 			if (valid) {
-				ua.logout(token);	
+				ua.logout(username, token);
 
 				response = Response
 					.status(Response.Status.OK)
