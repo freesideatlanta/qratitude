@@ -9,15 +9,15 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
 import org.apache.http.client.HttpClient;
-import org.apache.http.HttpEntity;
+//import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-//import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-//import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,7 +48,7 @@ public class PhotosProxy {
 		Uri remote = null;
 		try {
 			final HttpPost post = this.postPhotos(file);
-			// TODO: specify the header keys in the configuration
+			// TODO: specify the header key in the configuration
 			post.addHeader("token", token);
 
 			HttpClient client = NetworkUtil.getHttpClient();
@@ -85,12 +85,16 @@ public class PhotosProxy {
 
 	private HttpPost postPhotos(Uri file) throws UnsupportedEncodingException {
 		final HttpPost post = new HttpPost(this.photosUri);
+		
 		String path = file.getPath();
-		File toUpload = new File(path);
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		builder.addBinaryBody("file", toUpload);
-		builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-		HttpEntity entity = builder.build();
+		File binary = new File(path);
+		ContentBody toUpload = new FileBody(binary, "application/octet-stream");
+		//ByteArrayBody toUpload = new ByteArrayBody(bytes, name);
+		//ContentBody toUpload = new FileBody(binary);
+
+		MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+		entity.addPart("file", toUpload);
+
 		post.setEntity(entity);
 
 		return post;
