@@ -59,7 +59,7 @@ public class TokensResource {
 
 	@GET
 	public Response checkToken(@HeaderParam("token") String token) {
-		log.debug(token);
+		log.debug("token = " + token);
 
 		Response response = null;
 
@@ -69,7 +69,9 @@ public class TokensResource {
 
 			if (valid) {
 				UserStore us = StoreFactory.getUserStore();
-				UserQuery query = new UserTokenQuery(token);
+				String hash = CryptUtil.getSaltedHash(token);
+				log.debug("hash = " + hash);
+				UserQuery query = new UserTokenHashQuery(hash);
 				Collection<User> matches = us.read(query);
 
 				User user = null;

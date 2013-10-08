@@ -6,20 +6,22 @@ import java.util.regex.*;
 import com.mongodb.*;
 import org.bson.types.*;
 
-public class UserTokenQuery implements UserQuery {
+import org.freesideatlanta.qratitude.model.*;
 
-	private String token;
+public class UserTokenHashQuery implements UserQuery {
 
-	public UserTokenQuery(String token) throws IllegalArgumentException {
-		if (token == null) {
+	private String hash;
+
+	public UserTokenHashQuery(String hash) throws IllegalArgumentException {
+		if (hash == null) {
 			throw new IllegalArgumentException("UserQuery arguments cannot all be null");
 		}
 
-		this.token = token;
+		this.hash = hash;
 	}
 
 	public DBObject build() {
-		QueryBuilder qb = QueryBuilder.start("token").is(this.token);
+		QueryBuilder qb = QueryBuilder.start("token").is(this.hash);
 		DBObject dbo = qb.get();
 
 		return dbo;
