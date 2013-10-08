@@ -14,6 +14,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
@@ -88,8 +89,12 @@ public class PhotosProxy {
 		final HttpPost post = new HttpPost(this.photosUri);
 		
 		String path = file.getPath();
+		log.d("path = " + path);
 		File binary = new File(path);
-		ContentBody toUpload = new FileBody(binary, "application/octet-stream");
+		String filename = binary.getName();
+		log.d("filename = " + filename);
+		ContentBody toUpload = new FileBody(binary, ContentType.APPLICATION_OCTET_STREAM, filename);
+		//ContentBody toUpload = new FileBody(binary, "application/octet-stream", filename);
 
 		MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 		entity.addPart("file", toUpload);
